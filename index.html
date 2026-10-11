@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Togo Marché 24/24 - V3 FINAL</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
 body{font-family:'Outfit',sans-serif;background:#f8fafc}
@@ -14,257 +14,80 @@ body{font-family:'Outfit',sans-serif;background:#f8fafc}
 </style>
 </head>
 <body class="pb-24">
-<!-- OFFLINE BANNER -->
-<div id="offline" class="hidden fixed top-0 w-full bg-red-600 text-white text-center py-2 z-[999] text-sm font-bold"><i class="fa-solid fa-wifi"></i> Vérifiez votre connexion Internet - Connexion obligatoire</div>
-
-<!-- HEADER -->
-<header class="bg-[#0f172a] text-white p-4 sticky top-0 z-50 shadow-lg">
-<div class="flex justify-between items-center max-w-6xl mx-auto">
-<div>
-<h1 class="font-extrabold text-xl">🇹🇬 TOGO MARCHÉ <span class="text-yellow-400">24/24</span></h1>
-<p class="text-[10px] opacity-70">Plateforme libre - Tout le monde publie</p>
-</div>
+<div id="offlineBanner" class="hidden bg-red-600 text-white text-center py-2 text-sm">⚠️ Hors connexion</div>
+<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-4 sticky top-0 z-50 shadow-lg">
+<div class="max-w-7xl mx-auto flex justify-between items-center">
+<h1 class="font-black text-xl"><i class="fa-solid fa-store"></i> Togo Marché 24/24</h1>
 <div class="flex gap-2">
-<button onclick="showTab('live')" class="bg-red-600 px-3 py-1 rounded-full text-xs font-bold"><span class="live-dot">🔴</span> LIVE</button>
-<button onclick="showTab('profil')" class="bg-white/20 w-8 h-8 rounded-full"><i class="fa-solid fa-user"></i></button>
+<button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1 rounded-full text-sm font-bold">Accueil</button>
+<button onclick="showPage('register')" class="bg-black/20 px-3 py-1 rounded-full text-sm font-bold">S'inscrire</button>
 </div>
 </div>
 </header>
-
-<!-- TABS -->
-<div class="max-w-6xl mx-auto">
-
-<!-- TAB ACCUEIL / BOUTIQUES -->
-<div id="tab-accueil" class="tab p-3">
-<!-- SEARCH -->
-<div class="bg-white rounded-2xl p-3 shadow-sm flex gap-2 mt-2">
-<i class="fa-solid fa-search text-gray-400 mt-2"></i>
-<input id="searchInput" oninput="filtrer()" placeholder="Rechercher hôtel, restaurant, sauce, perruque..." class="w-full outline-none text-sm">
+<div id="homePage" class="max-w-7xl mx-auto p-4">
+<div class="bg-white rounded-2xl p-6 shadow mt-4 grid md:grid-cols-2 gap-6 items-center">
+<div>
+<h2 class="text-3xl font-black text-green-700">Tout Lomé chez vous, <br>24h/24 et 7j/7</h2>
+<p class="text-gray-600 mt-3">Commandez, payez à la livraison, suivez votre livreur en direct!</p>
+<div class="flex gap-2 mt-4">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-circle live-dot text-red-500"></i> LIVE en cours</span>
+<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-motorcycle"></i> 12 livreurs actifs</span>
 </div>
-
-<!-- CATEGORIES LIBRES -->
-<div class="flex gap-2 overflow-x-auto py-3 no-scrollbar">
-<button onclick="filterCat('tout')" class="catBtn bg-black text-white px-4 py-2 rounded-full text-xs whitespace-nowrap">Tout</button>
-<button onclick="filterCat('Hôtel')" class="catBtn bg-white px-4 py-2 rounded-full text-xs whitespace-nowrap border">🏨 Hôtel</button>
-<button onclick="filterCat('Restaurant')" class="catBtn bg-white px-4 py-2 rounded-full text-xs whitespace-nowrap border">🍲 Restaurant</button>
-<button onclick="filterCat('Supermarché')" class="catBtn bg-white px-4 py-2 rounded-full text-xs whitespace-nowrap border">🛒 Supermarché</button>
-<button onclick="filterCat('Boutique')" class="catBtn bg-white px-4 py-2 rounded-full text-xs whitespace-nowrap border">👗 Boutique</button>
-<button onclick="filterCat('Coiffure')" class="catBtn bg-white px-4 py-2 rounded-full text-xs whitespace-nowrap border">💇 Coiffure</button>
-<button onclick="filterCat('Alimentation')" class="catBtn bg-white px-4 py-2 rounded-full text-xs whitespace-nowrap border">🍅 Alimentation</button>
+<button onclick="showPage('register')" class="mt-4 bg-green-600 text-white px-6 py-3 rounded-xl font-bold w-full md:w-auto">Commencer à vendre - 1000F/mois</button>
 </div>
-
-<!-- PRODUITS GRID -->
-<div id="produitsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2"></div>
-</div>
-
-<!-- TAB INSCRIPTION -->
-<div id="tab-profil" class="tab hidden p-4">
-<h2 class="font-bold text-lg mb-3">Inscriptions - Tout le monde met son numéro</h2>
-<div class="grid md:grid-cols-3 gap-4">
-
-<!-- CLIENT -->
-<div class="bg-white rounded-2xl p-4 shadow border-t-4 border-blue-500">
-<h3 class="font-bold"><i class="fa-solid fa-user"></i> CLIENT - Libre</h3>
-<p class="text-[11px] text-gray-500 mb-3">Pas de mot de passe, juste ton numéro et adresse</p>
-<input id="c_photo" type="file" accept="image/*" class="text-xs mb-2">
-<input id="c_nom" placeholder="Nom complet" class="w-full border rounded-lg p-2 text-sm mb-2">
-<input id="c_num" placeholder="Numéro téléphone OBLIGATOIRE" class="w-full border rounded-lg p-2 text-sm mb-2 border-blue-300">
-<input id="c_adresse" placeholder="Adresse libre: Maison bleue à côté pharmacie..." class="w-full border rounded-lg p-2 text-sm mb-2">
-<label class="flex gap-2 text-xs mb-3"><input type="checkbox" id="c_gps"> Activer mon GPS pour livraison</label>
-<button onclick="saveClient()" class="w-full bg-blue-600 text-white py-2 rounded-xl text-sm font-bold">Enregistrer Client</button>
-</div>
-
-<!-- VENDEUR -->
-<div class="bg-white rounded-2xl p-4 shadow border-t-4 border-yellow-500">
-<h3 class="font-bold"><i class="fa-solid fa-store"></i> VENDEUR - Liberté Totale</h3>
-<input id="v_nom" placeholder="Nom: Hôtel La Lagune, Maquis etc" class="w-full border rounded-lg p-2 text-sm mb-2 mt-2">
-<select id="v_type" onchange="toggleAutre()" class="w-full border rounded-lg p-2 text-sm mb-2">
-<option value="Boutique">Boutique</option>
-<option value="Hôtel">Hôtel</option>
-<option value="Restaurant">Restaurant</option>
-<option value="Supermarché">Supermarché</option>
-<option value="Coiffure">Coiffure / Make-up</option>
-<option value="Alimentation">Alimentation</option>
-<option value="Autre">Autre (écrire vous-même)</option>
-</select>
-<input id="v_autre" placeholder="Écris: Quincaillerie, Élevage, Salle fête..." class="hidden w-full border rounded-lg p-2 text-sm mb-2 border-yellow-400">
-<input id="v_desc" placeholder="Description: 12 chambres vue lagune..." class="w-full border rounded-lg p-2 text-sm mb-2">
-<input id="v_what" placeholder="Numéro WhatsApp OBLIGATOIRE" class="w-full border rounded-lg p-2 text-sm mb-2 border-yellow-300">
-<input id="v_zone" placeholder="Zone: Adidogomé, Agoè..." class="w-full border rounded-lg p-2 text-sm mb-2">
-<input id="v_photo" type="file" accept="image/*" class="text-xs mb-2">
-<div class="bg-gray-50 p-2 rounded-lg mb-2">
-<p class="text-[11px] font-bold">ABONNEMENT:</p>
-<label class="flex gap-2 text-xs"><input type="radio" name="ab" value="ambulant" checked> Vendeur Ambulant 1000F/mois - 5 produits max</label>
-<label class="flex gap-2 text-xs"><input type="radio" name="ab" value="pro"> Vendeur Boutique PRO 2000F/mois - Illimité Gros+Détail + Badge ✅</label>
-<p class="text-[10px] mt-1">Paiement: Flooz / TMoney: +228 90 XX XX XX</p>
-</div>
-<button onclick="saveVendeur()" class="w-full bg-yellow-500 text-black py-2 rounded-xl text-sm font-bold">Publier Boutique + Payer Abonnement</button>
-</div><!-- LIVREUR -->
-<div class="bg-white rounded-2xl p-4 shadow border-t-4 border-green-600">
-<h3 class="font-bold"><i class="fa-solid fa-motorcycle"></i> LIVREUR - Sécurité</h3>
-<p class="text-[10px] text-red-600 mb-2">CNI + Plaque + Marque + Selfie moto OBLIGATOIRE</p>
-<input id="l_cni" type="file" accept="image/*" multiple class="text-xs mb-2"><span class="text-[10px]">CNI Recto/Verso</span>
-<input id="l_num" placeholder="Numéro téléphone" class="w-full border rounded-lg p-2 text-sm mb-2 mt-1">
-<input id="l_plaque" placeholder="Plaque Moto: TG-1234-AB" class="w-full border rounded-lg p-2 text-sm mb-2">
-<input id="l_marque" placeholder="Marque Moto: Haojue, Sanya, KTM..." class="w-full border rounded-lg p-2 text-sm mb-2">
-<input id="l_selfie" type="file" accept="image/*" class="text-xs mb-2"><span class="text-[10px]">Selfie avec moto</span>
-<div class="bg-green-50 p-2 rounded-lg text-[11px] mt-2">
-Min 1000F + 150F/km + Commission plateforme 500F
-</div>
-<button onclick="saveLivreur()" class="w-full bg-green-700 text-white py-2 rounded-xl text-sm font-bold mt-2">Devenir Livreur</button>
-</div>
-
-</div>
-</div>
-
-<!-- TAB LIVE -->
-<div id="tab-live" class="tab hidden p-4 text-center">
-<div class="bg-black text-white rounded-2xl p-10">
-<h2 class="text-2xl font-bold">🔴 LIVE VIDÉO</h2>
-<p class="text-sm opacity-70 mt-2">Comme TikTok Shop - Montrez vos produits en direct</p>
-<button onclick="alert('Fonction LIVE: Caméra activée - Vous êtes en direct! Les clients vous regardent et commandent.')" class="mt-6 bg-red-600 px-6 py-3 rounded-full font-bold">Démarrer mon LIVE 🔴</button>
-<div class="mt-6 text-left bg-white/10 rounded-xl p-3">
-<p class="text-xs">LIVE en cours: Make-up Glam - 23 spectateurs</p>
-<p class="text-xs">LIVE en cours: Hôtel La Lagune - Visite chambres - 12 spectateurs</p>
+<div class="bg-gradient-to-br from-green-50 to-yellow-50 rounded-xl p-4">
+<h3 class="font-bold">🔴 LIVE Marché</h3>
+<div class="mt-3 space-y-2">
+<div class="flex justify-between bg-white p-2 rounded-lg"><span>🍅 Tomates - Agoè</span><span class="text-red-500 font-bold">LIVE</span></div>
+<div class="flex justify-between bg-white p-2 rounded-lg"><span>👗 Pagnes - Adawlato</span><span class="text-red-500 font-bold">LIVE</span></div>
+<div class="flex justify-between bg-white p-2 rounded-lg"><span>🍚 Riz - Bè</span><span class="text-gray-400">il y a 5min</span></div>
 </div>
 </div>
 </div>
-
-<!-- TAB COMMANDE -->
-<div id="tab-commande" class="tab hidden p-4">
-<div class="bg-white rounded-2xl p-4 shadow max-w-md mx-auto">
-<h3 class="font-bold mb-2">Finaliser Commande</h3>
-<p id="cmd_produit" class="text-sm font-bold"></p>
-<input id="cmd_adresse" placeholder="Confirmer adresse: Maison bleue..." class="w-full border rounded-lg p-2 text-sm my-2">
-<div class="flex gap-2">
-<button onclick="optionMoiMeme()" class="flex-1 bg-gray-900 text-white py-3 rounded-xl text-xs"><i class="fa-solid fa-location-dot"></i> J'irai moi-même (GPS)</button>
-<button onclick="optionLivreur()" class="flex-1 bg-green-600 text-white py-3 rounded-xl text-xs"><i class="fa-solid fa-motorcycle"></i> Prendre Livreur</button>
+<div class="mt-6 flex gap-2 overflow-x-auto pb-2">
+<button class="bg-green-600 text-white px-4 py-2 rounded-full text-sm">Tout</button>
+<button class="bg-white border px-4 py-2 rounded-full text-sm">Alimentaire</button>
+<button class="bg-white border px-4 py-2 rounded-full text-sm">Vêtements</button>
+<button class="bg-white border px-4 py-2 rounded-full text-sm">Hôtel</button>
+<button class="bg-white border px-4 py-2 rounded-full text-sm">Restaurant</button>
 </div>
-<div id="livreurBox" class="hidden mt-3 bg-green-50 p-3 rounded-xl text-xs">
-<p>✅ Livreur trouvé! <b id="livreurNom"></b></p>
-<p>Distance: <span id="km">3.2</span>km | Prix: <span id="prixLiv">1480</span>F (1000F min + 150F/km + 500F comm)</p>
-<p class="mt-1">Client: GPS activé - Partage position</p>
-<button onclick="notifArrivee()" class="mt-2 w-full bg-black text-white py-2 rounded-lg">Simuler: Livreur arrivé 🔔</button>
-<p id="arriveeMsg" class="hidden mt-2 bg-yellow-400 text-black p-2 rounded-lg font-bold text-center">🔔 VOTRE LIVREUR EST ARRIVÉ! Il est à 50m!</p>
-<p>Appeler: <a id="callBtn" href="#" class="text-blue-600 underline">Vendeur / Livreur</a></p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Tomates 1kg</h4><p class="text-xs text-gray-500">Agoè - Afi</p><p class="font-black text-green-600">800 F</p><button onclick="orderNow('Tomates')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
+<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Pagne Wax</h4><p class="text-xs text-gray-500">Adawlato - PRO</p><p class="font-black text-green-600">12.000 F</p><button onclick="orderNow('Pagne')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
+<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Riz + Sauce</h4><p class="text-xs text-gray-500">Restaurant Bè</p><p class="font-black text-green-600">1.500 F</p><button onclick="orderNow('Riz')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
+<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Montre Connectée</h4><p class="text-xs text-gray-500">Déckon - PRO</p><p class="font-black text-green-600">15.000 F</p><button onclick="orderNow('Montre')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
 </div>
 </div>
+<div id="registerPage" class="hidden max-w-4xl mx-auto p-4">
+<div class="bg-white rounded-2xl shadow p-6 mt-4">
+<h2 class="text-2xl font-black text-center">Créer votre compte</h2>
+<div class="grid grid-cols-3 gap-2 mt-6">
+<button id="btnClient" onclick="setRole('client')" class="border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold"><i class="fa-solid fa-user"></i><br>Client</button>
+<button id="btnVendeur" onclick="setRole('vendeur')" class="border p-4 rounded-xl font-bold"><i class="fa-solid fa-store"></i><br>Vendeur</button>
+<button id="btnLivreur" onclick="setRole('livreur')" class="border p-4 rounded-xl font-bold"><i class="fa-solid fa-motorcycle"></i><br>Livreur</button>
 </div>
-
+<div id="formClient" class="mt-6"><h3 class="font-bold text-lg">Inscription Client</h3><div class="mt-4 space-y-3"><input id="cNom" placeholder="Nom complet" class="w-full border rounded-lg p-3"><input id="cTel" placeholder="Numéro Togocel / Moov ex: 90 12 34 56" class="w-full border rounded-lg p-3"><input id="cQuartier" placeholder="Quartier ex: Agoè" class="w-full border rounded-lg p-3"><button onclick="getGPS('client')" class="w-full bg-blue-100 text-blue-700 p-3 rounded-lg font-bold"><i class="fa-solid fa-location-crosshairs"></i> Partager ma position GPS</button><p id="gpsClient" class="text-xs text-green-600 hidden">✅ GPS capturé!</p><button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">S'inscrire gratuitement</button></div></div>
+<div id="formVendeur" class="hidden mt-6"><h3 class="font-bold text-lg">Inscription Vendeur</h3><div class="mt-4 space-y-3"><input id="vNom" placeholder="Nom / Boutique" class="w-full border rounded-lg p-3"><input id="vTel" placeholder="Numéro" class="w-full border rounded-lg p-3"><select id="vType" class="w-full border rounded-lg p-3"><option value="">Type d'activité</option><option value="hotel">Hôtel</option><option value="restaurant">Restaurant</option><option value="ambulant">Vendeur Ambulant</option><option value="boutique">Boutique</option><option value="autre">Autre</option></select><input id="vQuartier" placeholder="Quartier / Marché" class="w-full border rounded-lg p-3"><div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4"><h4 class="font-bold text-sm">💳 Abonnement:</h4><label class="flex gap-2 mt-3 p-3 bg-white rounded-lg border-2 border-green-500"><input type="radio" name="abo" value="1000" checked><div><b>Ambulant - 1000F/mois</b><br><span class="text-xs">5 produits, LIVE 30min/jour</span></div></label><label class="flex gap-2 mt-2 p-3 bg-white rounded-lg border"><input type="radio" name="abo" value="2000"><div><b>Boutique PRO - 2000F/mois</b><br><span class="text-xs">Illimité, Badge PRO, Priorité</span></div></label></div><button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">S'inscrire & Payer</button></div></div>
+<div id="formLivreur" class="hidden mt-6"><h3 class="font-bold text-lg">Inscription Livreur - Vérification</h3><div class="mt-4 space-y-3"><input id="lNom" placeholder="Nom complet" class="w-full border rounded-lg p-3"><input id="lTel" placeholder="Numéro" class="w-full border rounded-lg p-3"><input id="lCNI" placeholder="Numéro CNI obligatoire" class="w-full border rounded-lg p-3"><div class="grid grid-cols-2 gap-2"><input id="lPlaque" placeholder="Plaque moto" class="border rounded-lg p-3"><input id="lMarque" placeholder="Marque ex: Haojue" class="border rounded-lg p-3"></div><input id="lQuartier" placeholder="Quartier base" class="w-full border rounded-lg p-3"><div class="bg-blue-50 border rounded-xl p-3 text-sm">🛡️ Pour sécurité: Envoyez photo CNI + moto par WhatsApp après inscription.</div><button onclick="registerLivreur()" class="w-full bg-black text-white p-3 rounded-xl font-bold">S'inscrire Livreur</button></div></div>
 </div>
-
-<!-- FOOTER SUPPORT -->
-<footer class="bg-[#0f172a] text-white p-4 mt-10 text-center text-xs">
-<p class="font-bold">Support Togo Marché 24/24 - 24h/7j</p>
-<p>📞 +228 90 12 34 56 (Flooz / Appels) | +228 92 12 34 56 (TMoney / WhatsApp)</p>
-<p class="opacity-60 mt-1">Commission plateforme: 500F par livraison | Livraison: 1000F min + 150F/km</p>
-<p class="opacity-40 mt-2">© 2026 Togo Marché 24/24 - Plateforme libre</p>
-</footer>
-
-<!-- BOTTOM NAV -->
-<nav class="fixed bottom-0 w-full bg-white border-t flex justify-around py-2 max-w-6xl mx-auto left-0 right-0 rounded-t-2xl shadow-[0_-5px_20px_rgba(0,0,0,0.1)]">
-<button onclick="showTab('accueil')" class="flex flex-col items-center text-xs"><i class="fa-solid fa-house"></i>Accueil</button>
-<button onclick="showTab('profil')" class="flex flex-col items-center text-xs"><i class="fa-solid fa-user-plus"></i>S'inscrire</button>
-<button onclick="showTab('live')" class="flex flex-col items-center text-xs text-red-600"><i class="fa-solid fa-video"></i>LIVE</button>
-<button onclick="showTab('commande')" class="flex flex-col items-center text-xs"><i class="fa-solid fa-bag-shopping"></i>Panier</button>
-</nav>
-
+</div>
+<div id="orderModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4"><div class="bg-white rounded-t-2xl md:rounded-2xl w-full max-w-md p-6"><h3 class="font-black text-xl">Commande: <span id="orderProduct"></span></h3><div class="mt-4 space-y-3"><p class="text-sm font-bold">Comment récupérer?</p><button onclick="selectDelivery('self')" id="btnSelf" class="w-full border-2 p-3 rounded-xl text-left"><i class="fa-solid fa-person-walking"></i> <b>J'irai moi-même (GPS)</b><br><span class="text-xs">Gratuit</span></button><button onclick="selectDelivery('livreur')" id="btnLivreurDelivery" class="w-full border-2 p-3 rounded-xl text-left"><i class="fa-solid fa-motorcycle"></i> <b>Livraison par livreur</b><br><span class="text-xs">500F - 1500F</span></button><div id="livreurInfo" class="hidden bg-green-50 p-3 rounded-xl text-sm"><p><b>✅ Livreur Kossi - 2min</b></p><p>Plaque: TG 1234 AB - Haojue</p><p class="mt-2"><span id="liveTracking">En route...</span></p></div><button onclick="confirmOrder()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold mt-2">Confirmer</button><button onclick="closeOrder()" class="w-full bg-gray-100 p-3 rounded-xl mt-2">Annuler</button></div></div></div>
+<div id="notif" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-lg z-50 font-bold text-sm">✅ Votre livreur est arrivé!</div>
 <script>
-let produits = JSON.parse(localStorage.getItem('tm_produits')||'[]');
-if(produits.length==0){
- produits=[
-  {id:1,nom:"Perruque Brésilienne",prix:"15000F",type:"Boutique",zone:"Adidogomé",tel:"90123456",desc:"Gros 12000F / Détail 15000F",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300"},
-  {id:2,nom:"Chambre Standard",prix:"10000F/nuit",type:"Hôtel",zone:"Kodjoviakopé",tel:"92123456",desc:"12 chambres vue lagune - Clim + Wifi",img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300"},
-  {id:3,nom:"Sauce Adémè + Poisson",prix:"2000F",type:"Restaurant",zone:"Agoè",tel:"90112233",desc:"Détail seulement",img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300"},
-  {id:4,nom:"Ciment + Fer",prix:"Gros sur demande",type:"Autre",zone:"Lomé Port",tel:"90998877",desc:"Quincaillerie - Gros & Détail",img:"https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300"}
- ];
-}
-function render(list=produits){
- const grid=document.getElementById('produitsGrid');
- grid.innerHTML=list.map(p=>`
-  <div class="bg-white rounded-2xl shadow overflow-hidden">
-   <img src="${p.img}" class="h-28 w-full object-cover">
-   <div class="p-2">
-    <span class="text-[9px] bg-yellow-100 px-2 py-0.5 rounded-full">${p.type} ${p.badge?'✅':''}</span>
-    <p class="font-bold text-xs mt-1">${p.nom}</p>
-    <p class="text-[10px] text-gray-500">${p.desc}</p>
-    <p class="text-xs font-bold text-green-700 mt-1">${p.prix}</p>
-    <p class="text-[10px]">📍 ${p.zone} | 📞 ${p.tel}</p>
-    <button onclick="commander('${p.nom}','${p.tel}')" class="w-full mt-2 bg-black text-white text-[11px] py-2 rounded-lg">Commander / GPS</button>
-   </div>
-  </div>
- `).join('');
-}
-function showTab(t){
- document.querySelectorAll('.tab').forEach(x=>x.classList.add('hidden'));
- document.getElementById('tab-'+t).classList.remove('hidden');
-}
-function filtrer(){
- const q=document.getElementById('searchInput').value.toLowerCase();
- render(produits.filter(p=>p.nom.toLowerCase().includes(q)||p.type.toLowerCase().includes(q)||p.zone.toLowerCase().includes(q)));
-}
-function filterCat(cat){
- if(cat=='tout') render();
- else render(produits.filter(p=>p.type==cat));
-}
-function toggleAutre(){
- document.getElementById('v_autre').classList.toggle('hidden', document.getElementById('v_type').value!='Autre');
-}
-function saveClient(){
- if(!c_num.value){alert('Numéro obligatoire Djo!');return}
- localStorage.setItem('tm_client', JSON.stringify({nom:c_nom.value,num:c_num.value,adresse:c_adresse.value,gps:c_gps.checked}));
- alert('Client enregistré! Numéro: '+c_num.value+' - Tu peux commander maintenant!');
- showTab('accueil');
-}
-function saveVendeur(){
- const type=v_type.value=='Autre'?v_autre.value:v_type.value;
- const ab=document.querySelector('input[name=ab]:checked').value;
- const maxProduits = ab=='ambulant'?5:999;
- const exist = produits.filter(p=>p.tel==v_what.value).length;
- if(exist>=maxProduits){alert('Limite atteinte! Vendeur Ambulant 5 produits max. Passe en PRO 2000F pour illimité');return}
- if(!v_what.value){alert('WhatsApp obligatoire!');return}
- const newP={id:Date.now(),nom:v_nom.value,type:type,zone:v_zone.value,tel:v_what.value,desc:v_desc.value+' - '+(ab=='ambulant'?'Ambulant 1000F':'Boutique PRO 2000F'),prix:'Prix à discuter',img:'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300',badge:ab=='pro'};
- produits.unshift(newP);
- localStorage.setItem('tm_produits', JSON.stringify(produits));
- alert('Boutique publiée! Type: '+type+' - Abonnement: '+ab+' - En attente paiement Flooz/TMoney +228 90 XX XX XX');
- render(); showTab('accueil');
-}
-function saveLivreur(){
- if(!l_plaque.value||!l_marque.value){alert('Plaque + Marque + CNI + Selfie moto OBLIGATOIRE!');return}
- localStorage.setItem('tm_livreur', JSON.stringify({plaque:l_plaque.value,marque:l_marque.value,num:l_num.value}));
- alert('Livreur enregistré! CNI + '+l_marque.value+' Plaque '+l_plaque.value+' Validé! Tu recevras les commandes. Min 1000F + 150F/km + 500F commission');
- showTab('accueil');
-}
-function commander(nom,tel){
- document.getElementById('cmd_produit').innerText=nom+' - Vendeur: '+tel;
- document.getElementById('callBtn').href='tel:'+tel;
- showTab('commande');
-}
-function optionMoiMeme(){
- alert('GPS activé! Itinéraire vers boutique tracé. Tu peux y aller toi-même. Si tu as activé ton GPS client, le vendeur voit que tu arrives.');
- window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(document.getElementById('cmd_adresse').value||'Lomé'),'_blank');
-}
-function optionLivreur(){
- const km=(Math.random()*8+1).toFixed(1);
- const prix=1000+Math.round(km*150);
- const total=prix+500;
- document.getElementById('km').innerText=km;
- document.getElementById('prixLiv').innerText=total+' (dont 500F commission)';
- document.getElementById('livreurNom').innerText='Koffi - Haojue TG-...';
- document.getElementById('livreurBox').classList.remove('hidden');
-}
-function notifArrivee(){
- document.getElementById('arriveeMsg').classList.remove('hidden');
- if('vibrate' in navigator) navigator.vibrate([300,100,300]);
- new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play().catch(()=>{});
- alert('🔔 NOTIFICATION: Votre livreur est arrivé à 50m!');
-}
-setInterval(()=>{
- const off=document.getElementById('offline');
- if(!navigator.onLine) off.classList.remove('hidden'); else off.classList.add('hidden');
-},1000);
-render();
+let role='client',deliveryMode='',clientGPS=null;
+function showPage(p){document.getElementById('homePage').classList.toggle('hidden',p!=='home');document.getElementById('registerPage').classList.toggle('hidden',p!=='register');}
+function setRole(r){role=r;document.getElementById('btnClient').className=r==='client'?'border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold':'border p-4 rounded-xl font-bold';document.getElementById('btnVendeur').className=r==='vendeur'?'border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold':'border p-4 rounded-xl font-bold';document.getElementById('btnLivreur').className=r==='livreur'?'border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold':'border p-4 rounded-xl font-bold';document.getElementById('formClient').classList.toggle('hidden',r!=='client');document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');}
+function getGPS(t){if(navigator.geolocation){navigator.geolocation.getCurrentPosition(p=>{clientGPS=p.coords;document.getElementById('gpsClient').classList.remove('hidden');alert('GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5));},()=>alert('Activez GPS!'));}}
+function registerClient(){const n=document.getElementById('cNom').value,t=document.getElementById('cTel').value;if(!n||!t)return alert('Remplissez nom et tel');localStorage.setItem('togo_user',JSON.stringify({role:'client',nom:n,tel:t,gps:clientGPS}));alert('✅ Client créé! '+n);showPage('home');}
+function registerVendeur(){const n=document.getElementById('vNom').value,t=document.getElementById('vTel').value,ty=document.getElementById('vType').value;if(!n||!t||!ty)return alert('Remplissez tout');const a=document.querySelector('input[name="abo"]:checked').value;localStorage.setItem('togo_user',JSON.stringify({role:'vendeur',nom:n,tel:t,type:ty,abo:a}));alert('✅ Vendeur '+ty+' - Abonnement '+a+'F. Payez TMoney et envoyez preuve.');showPage('home');}
+function registerLivreur(){const n=document.getElementById('lNom').value,t=document.getElementById('lTel').value,c=document.getElementById('lCNI').value,p=document.getElementById('lPlaque').value;if(!n||!t||!c||!p)return alert('CNI et plaque obligatoires');localStorage.setItem('togo_user',JSON.stringify({role:'livreur',nom:n,tel:t,cni:c,plaque:p}));alert('✅ Demande Livreur envoyée! Envoyez photo CNI + moto WhatsApp.');showPage('home');}
+function orderNow(pr){document.getElementById('orderProduct').innerText=pr;document.getElementById('orderModal').classList.remove('hidden');}
+function closeOrder(){document.getElementById('orderModal').classList.add('hidden');}
+function selectDelivery(m){deliveryMode=m;document.getElementById('btnSelf').className=m==='self'?'w-full border-2 border-green-600 bg-green-50 p-3 rounded-xl text-left':'w-full border-2 p-3 rounded-xl text-left';document.getElementById('btnLivreurDelivery').className=m==='livreur'?'w-full border-2 border-green-600 bg-green-50 p-3 rounded-xl text-left':'w-full border-2 p-3 rounded-xl text-left';if(m==='livreur'){document.getElementById('livreurInfo').classList.remove('hidden');let i=0;const msgs=["Livreur à 500m...","Livreur à 200m...","Livreur arrivé! ✅"];const int=setInterval(()=>{document.getElementById('liveTracking').innerText=msgs[i];i++;if(i===msgs.length){clearInterval(int);showNotif();}},1500);}}
+function confirmOrder(){if(!deliveryMode)return alert("Choisissez J'irai ou Livreur");if(deliveryMode==='self'){alert('📍 GPS Vendeur: Agoè 6.1859, 1.2123 - Ouvrez Maps.');}else{alert('✅ Commande confirmée! Livreur Kossi en route. Suivi LIVE. +1000F livraison.');showNotif();}closeOrder();}
+function showNotif(){const n=document.getElementById('notif');n.classList.remove('hidden');setTimeout(()=>n.classList.add('hidden'),5000);}
+window.addEventListener('offline',()=>document.getElementById('offlineBanner').classList.remove('hidden'));
+window.addEventListener('online',()=>document.getElementById('offlineBanner').classList.add('hidden'));
 </script>
 </body>
 </html>
-
