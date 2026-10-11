@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Togo Marché 24/24 - V3 FINAL</title>
+<title>Togo Marché 24/24 - V4 SYSTÈME</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -14,80 +14,427 @@ body{font-family:'Outfit',sans-serif;background:#f8fafc}
 </style>
 </head>
 <body class="pb-24">
-<div id="offlineBanner" class="hidden bg-red-600 text-white text-center py-2 text-sm">⚠️ Hors connexion</div>
 <header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-4 sticky top-0 z-50 shadow-lg">
 <div class="max-w-7xl mx-auto flex justify-between items-center">
-<h1 class="font-black text-xl"><i class="fa-solid fa-store"></i> Togo Marché 24/24</h1>
-<div class="flex gap-2">
-<button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1 rounded-full text-sm font-bold">Accueil</button>
-<button onclick="showPage('register')" class="bg-black/20 px-3 py-1 rounded-full text-sm font-bold">S'inscrire</button>
+<h1 class="font-black text-lg md:text-xl"><i class="fa-solid fa-store"></i> Togo Marché 24/24 <span class="bg-white text-green-700 text-[10px] px-2 py-0.5 rounded-full ml-1">V4 SYSTÈME</span></h1>
+<div class="flex gap-1 md:gap-2">
+<button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1.5 rounded-full text-xs md:text-sm font-bold">Accueil</button>
+<button onclick="showPage('orders')" class="bg-black/20 px-3 py-1.5 rounded-full text-xs md:text-sm font-bold relative"><i class="fa-solid fa-box"></i> <span id="orderBadge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span></button>
+<button onclick="showPage('register')" class="bg-black/20 px-3 py-1.5 rounded-full text-xs md:text-sm font-bold">Compte</button>
 </div>
 </div>
 </header>
-<div id="homePage" class="max-w-7xl mx-auto p-4">
-<div class="bg-white rounded-2xl p-6 shadow mt-4 grid md:grid-cols-2 gap-6 items-center">
+
+<!-- PAGE ACCUEIL -->
+<div id="homePage" class="max-w-7xl mx-auto p-3 md:p-4">
+<!-- Recherche visible avant inscription -->
+<div class="bg-white rounded-2xl p-4 shadow mt-3">
+<div class="flex gap-2">
+<div class="flex-1 relative">
+<i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-gray-400"></i>
+<input id="searchInput" oninput="filterProducts()" placeholder="🔍 Chercher Tomates, Pagne, Riz..." class="w-full border-2 border-green-100 focus:border-green-500 rounded-xl pl-10 pr-4 py-3 outline-none">
+</div>
+<button onclick="getClientGPSForSearch()" class="bg-blue-600 text-white px-3 rounded-xl text-xs font-bold"><i class="fa-solid fa-location-dot"></i><br>GPS</button>
+</div>
+<p id="gpsSearchStatus" class="text-xs text-green-600 mt-2 hidden">✅ Position enregistrée - on te montre les vendeurs proches</p>
+<div class="flex gap-2 overflow-x-auto pb-1 mt-3">
+<button onclick="filterCat('all')" id="cat-all" class="bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">Tout</button>
+<button onclick="filterCat('alimentaire')" id="cat-alimentaire" class="bg-white border px-4 py-2 rounded-full text-xs whitespace-nowrap">Alimentaire</button>
+<button onclick="filterCat('vetement')" id="cat-vetement" class="bg-white border px-4 py-2 rounded-full text-xs whitespace-nowrap">Vêtements</button>
+<button onclick="filterCat('hotel')" id="cat-hotel" class="bg-white border px-4 py-2 rounded-full text-xs whitespace-nowrap">Hôtel</button>
+<button onclick="filterCat('restaurant')" id="cat-restaurant" class="bg-white border px-4 py-2 rounded-full text-xs whitespace-nowrap">Restaurant</button>
+</div>
+</div>
+
+<div class="bg-white rounded-2xl p-4 shadow mt-4 grid md:grid-cols-2 gap-4 items-center">
 <div>
-<h2 class="text-3xl font-black text-green-700">Tout Lomé chez vous, <br>24h/24 et 7j/7</h2>
-<p class="text-gray-600 mt-3">Commandez, payez à la livraison, suivez votre livreur en direct!</p>
-<div class="flex gap-2 mt-4">
-<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-circle live-dot text-red-500"></i> LIVE en cours</span>
-<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-motorcycle"></i> 12 livreurs actifs</span>
-</div>
-<button onclick="showPage('register')" class="mt-4 bg-green-600 text-white px-6 py-3 rounded-xl font-bold w-full md:w-auto">Commencer à vendre - 1000F/mois</button>
-</div>
-<div class="bg-gradient-to-br from-green-50 to-yellow-50 rounded-xl p-4">
-<h3 class="font-bold">🔴 LIVE Marché</h3>
-<div class="mt-3 space-y-2">
-<div class="flex justify-between bg-white p-2 rounded-lg"><span>🍅 Tomates - Agoè</span><span class="text-red-500 font-bold">LIVE</span></div>
-<div class="flex justify-between bg-white p-2 rounded-lg"><span>👗 Pagnes - Adawlato</span><span class="text-red-500 font-bold">LIVE</span></div>
-<div class="flex justify-between bg-white p-2 rounded-lg"><span>🍚 Riz - Bè</span><span class="text-gray-400">il y a 5min</span></div>
+<h2 class="text-2xl md:text-3xl font-black text-green-700">Tout Lomé chez vous,<br>24h/24 et 7j/7</h2>
+<p class="text-gray-600 mt-2 text-sm">Client regarde sans compte. Paye à la livraison. GPS partagé auto.</p>
+<div class="flex gap-2 mt-3 flex-wrap">
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[11px] font-bold"><i class="fa-solid fa-circle live-dot text-red-500"></i> LIVE en cours</span>
+<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[11px] font-bold"><i class="fa-solid fa-motorcycle"></i> <span id="activeLivreurs">3</span> livreurs</span>
+<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[11px] font-bold"><i class="fa-solid fa-location-dot"></i> GPS partagé</span>
 </div>
 </div>
-</div>
-<div class="mt-6 flex gap-2 overflow-x-auto pb-2">
-<button class="bg-green-600 text-white px-4 py-2 rounded-full text-sm">Tout</button>
-<button class="bg-white border px-4 py-2 rounded-full text-sm">Alimentaire</button>
-<button class="bg-white border px-4 py-2 rounded-full text-sm">Vêtements</button>
-<button class="bg-white border px-4 py-2 rounded-full text-sm">Hôtel</button>
-<button class="bg-white border px-4 py-2 rounded-full text-sm">Restaurant</button>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Tomates 1kg</h4><p class="text-xs text-gray-500">Agoè - Afi</p><p class="font-black text-green-600">800 F</p><button onclick="orderNow('Tomates')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
-<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Pagne Wax</h4><p class="text-xs text-gray-500">Adawlato - PRO</p><p class="font-black text-green-600">12.000 F</p><button onclick="orderNow('Pagne')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
-<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Riz + Sauce</h4><p class="text-xs text-gray-500">Restaurant Bè</p><p class="font-black text-green-600">1.500 F</p><button onclick="orderNow('Riz')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
-<div class="bg-white rounded-xl shadow p-3"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" class="rounded-lg h-32 w-full object-cover"><h4 class="font-bold mt-2">Montre Connectée</h4><p class="text-xs text-gray-500">Déckon - PRO</p><p class="font-black text-green-600">15.000 F</p><button onclick="orderNow('Montre')" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-sm font-bold">Commander</button></div>
+<div class="bg-gradient-to-br from-green-50 to-yellow-50 rounded-xl p-3">
+<h3 class="font-bold text-sm">🔴 LIVE Marché - En direct</h3>
+<div class="mt-2 space-y-2 text-sm">
+<div class="flex justify-between bg-white p-2 rounded-lg"><span>🍅 Tomates - Agoè - Afi</span><span class="text-red-500 font-bold text-xs">LIVE</span></div>
+<div class="flex justify-between bg-white p-2 rounded-lg"><span>👗 Pagnes - Adawlato</span><span class="text-red-500 font-bold text-xs">LIVE</span></div>
+<div class="flex justify-between bg-white p-2 rounded-lg"><span>🍚 Riz - Bè - Maquis</span><span class="text-gray-400 text-xs">5 min</span></div>
 </div>
 </div>
+</div>
+
+<div id="productsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+<!-- Produits injectés par JS -->
+</div>
+</div>
+
+<!-- PAGE COMMANDES / LIVREUR DASHBOARD -->
+<div id="ordersPage" class="hidden max-w-4xl mx-auto p-4">
+<div class="bg-white rounded-2xl shadow p-5 mt-3">
+<div class="flex justify-between items-center">
+<h2 class="text-xl font-black"><i class="fa-solid fa-box"></i> Mes Commandes / Dashboard Livreur</h2>
+<button onclick="refreshOrders()" class="bg-gray-100 px-3 py-1 rounded-full text-xs"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+</div>
+<div id="userInfoBox" class="mt-4 bg-green-50 border border-green-200 rounded-xl p-3 text-sm hidden"></div>
+<div class="mt-4 grid grid-cols-3 gap-2 text-xs">
+<button onclick="filterOrders('all')" class="bg-green-600 text-white p-2 rounded-lg font-bold">Tout</button>
+<button onclick="filterOrders('disponible')" class="bg-white border p-2 rounded-lg">Disponibles</button>
+<button onclick="filterOrders('encours')" class="bg-white border p-2 rounded-lg">En cours</button>
+</div>
+<div id="ordersList" class="mt-4 space-y-3"></div>
+<p id="noOrders" class="text-center text-gray-400 text-sm mt-8 hidden">Aucune commande pour le moment. Commande un produit sur Accueil!</p>
+</div>
+</div>
+
+<!-- PAGE INSCRIPTION -->
 <div id="registerPage" class="hidden max-w-4xl mx-auto p-4">
-<div class="bg-white rounded-2xl shadow p-6 mt-4">
+<div class="bg-white rounded-2xl shadow p-5 mt-3">
 <h2 class="text-2xl font-black text-center">Créer votre compte</h2>
-<div class="grid grid-cols-3 gap-2 mt-6">
-<button id="btnClient" onclick="setRole('client')" class="border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold"><i class="fa-solid fa-user"></i><br>Client</button>
-<button id="btnVendeur" onclick="setRole('vendeur')" class="border p-4 rounded-xl font-bold"><i class="fa-solid fa-store"></i><br>Vendeur</button>
-<button id="btnLivreur" onclick="setRole('livreur')" class="border p-4 rounded-xl font-bold"><i class="fa-solid fa-motorcycle"></i><br>Livreur</button>
+<p class="text-center text-xs text-gray-500 mt-1">Client peut voir avant. GPS gardé pour J'irai moi-même + Livreur LIVE</p>
+<div class="grid grid-cols-3 gap-2 mt-5">
+<button id="btnClient" onclick="setRole('client')" class="border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-sm"><i class="fa-solid fa-user"></i><br>Client</button>
+<button id="btnVendeur" onclick="setRole('vendeur')" class="border p-3 rounded-xl font-bold text-sm"><i class="fa-solid fa-store"></i><br>Vendeur</button>
+<button id="btnLivreur" onclick="setRole('livreur')" class="border p-3 rounded-xl font-bold text-sm"><i class="fa-solid fa-motorcycle"></i><br>Livreur</button>
 </div>
-<div id="formClient" class="mt-6"><h3 class="font-bold text-lg">Inscription Client</h3><div class="mt-4 space-y-3"><input id="cNom" placeholder="Nom complet" class="w-full border rounded-lg p-3"><input id="cTel" placeholder="Numéro Togocel / Moov ex: 90 12 34 56" class="w-full border rounded-lg p-3"><input id="cQuartier" placeholder="Quartier ex: Agoè" class="w-full border rounded-lg p-3"><button onclick="getGPS('client')" class="w-full bg-blue-100 text-blue-700 p-3 rounded-lg font-bold"><i class="fa-solid fa-location-crosshairs"></i> Partager ma position GPS</button><p id="gpsClient" class="text-xs text-green-600 hidden">✅ GPS capturé!</p><button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">S'inscrire gratuitement</button></div></div>
-<div id="formVendeur" class="hidden mt-6"><h3 class="font-bold text-lg">Inscription Vendeur</h3><div class="mt-4 space-y-3"><input id="vNom" placeholder="Nom / Boutique" class="w-full border rounded-lg p-3"><input id="vTel" placeholder="Numéro" class="w-full border rounded-lg p-3"><select id="vType" class="w-full border rounded-lg p-3"><option value="">Type d'activité</option><option value="hotel">Hôtel</option><option value="restaurant">Restaurant</option><option value="ambulant">Vendeur Ambulant</option><option value="boutique">Boutique</option><option value="autre">Autre</option></select><input id="vQuartier" placeholder="Quartier / Marché" class="w-full border rounded-lg p-3"><div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4"><h4 class="font-bold text-sm">💳 Abonnement:</h4><label class="flex gap-2 mt-3 p-3 bg-white rounded-lg border-2 border-green-500"><input type="radio" name="abo" value="1000" checked><div><b>Ambulant - 1000F/mois</b><br><span class="text-xs">5 produits, LIVE 30min/jour</span></div></label><label class="flex gap-2 mt-2 p-3 bg-white rounded-lg border"><input type="radio" name="abo" value="2000"><div><b>Boutique PRO - 2000F/mois</b><br><span class="text-xs">Illimité, Badge PRO, Priorité</span></div></label></div><button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">S'inscrire & Payer</button></div></div>
-<div id="formLivreur" class="hidden mt-6"><h3 class="font-bold text-lg">Inscription Livreur - Vérification</h3><div class="mt-4 space-y-3"><input id="lNom" placeholder="Nom complet" class="w-full border rounded-lg p-3"><input id="lTel" placeholder="Numéro" class="w-full border rounded-lg p-3"><input id="lCNI" placeholder="Numéro CNI obligatoire" class="w-full border rounded-lg p-3"><div class="grid grid-cols-2 gap-2"><input id="lPlaque" placeholder="Plaque moto" class="border rounded-lg p-3"><input id="lMarque" placeholder="Marque ex: Haojue" class="border rounded-lg p-3"></div><input id="lQuartier" placeholder="Quartier base" class="w-full border rounded-lg p-3"><div class="bg-blue-50 border rounded-xl p-3 text-sm">🛡️ Pour sécurité: Envoyez photo CNI + moto par WhatsApp après inscription.</div><button onclick="registerLivreur()" class="w-full bg-black text-white p-3 rounded-xl font-bold">S'inscrire Livreur</button></div></div>
+
+<div id="formClient" class="mt-6">
+<h3 class="font-bold">Inscription Client - GPS gardé</h3>
+<div class="mt-3 space-y-3">
+<input id="cNom" placeholder="Nom complet" class="w-full border rounded-lg p-3 text-sm">
+<input id="cTel" placeholder="Tél: 90 12 34 56" class="w-full border rounded-lg p-3 text-sm">
+<input id="cQuartier" placeholder="Quartier ex: Agoè" class="w-full border rounded-lg p-3 text-sm">
+<button onclick="getGPS('client')" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold text-sm"><i class="fa-solid fa-location-crosshairs"></i> 📍 Partager ma position GPS (pour livraison)</button>
+<p id="gpsClient" class="text-xs text-green-600 hidden font-bold">✅ GPS client capturé!</p>
+<button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">S'inscrire gratuitement</button>
 </div>
 </div>
-<div id="orderModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4"><div class="bg-white rounded-t-2xl md:rounded-2xl w-full max-w-md p-6"><h3 class="font-black text-xl">Commande: <span id="orderProduct"></span></h3><div class="mt-4 space-y-3"><p class="text-sm font-bold">Comment récupérer?</p><button onclick="selectDelivery('self')" id="btnSelf" class="w-full border-2 p-3 rounded-xl text-left"><i class="fa-solid fa-person-walking"></i> <b>J'irai moi-même (GPS)</b><br><span class="text-xs">Gratuit</span></button><button onclick="selectDelivery('livreur')" id="btnLivreurDelivery" class="w-full border-2 p-3 rounded-xl text-left"><i class="fa-solid fa-motorcycle"></i> <b>Livraison par livreur</b><br><span class="text-xs">500F - 1500F</span></button><div id="livreurInfo" class="hidden bg-green-50 p-3 rounded-xl text-sm"><p><b>✅ Livreur Kossi - 2min</b></p><p>Plaque: TG 1234 AB - Haojue</p><p class="mt-2"><span id="liveTracking">En route...</span></p></div><button onclick="confirmOrder()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold mt-2">Confirmer</button><button onclick="closeOrder()" class="w-full bg-gray-100 p-3 rounded-xl mt-2">Annuler</button></div></div></div>
-<div id="notif" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-lg z-50 font-bold text-sm">✅ Votre livreur est arrivé!</div>
+
+<div id="formVendeur" class="hidden mt-6">
+<h3 class="font-bold">Inscription Vendeur - On garde AUTRE</h3>
+<div class="mt-3 space-y-3">
+<input id="vNom" placeholder="Nom / Boutique / Hôtel" class="w-full border rounded-lg p-3 text-sm">
+<input id="vTel" placeholder="Téléphone" class="w-full border rounded-lg p-3 text-sm">
+<select id="vType" class="w-full border rounded-lg p-3 text-sm">
+<option value="">Type d'activité</option>
+<option value="hotel">🏨 Hôtel</option>
+<option value="restaurant">🍚 Restaurant / Maquis</option>
+<option value="ambulant">🚶 Vendeur Ambulant</option>
+<option value="boutique">🏪 Boutique</option>
+<option value="autre">📦 Autre (on garde!)</option>
+</select>
+<input id="vQuartier" placeholder="Quartier / Marché" class="w-full border rounded-lg p-3 text-sm">
+<button onclick="getGPS('vendeur')" class="w-full bg-blue-100 text-blue-700 p-2 rounded-lg text-xs font-bold"><i class="fa-solid fa-location-dot"></i> Partager position boutique (pour J'irai moi-même)</button>
+<p id="gpsVendeur" class="text-xs text-green-600 hidden">✅ GPS boutique capturé!</p>
+<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+<h4 class="font-bold text-xs">💳 Abonnement (on garde 1000F / 2000F)</h4>
+<label class="flex gap-2 mt-2 p-2 bg-white rounded-lg border-2 border-green-500 text-sm"><input type="radio" name="abo" value="1000" checked><div><b>Ambulant - 1000F/mois</b><br><span class="text-[11px]">5 produits, LIVE 30min</span></div></label>
+<label class="flex gap-2 mt-2 p-2 bg-white rounded-lg border text-sm"><input type="radio" name="abo" value="2000"><div><b>Boutique PRO - 2000F/mois</b><br><span class="text-[11px]">Illimité + Badge PRO</span></div></label>
+</div>
+<button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">S'inscrire Vendeur</button>
+</div>
+</div>
+
+<div id="formLivreur" class="hidden mt-6">
+<h3 class="font-bold">Inscription Livreur - CNI + Plaque + GPS LIVE</h3>
+<div class="mt-3 space-y-3">
+<input id="lNom" placeholder="Nom complet" class="w-full border rounded-lg p-3 text-sm">
+<input id="lTel" placeholder="Téléphone" class="w-full border rounded-lg p-3 text-sm">
+<input id="lCNI" placeholder="Numéro CNI obligatoire" class="w-full border-2 border-red-200 rounded-lg p-3 text-sm">
+<div class="grid grid-cols-2 gap-2">
+<input id="lPlaque" placeholder="Plaque TG 1234 AB" class="border-2 border-red-200 rounded-lg p-3 text-sm">
+<input id="lMarque" placeholder="Marque ex: Haojue" class="border rounded-lg p-3 text-sm">
+</div>
+<input id="lQuartier" placeholder="Quartier base" class="w-full border rounded-lg p-3 text-sm">
+<button onclick="getGPS('livreur')" class="w-full bg-black text-white p-3 rounded-xl font-bold text-sm"><i class="fa-solid fa-satellite-dish"></i> 📍 Partager ma position GPS en direct (LIVE)</button>
+<p id="gpsLivreur" class="text-xs text-green-600 hidden font-bold">✅ GPS LIVE activé! Le client te verra arriver.</p>
+<div class="bg-blue-50 border rounded-xl p-2 text-[11px]">🛡️ Vérification: Après inscription envoie photo CNI + moto + plaque par WhatsApp au 90 XX XX XX pour activation.</div>
+<button onclick="registerLivreur()" class="w-full bg-black text-white p-3 rounded-xl font-bold">S'inscrire Livreur - Activer GPS LIVE</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MODAL COMMANDE -->
+<div id="orderModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-end md:items-center justify-center p-3">
+<div class="bg-white rounded-t-2xl md:rounded-2xl w-full max-w-md p-5 max-h-[90vh] overflow-y-auto">
+<h3 class="font-black text-lg">Commander: <span id="orderProduct" class="text-green-600"></span></h3>
+<p class="text-xs text-gray-500" id="orderPrice"></p>
+<div class="mt-4 space-y-3">
+<p class="text-sm font-bold">Comment récupérer? (GPS gardé pour les 2)</p>
+<button onclick="selectDelivery('self')" id="btnSelf" class="w-full border-2 p-3 rounded-xl text-left hover:bg-green-50"><i class="fa-solid fa-person-walking"></i> <b>J'irai moi-même (GPS gardé)</b><br><span class="text-[11px] text-gray-600">Tu partages ton GPS + tu vois GPS vendeur sur Maps. Gratuit.</span><br><span id="gpsClientInModal" class="text-[11px] text-green-600 hidden">✅ Ton GPS sera envoyé au vendeur</span></button>
+<button onclick="selectDelivery('livreur')" id="btnLivreurDelivery" class="w-full border-2 p-3 rounded-xl text-left hover:bg-green-50"><i class="fa-solid fa-motorcycle"></i> <b>Livraison par livreur - GPS LIVE</b><br><span class="text-[11px] text-gray-600">Ton GPS partagé auto au livreur + tu suis livreur en direct 500m → 200m → Arrivé</span><br><span id="gpsLivreurInModal" class="text-[11px] text-blue-600 hidden">✅ GPS LIVE livreur activé</span></button>
+
+<div id="clientGPSShareBox" class="hidden bg-blue-50 border border-blue-200 p-3 rounded-xl">
+<p class="text-xs font-bold"><i class="fa-solid fa-location-dot"></i> Partage GPS obligatoire pour livraison:</p>
+<button onclick="getGPSForOrder()" class="mt-2 w-full bg-blue-600 text-white p-2 rounded-lg text-xs font-bold">📍 Partager ma position maintenant</button>
+<p id="gpsOrderStatus" class="text-[11px] text-green-600 mt-1 hidden">✅ Position client envoyée au livreur!</p>
+</div>
+
+<div id="livreurLiveBox" class="hidden bg-green-50 border border-green-200 p-3 rounded-xl text-sm">
+<p class="font-bold">✅ Livreur assigné:</p>
+<p id="livreurAssignedName">Kossi - Plaque TG 1234 AB - Haojue - 📞 90 12 34 56</p>
+<p class="mt-2 text-xs"><i class="fa-solid fa-satellite-dish"></i> <span id="liveTracking">En attente GPS...</span></p>
+<div class="mt-2 flex gap-2">
+<button onclick="openGPS('client')" class="flex-1 bg-blue-600 text-white p-2 rounded-lg text-[11px] font-bold">Voir Client sur Maps</button>
+<button onclick="openGPS('vendeur')" class="flex-1 bg-green-600 text-white p-2 rounded-lg text-[11px] font-bold">Voir Vendeur sur Maps</button>
+</div>
+</div>
+
+<button onclick="confirmOrder()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold mt-2">✅ Confirmer commande dans système</button>
+<button onclick="closeOrder()" class="w-full bg-gray-100 p-3 rounded-xl text-sm">Annuler</button>
+</div>
+</div>
+</div>
+
+<div id="notif" class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-xl z-[60] font-bold text-sm text-center">✅ Votre livreur est arrivé! Il est devant vous!</div>
+
 <script>
-let role='client',deliveryMode='',clientGPS=null;
-function showPage(p){document.getElementById('homePage').classList.toggle('hidden',p!=='home');document.getElementById('registerPage').classList.toggle('hidden',p!=='register');}
-function setRole(r){role=r;document.getElementById('btnClient').className=r==='client'?'border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold':'border p-4 rounded-xl font-bold';document.getElementById('btnVendeur').className=r==='vendeur'?'border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold':'border p-4 rounded-xl font-bold';document.getElementById('btnLivreur').className=r==='livreur'?'border-2 border-green-600 bg-green-50 p-4 rounded-xl font-bold':'border p-4 rounded-xl font-bold';document.getElementById('formClient').classList.toggle('hidden',r!=='client');document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');}
-function getGPS(t){if(navigator.geolocation){navigator.geolocation.getCurrentPosition(p=>{clientGPS=p.coords;document.getElementById('gpsClient').classList.remove('hidden');alert('GPS: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5));},()=>alert('Activez GPS!'));}}
-function registerClient(){const n=document.getElementById('cNom').value,t=document.getElementById('cTel').value;if(!n||!t)return alert('Remplissez nom et tel');localStorage.setItem('togo_user',JSON.stringify({role:'client',nom:n,tel:t,gps:clientGPS}));alert('✅ Client créé! '+n);showPage('home');}
-function registerVendeur(){const n=document.getElementById('vNom').value,t=document.getElementById('vTel').value,ty=document.getElementById('vType').value;if(!n||!t||!ty)return alert('Remplissez tout');const a=document.querySelector('input[name="abo"]:checked').value;localStorage.setItem('togo_user',JSON.stringify({role:'vendeur',nom:n,tel:t,type:ty,abo:a}));alert('✅ Vendeur '+ty+' - Abonnement '+a+'F. Payez TMoney et envoyez preuve.');showPage('home');}
-function registerLivreur(){const n=document.getElementById('lNom').value,t=document.getElementById('lTel').value,c=document.getElementById('lCNI').value,p=document.getElementById('lPlaque').value;if(!n||!t||!c||!p)return alert('CNI et plaque obligatoires');localStorage.setItem('togo_user',JSON.stringify({role:'livreur',nom:n,tel:t,cni:c,plaque:p}));alert('✅ Demande Livreur envoyée! Envoyez photo CNI + moto WhatsApp.');showPage('home');}
-function orderNow(pr){document.getElementById('orderProduct').innerText=pr;document.getElementById('orderModal').classList.remove('hidden');}
+const PRODUCTS=[
+{id:1,name:"Tomates 1kg",price:800,cat:"alimentaire",vendeur:"Afi - Agoè",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300",gps:{lat:6.1859,lng:1.2123}},
+{id:2,name:"Pagne Wax",price:12000,cat:"vetement",vendeur:"Adawlato PRO",img:"https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300",gps:{lat:6.1319,lng:1.2228}},
+{id:3,name:"Riz + Sauce",price:1500,cat:"restaurant",vendeur:"Maquis Bè",img:"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300",gps:{lat:6.1280,lng:1.2250}},
+{id:4,name:"Chambre Hôtel 1 nuit",price:8000,cat:"hotel",vendeur:"Hôtel 2 Février",img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300",gps:{lat:6.1300,lng:1.2150}},
+{id:5,name:"Montre Connectée",price:15000,cat:"autre",vendeur:"Déckon PRO",img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300",gps:{lat:6.1350,lng:1.2200}},
+{id:6,name:"Bananes",price:500,cat:"alimentaire",vendeur:"Kodjo - Marché",img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300",gps:{lat:6.1840,lng:1.2100}}
+];
+let role='client',deliveryMode='',clientGPS=null,vendeurGPS=null,livreurGPS=null,orderGPS=null,selectedProduct=null,currentCat='all',orderFilter='all';
+
+function init(){
+ renderProducts(PRODUCTS);
+ updateOrderBadge();
+ showUserInfo();
+}
+function showPage(p){
+ document.getElementById('homePage').classList.toggle('hidden',p!=='home');
+ document.getElementById('registerPage').classList.toggle('hidden',p!=='register');
+ document.getElementById('ordersPage').classList.toggle('hidden',p!=='orders');
+ if(p==='orders') renderOrders();
+}
+function renderProducts(list){
+ const g=document.getElementById('productsGrid');
+ g.innerHTML=list.map(pr=>`
+ <div class="bg-white rounded-xl shadow p-2">
+ <img src="${pr.img}" class="rounded-lg h-28 w-full object-cover">
+ <h4 class="font-bold mt-1 text-sm">${pr.name}</h4>
+ <p class="text-[11px] text-gray-500">${pr.vendeur} • ${pr.cat}</p>
+ <p class="font-black text-green-600 text-sm">${pr.price.toLocaleString()} F</p>
+ <button onclick="orderNow(${pr.id})" class="mt-2 bg-green-600 text-white w-full py-2 rounded-lg text-xs font-bold">Commander</button>
+ </div>`).join('');
+}
+function filterProducts(){
+ const q=document.getElementById('searchInput').value.toLowerCase();
+ let f=PRODUCTS.filter(p=>p.name.toLowerCase().includes(q) || p.vendeur.toLowerCase().includes(q));
+ if(currentCat!=='all') f=f.filter(p=>p.cat===currentCat);
+ renderProducts(f);
+}
+function filterCat(c){
+ currentCat=c;
+ document.querySelectorAll('[id^="cat-"]').forEach(b=>{b.className='bg-white border px-4 py-2 rounded-full text-xs whitespace-nowrap';});
+ document.getElementById('cat-'+c).className='bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap';
+ filterProducts();
+}
+function getClientGPSForSearch(){
+ if(!navigator.geolocation) return alert('GPS non supporté');
+ navigator.geolocation.getCurrentPosition(p=>{
+  clientGPS={lat:p.coords.latitude,lng:p.coords.longitude};
+  localStorage.setItem('togo_client_gps',JSON.stringify(clientGPS));
+  document.getElementById('gpsSearchStatus').classList.remove('hidden');
+  document.getElementById('gpsSearchStatus').innerText=`✅ Position: ${clientGPS.lat.toFixed(4)}, ${clientGPS.lng.toFixed(4)} - Vendeurs proches affichés`;
+ },()=>alert('Activez GPS!'));
+}
+function setRole(r){
+ role=r;
+ document.getElementById('btnClient').className=r==='client'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-sm':'border p-3 rounded-xl font-bold text-sm';
+ document.getElementById('btnVendeur').className=r==='vendeur'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-sm':'border p-3 rounded-xl font-bold text-sm';
+ document.getElementById('btnLivreur').className=r==='livreur'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-sm':'border p-3 rounded-xl font-bold text-sm';
+ document.getElementById('formClient').classList.toggle('hidden',r!=='client');
+ document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');
+ document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');
+}
+function getGPS(t){
+ if(!navigator.geolocation) return alert('GPS non supporté');
+ navigator.geolocation.getCurrentPosition(p=>{
+  const c={lat:p.coords.latitude,lng:p.coords.longitude};
+  if(t==='client'){clientGPS=c;document.getElementById('gpsClient').classList.remove('hidden');}
+  if(t==='vendeur'){vendeurGPS=c;document.getElementById('gpsVendeur').classList.remove('hidden');}
+  if(t==='livreur'){livreurGPS=c;document.getElementById('gpsLivreur').classList.remove('hidden');}
+  alert('GPS capturé: '+c.lat.toFixed(5)+', '+c.lng.toFixed(5));
+ },()=>alert('Activez localisation!'));
+}
+function getGPSForOrder(){
+ if(!navigator.geolocation){orderGPS=clientGPS; document.getElementById('gpsOrderStatus').classList.remove('hidden'); return;}
+ navigator.geolocation.getCurrentPosition(p=>{
+  orderGPS={lat:p.coords.latitude,lng:p.coords.longitude};
+  clientGPS=orderGPS;
+  document.getElementById('gpsOrderStatus').classList.remove('hidden');
+  document.getElementById('gpsClientInModal').classList.remove('hidden');
+ },()=>{orderGPS=clientGPS; document.getElementById('gpsOrderStatus').classList.remove('hidden');});
+}
+function showUserInfo(){
+ const u=JSON.parse(localStorage.getItem('togo_user')||'null');
+ const box=document.getElementById('userInfoBox');
+ if(!u){box.classList.add('hidden');return;}
+ box.classList.remove('hidden');
+ box.innerHTML=`✅ Connecté: <b>${u.nom}</b> - ${u.role.toUpperCase()} ${u.type?'- '+u.type:''} ${u.plaque?'- '+u.plaque:''}<br><span class="text-[11px]">Tel: ${u.tel} ${u.cni?'| CNI:'+u.cni:''}</span>`;
+}
+function registerClient(){
+ const n=document.getElementById('cNom').value,t=document.getElementById('cTel').value,q=document.getElementById('cQuartier').value;
+ if(!n||!t) return alert('Nom et Tel obligatoires');
+ localStorage.setItem('togo_user',JSON.stringify({role:'client',nom:n,tel:t,quartier:q,gps:clientGPS}));
+ showUserInfo(); alert('✅ Client créé! GPS gardé. Tu peux commander.'); showPage('home');
+}
+function registerVendeur(){
+ const n=document.getElementById('vNom').value,t=document.getElementById('vTel').value,ty=document.getElementById('vType').value,q=document.getElementById('vQuartier').value;
+ if(!n||!t||!ty) return alert('Remplis tout - Autre est gardé!');
+ const abo=document.querySelector('input[name="abo"]:checked').value;
+ localStorage.setItem('togo_user',JSON.stringify({role:'vendeur',nom:n,tel:t,type:ty,quartier:q,gps:vendeurGPS,abo:abo}));
+ showUserInfo(); alert(`✅ Vendeur ${ty} (${abo}F) créé! Type Autre gardé. GPS boutique gardé.`); showPage('home');
+}
+function registerLivreur(){
+ const n=document.getElementById('lNom').value,t=document.getElementById('lTel').value,c=document.getElementById('lCNI').value,p=document.getElementById('lPlaque').value,m=document.getElementById('lMarque').value,q=document.getElementById('lQuartier').value;
+ if(!n||!t||!c||!p) return alert('Nom, Tel, CNI et Plaque obligatoires - vérification sécurité');
+ localStorage.setItem('togo_user',JSON.stringify({role:'livreur',nom:n,tel:t,cni:c,plaque:p,marque:m,quartier:q,gps:livreurGPS,live:true}));
+ showUserInfo(); alert('✅ Livreur inscrit! GPS LIVE activé. Tu recevras les commandes dans Dashboard. Envoie photo CNI + moto WhatsApp.'); showPage('orders');
+}
+
+function orderNow(id){
+ selectedProduct=PRODUCTS.find(p=>p.id===id);
+ document.getElementById('orderProduct').innerText=selectedProduct.name;
+ document.getElementById('orderPrice').innerText=selectedProduct.price.toLocaleString()+' F - '+selectedProduct.vendeur;
+ document.getElementById('orderModal').classList.remove('hidden');
+ deliveryMode=''; document.getElementById('clientGPSShareBox').classList.add('hidden'); document.getElementById('livreurLiveBox').classList.add('hidden');
+ document.getElementById('gpsClientInModal').classList.add('hidden'); document.getElementById('gpsLivreurInModal').classList.add('hidden');
+}
 function closeOrder(){document.getElementById('orderModal').classList.add('hidden');}
-function selectDelivery(m){deliveryMode=m;document.getElementById('btnSelf').className=m==='self'?'w-full border-2 border-green-600 bg-green-50 p-3 rounded-xl text-left':'w-full border-2 p-3 rounded-xl text-left';document.getElementById('btnLivreurDelivery').className=m==='livreur'?'w-full border-2 border-green-600 bg-green-50 p-3 rounded-xl text-left':'w-full border-2 p-3 rounded-xl text-left';if(m==='livreur'){document.getElementById('livreurInfo').classList.remove('hidden');let i=0;const msgs=["Livreur à 500m...","Livreur à 200m...","Livreur arrivé! ✅"];const int=setInterval(()=>{document.getElementById('liveTracking').innerText=msgs[i];i++;if(i===msgs.length){clearInterval(int);showNotif();}},1500);}}
-function confirmOrder(){if(!deliveryMode)return alert("Choisissez J'irai ou Livreur");if(deliveryMode==='self'){alert('📍 GPS Vendeur: Agoè 6.1859, 1.2123 - Ouvrez Maps.');}else{alert('✅ Commande confirmée! Livreur Kossi en route. Suivi LIVE. +1000F livraison.');showNotif();}closeOrder();}
-function showNotif(){const n=document.getElementById('notif');n.classList.remove('hidden');setTimeout(()=>n.classList.add('hidden'),5000);}
-window.addEventListener('offline',()=>document.getElementById('offlineBanner').classList.remove('hidden'));
-window.addEventListener('online',()=>document.getElementById('offlineBanner').classList.add('hidden'));
+function selectDelivery(m){
+ deliveryMode=m;
+ document.getElementById('btnSelf').className=m==='self'?'w-full border-2 border-green-600 bg-green-50 p-3 rounded-xl text-left':'w-full border-2 p-3 rounded-xl text-left';
+ document.getElementById('btnLivreurDelivery').className=m==='livreur'?'w-full border-2 border-green-600 bg-green-50 p-3 rounded-xl text-left':'w-full border-2 p-3 rounded-xl text-left';
+ if(m==='self'){
+  document.getElementById('clientGPSShareBox').classList.remove('hidden');
+  document.getElementById('gpsClientInModal').classList.remove('hidden');
+  document.getElementById('livreurLiveBox').classList.add('hidden');
+ } else {
+  document.getElementById('clientGPSShareBox').classList.remove('hidden');
+  document.getElementById('livreurLiveBox').classList.remove('hidden');
+  document.getElementById('gpsLivreurInModal').classList.remove('hidden');
+  // Simule assignation livreur avec GPS LIVE
+  document.getElementById('livreurAssignedName').innerText=`Kossi - ${JSON.parse(localStorage.getItem('togo_user')||'{}').plaque||'TG 1234 AB'} - ${JSON.parse(localStorage.getItem('togo_user')||'{}').marque||'Haojue'} - Livraison 1000F`;
+  let i=0; const msgs=["📍 Livreur GPS LIVE à 800m...","📍 Livreur à 500m de toi...","📍 Livreur à 200m... GPS partagé!","✅ Livreur arrivé devant toi!"];
+  const int=setInterval(()=>{if(document.getElementById('orderModal').classList.contains('hidden')){clearInterval(int);return;} document.getElementById('liveTracking').innerText=msgs[i]; i++; if(i>=msgs.length){clearInterval(int); showNotif();}},1500);
+ }
+}
+function confirmOrder(){
+ if(!deliveryMode) return alert("Choisis J'irai moi-même ou Livreur - GPS gardé pour les 2");
+ const user=JSON.parse(localStorage.getItem('togo_user')||'{"nom":"Client Anonyme","tel":"90 XX","role":"client"}');
+ if(!orderGPS) orderGPS=clientGPS||JSON.parse(localStorage.getItem('togo_client_gps')||'null')||{lat:6.1319,lng:1.2228};
+ const orders=JSON.parse(localStorage.getItem('togo_orders')||'[]');
+ const newOrder={
+  id:Date.now(),
+  product:selectedProduct.name,
+  price:selectedProduct.price,
+  vendeur:selectedProduct.vendeur,
+  vendeurGPS:selectedProduct.gps,
+  client:user.nom,
+  clientTel:user.tel,
+  clientGPS:orderGPS,
+  quartier:document.getElementById('cQuartier')?.value||'Agoè',
+  mode:deliveryMode,
+  status:deliveryMode==='self'?'a_retirer':'disponible',
+  livreur:null,
+  livreurGPS:null,
+  created:new Date().toLocaleString()
+ };
+ orders.unshift(newOrder);
+ localStorage.setItem('togo_orders',JSON.stringify(orders));
+ updateOrderBadge();
+ closeOrder();
+ if(deliveryMode==='self'){
+  alert(`✅ Commande enregistrée dans SYSTÈME!\n\n📍 Ton GPS: ${orderGPS.lat.toFixed(4)}, ${orderGPS.lng.toFixed(4)} envoyé au vendeur.\n📍 GPS Vendeur: ${selectedProduct.gps.lat}, ${selectedProduct.gps.lng}\n\nOuvre Google Maps pour y aller. Va dans "Mes Commandes" pour suivre.`);
+  openGPS('vendeur',selectedProduct.gps);
+ } else {
+  alert(`✅ Commande dans SYSTÈME! Livreur notifié.\n\n📍 Ton GPS ${orderGPS.lat.toFixed(4)}, ${orderGPS.lng.toFixed(4)} partagé auto au livreur.\nLe livreur va accepter et partager son GPS LIVE. Suivi dans "Mes Commandes" → 500m → 200m → Arrivé!`);
+  showPage('orders');
+ }
+}
+function updateOrderBadge(){
+ const orders=JSON.parse(localStorage.getItem('togo_orders')||'[]');
+ const b=document.getElementById('orderBadge');
+ if(orders.length>0){b.classList.remove('hidden'); b.innerText=orders.length;} else b.classList.add('hidden');
+ document.getElementById('activeLivreurs').innerText=JSON.parse(localStorage.getItem('togo_user')||'{}').role==='livreur'?1:3;
+}
+function renderOrders(){
+ const orders=JSON.parse(localStorage.getItem('togo_orders')||'[]');
+ const user=JSON.parse(localStorage.getItem('togo_user')||'{}');
+ let filtered=orders;
+ if(orderFilter!=='all') filtered=orders.filter(o=>o.status===orderFilter || (orderFilter==='encours' && o.status!=='disponible' && o.status!=='a_retirer'));
+ const list=document.getElementById('ordersList');
+ const no=document.getElementById('noOrders');
+ if(filtered.length===0){list.innerHTML=''; no.classList.remove('hidden'); return;} no.classList.add('hidden');
+ list.innerHTML=filtered.map(o=>`
+ <div class="border rounded-xl p-3 ${o.status==='disponible'?'bg-yellow-50 border-yellow-200':o.status==='encours'?'bg-blue-50 border-blue-200':'bg-white'}">
+ <div class="flex justify-between">
+ <div>
+ <p class="font-bold text-sm">${o.product} - ${o.price}F</p>
+ <p class="text-[11px] text-gray-600">Vendeur: ${o.vendeur} | Client: ${o.client} - ${o.clientTel}</p>
+ <p class="text-[11px]">Mode: ${o.mode==='self'?'🚶 J\'irai moi-même - GPS client + vendeur gardé':'🏍️ Livraison - GPS LIVE'} | ${o.created}</p>
+ ${o.clientGPS?`<p class="text-[10px] text-blue-600">📍 GPS Client: ${o.clientGPS.lat.toFixed(4)}, ${o.clientGPS.lng.toFixed(4)} (partagé au livreur)</p>`:''}
+ ${o.vendeurGPS?`<p class="text-[10px] text-green-600">📍 GPS Vendeur: ${o.vendeurGPS.lat.toFixed(4)}, ${o.vendeurGPS.lng.toFixed(4)}</p>`:''}
+ ${o.livreur?`<p class="text-[11px] font-bold text-green-700">🏍️ Livreur: ${o.livreur.nom} - ${o.livreur.plaque} - ${o.livreur.marque} | GPS LIVE: ${o.livreurGPS?o.livreurGPS.lat.toFixed(4):'activé'}</p>`:''}
+ <span class="inline-block mt-1 text-[10px] px-2 py-0.5 rounded-full ${o.status==='disponible'?'bg-yellow-200':'bg-blue-200'}">${o.status.toUpperCase()}</span>
+ </div>
+ <div class="flex flex-col gap-1">
+ ${o.status==='disponible' && user.role==='livreur'?`<button onclick="acceptOrder(${o.id})" class="bg-black text-white px-3 py-1.5 rounded-lg text-[11px] font-bold">Accepter + GPS LIVE</button>`:''}
+ <button onclick="openGPS('client',${o.clientGPS?`{lat:${o.clientGPS.lat},lng:${o.clientGPS.lng}}`:'null'})" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-[10px]">GPS Client Maps</button>
+ <button onclick="openGPS('vendeur',${o.vendeurGPS?`{lat:${o.vendeurGPS.lat},lng:${o.vendeurGPS.lng}}`:'null'})" class="bg-green-600 text-white px-3 py-1 rounded-lg text-[10px]">GPS Vendeur Maps</button>
+ ${o.status!=='disponible'?`<button onclick="updateLive(${o.id})" class="bg-green-600 text-white px-3 py-1 rounded-lg text-[10px]">Simuler GPS LIVE 500m→Arrivé</button>`:''}
+ </div>
+ </div>
+ </div>`).join('');
+}
+function filterOrders(f){orderFilter=f; renderOrders();}
+function refreshOrders(){renderOrders(); updateOrderBadge();}
+function acceptOrder(id){
+ const orders=JSON.parse(localStorage.getItem('togo_orders')||'[]');
+ const user=JSON.parse(localStorage.getItem('togo_user')||'{}');
+ const idx=orders.findIndex(o=>o.id===id);
+ if(idx===-1) return;
+ // Livreur partage son GPS LIVE quand il accepte
+ if(navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(p=>{
+   orders[idx].livreur=user;
+   orders[idx].livreurGPS={lat:p.coords.latitude,lng:p.coords.longitude};
+   orders[idx].status='encours';
+   localStorage.setItem('togo_orders',JSON.stringify(orders));
+   alert(`✅ Commande acceptée! Ton GPS LIVE ${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)} partagé au client. Le client te voit arriver 500m→200m→Arrivé!`);
+   renderOrders();
+  },()=>{
+   orders[idx].livreur=user; orders[idx].livreurGPS=livreurGPS||{lat:6.1350,lng:1.22}; orders[idx].status='encours';
+   localStorage.setItem('togo_orders',JSON.stringify(orders)); renderOrders();
+  });
+ } else {
+  orders[idx].livreur=user; orders[idx].livreurGPS=livreurGPS||{lat:6.1350,lng:1.22}; orders[idx].status='encours';
+  localStorage.setItem('togo_orders',JSON.stringify(orders)); renderOrders();
+ }
+}
+function updateLive(id){
+ let i=0; const msgs=["📍 Livreur GPS LIVE à 500m du client...","📍 Livreur à 200m...","✅ Votre livreur est arrivé! Il est devant vous!"];
+ const int=setInterval(()=>{document.getElementById('notif').innerText=msgs[i]; document.getElementById('notif').classList.remove('hidden'); i++; if(i>=msgs.length){clearInterval(int); setTimeout(()=>document.getElementById('notif').classList.add('hidden'),3000);}},1500);
+}
+function openGPS(type,gpsObj){
+ let gps=gpsObj;
+ if(!gps){
+  if(type==='client') gps=clientGPS||orderGPS||JSON.parse(localStorage.getItem('togo_client_gps')||'null');
+  if(type==='vendeur') gps=selectedProduct?.gps||vendeurGPS;
+ }
+ if(!gps) return alert('GPS non disponible - partage ta position d\'abord');
+ window.open(`https://www.google.com/maps?q=${gps.lat},${gps.lng}`,'_blank');
+}
+function showNotif(){const n=document.getElementById('notif'); n.classList.remove('hidden'); setTimeout(()=>n.classList.add('hidden'),4000);}
+window.addEventListener('load',init);
 </script>
 </body>
 </html>
