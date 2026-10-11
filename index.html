@@ -1,125 +1,118 @@
 <!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Togo Go - V6.5 Double Selfie</title>
-<script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>body{background:#f8fafc;font-family:sans-serif}.cam-mirror{transform:scaleX(-1)}</style></head>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Togo Go</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>body{background:#f8fafc;font-family:sans-serif}.cam-mirror{transform:scaleX(-1)}</style>
+</head>
 <body class="pb-24">
-
-<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50">
-<div class="flex justify-between items-center max-w-7xl mx-auto"><b><i class="fa-solid fa-bag-shopping"></i> Togo Go</b><div class="flex gap-1"><button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1.5 rounded-full text-[11px] font-bold">Accueil</button><button onclick="showPage('vendeurDash')" class="bg-black/20 px-3 py-1.5 rounded-full text-[11px]">🏪</button><button onclick="killGhost()" class="bg-red-600 px-2 py-1.5 rounded-full text-[9px]">🚨</button><button onclick="showPage('register')" class="bg-black/20 px-3 py-1.5 rounded-full text-[11px]">Compte</button></div></div>
+<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50 shadow">
+<div class="flex justify-between items-center max-w-7xl mx-auto">
+<b><i class="fa-solid fa-bag-shopping"></i> Togo Go</b>
+<div class="flex gap-1">
+<button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1.5 rounded-full text-[11px] font-bold">Accueil</button>
+<button onclick="showPage('vendeurDash')" class="bg-black/20 px-3 py-1.5 rounded-full text-[11px] font-bold">🏪</button>
+<button onclick="killGhost()" class="bg-red-600 px-2 py-1.5 rounded-full text-[9px] font-bold">🚨 Tue LIVE</button>
+<button onclick="showPage('register')" class="bg-black/20 px-3 py-1.5 rounded-full text-[11px] font-bold">Compte</button>
+</div>
+</div>
 </header>
 
-<!-- MODAL SELFIE DU MATIN OBLIGATOIRE -->
 <div id="morningModal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
 <div class="bg-white rounded-2xl p-5 w-full max-w-sm text-center">
-<h2 class="font-black text-lg">☀️ Bonjour Djo! Selfie du matin</h2><p class="text-xs text-gray-500 mt-1">Client & Livreur - Obligatoire pour activer aujourd'hui</p>
+<h2 class="font-black">☀️ Selfie du matin</h2><p class="text-xs text-gray-500">Obligatoire pour activer aujourd'hui</p>
 <video id="morningVideo" autoplay muted playsinline class="w-full h-64 bg-black rounded-xl mt-3 cam-mirror object-cover"></video>
 <canvas id="morningCanvas" class="hidden"></canvas>
 <img id="morningPreview" class="hidden w-full h-64 object-cover rounded-xl mt-3">
-<button onclick="takeMorningSelfie()" id="btnTakeMorning" class="mt-3 w-full bg-green-600 text-white py-3 rounded-xl font-bold">📸 Prendre selfie matin</button>
-<button onclick="confirmMorningSelfie()" id="btnConfirmMorning" class="hidden mt-3 w-full bg-black text-white py-3 rounded-xl font-bold">✅ Valider et entrer dans Togo Go</button>
-<p class="text-[10px] text-gray-400 mt-2">Ce selfie change chaque jour. Selfie permanent + CNI restent en base.</p>
+<button onclick="takeMorningSelfie()" id="btnTakeMorning" class="mt-3 w-full bg-green-600 text-white py-3 rounded-xl font-bold">📸 Prendre selfie</button>
+<button onclick="confirmMorningSelfie()" id="btnConfirmMorning" class="hidden mt-3 w-full bg-black text-white py-3 rounded-xl font-bold">✅ Entrer dans Togo Go</button>
 </div>
 </div>
 
 <div id="homePage" class="max-w-7xl mx-auto p-3">
-<div class="bg-white rounded-2xl p-3 shadow flex gap-2"><input id="searchInput" placeholder="Chercher..." class="flex-1 border rounded-xl px-3 py-3 text-sm"><button class="bg-blue-600 text-white px-3 rounded-xl text-[10px]">📍</button></div>
-<div id="liveHomeZone" class="hidden mt-3 bg-black rounded-2xl overflow-hidden"><div class="bg-red-600 text-white p-2 flex justify-between text-xs"><b>🔴 LIVE</b><button onclick="killGhost()" class="bg-white text-red-600 px-2 rounded-full text-[9px]">Fermer</button></div><video id="homeLiveVideo" autoplay muted playsinline class="w-full h-60 bg-black object-cover"></video></div>
-<div id="productsGrid" class="grid grid-cols-2 gap-3 mt-3"></div>
+<div class="bg-white rounded-2xl p-3 shadow mt-2 flex gap-2"><input id="searchInput" placeholder="Chercher produits..." class="flex-1 border rounded-xl px-3 py-3 text-sm"><button class="bg-blue-600 text-white px-3 rounded-xl text-[10px]">📍 GPS</button></div>
+<div id="liveHomeZone" class="hidden mt-3 bg-black rounded-2xl overflow-hidden"><div class="bg-red-600 text-white p-2 flex justify-between text-xs"><b>🔴 LIVE EN DIRECT</b><button onclick="killGhost()" class="bg-white text-red-600 px-2 rounded-full text-[9px]">Fermer</button></div><video id="homeLiveVideo" autoplay muted playsinline class="w-full h-60 bg-black object-cover"></video></div>
+<div id="productsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3"></div>
 </div>
 
-<div id="vendeurDashPage" class="hidden max-w-4xl mx-auto p-4"><div class="bg-white rounded-2xl shadow p-5"><h2 class="font-black">🏪 Boutique</h2><video id="liveVideo" autoplay muted playsinline class="hidden w-full h-64 bg-black rounded-xl mt-3 object-cover"></video><div class="flex gap-2 mt-3"><button onclick="startLive()" id="btnStartLive" class="flex-1 bg-red-600 text-white py-3 rounded-xl font-black">🔴 SELFIE</button><button onclick="switchCamera()" id="btnSwitch" class="hidden bg-blue-600 text-white px-4 py-3 rounded-xl">🔄</button><button onclick="stopLive()" id="btnStopLive" class="hidden bg-gray-800 text-white px-4 py-3 rounded-xl">⏹️</button></div></div></div>
+<div id="vendeurDashPage" class="hidden max-w-4xl mx-auto p-4">
+<div class="bg-white rounded-2xl shadow p-5 mt-3"><h2 class="font-black">🏪 Ma Boutique - LIVE</h2><video id="liveVideo" autoplay muted playsinline class="hidden w-full h-64 bg-black rounded-xl mt-3 object-cover"></video><div class="flex gap-2 mt-3"><button onclick="startLive()" id="btnStartLive" class="flex-1 bg-red-600 text-white py-3 rounded-xl font-black">📸 Démarrer LIVE Selfie</button><button onclick="switchCamera()" id="btnSwitch" class="hidden bg-blue-600 text-white px-4 py-3 rounded-xl">🔄</button><button onclick="stopLive()" id="btnStopLive" class="hidden bg-gray-800 text-white px-4 py-3 rounded-xl">⏹️ Couper</button></div><p id="liveStatus" class="hidden text-xs text-red-600 mt-2 text-center">🔴 En direct</p></div>
+<div class="mt-4 bg-white rounded-xl shadow p-4"><h3 class="font-bold text-sm">➕ Publier</h3><input id="pName" placeholder="Nom" class="mt-2 w-full border rounded p-2 text-sm"><div class="grid grid-cols-2 gap-2 mt-2"><input id="pPriceDetail" type="number" placeholder="Prix Détail" class="border rounded p-2 text-sm"><input id="pPriceGros" type="number" placeholder="Prix Gros" class="border rounded p-2 text-sm"></div><button onclick="publishProduct()" class="mt-3 w-full bg-black text-white p-3 rounded-xl font-bold">Publier</button></div>
+</div>
 
-<div id="registerPage" class="max-w-3xl mx-auto p-4"><div class="bg-white rounded-2xl shadow p-6 mt-3">
-<h2 class="text-xl font-black text-center">Compte Togo Go</h2>
-<div class="grid grid-cols-3 gap-2 mt-4"><button onclick="setRole('client')" id="btnClient" class="border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs">Client</button><button onclick="setRole('vendeur')" id="btnVendeur" class="border p-3 rounded-xl font-bold text-xs">Vendeur</button><button onclick="setRole('livreur')" id="btnLivreur" class="border p-3 rounded-xl font-bold text-xs">Livreur</button></div>
+<div id="registerPage" class="hidden max-w-3xl mx-auto p-4">
+<div class="bg-white rounded-2xl shadow p-6 mt-3">
+<h2 class="text-xl font-black text-center">Compte</h2><p class="text-center text-xs text-gray-500">Rejoins Togo Go</p>
+<div class="grid grid-cols-3 gap-2 mt-5">
+<button id="btnClient" onclick="setRole('client')" class="border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs">Client</button>
+<button id="btnVendeur" onclick="setRole('vendeur')" class="border p-3 rounded-xl font-bold text-xs">Vendeur</button>
+<button id="btnLivreur" onclick="setRole('livreur')" class="border p-3 rounded-xl font-bold text-xs">Livreur</button>
+</div>
 
-<!-- CLIENT FORM -->
 <div id="formClient" class="mt-5 space-y-3">
-<input id="cNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><input id="cTel" placeholder="Tél" class="w-full border rounded-xl p-3 text-sm">
-<div class="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-3"><p class="text-[11px] font-bold">📸 Selfie permanent (restera dans système)</p><video id="cSelfieVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 cam-mirror object-cover"></video><canvas id="cSelfieCanvas" class="hidden"></canvas><img id="cSelfieImg" class="hidden w-full h-48 rounded-xl object-cover mt-2"><div class="flex gap-2 mt-2"><button onclick="startCam('client')" class="flex-1 bg-black text-white py-2 rounded-xl text-xs">📸 Activer Selfie</button><button onclick="capturePerm('client')" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer</button></div></div>
+<input id="cNom" placeholder="Nom complet" class="w-full border rounded-xl p-3 text-sm"><input id="cTel" placeholder="Tél WhatsApp" class="w-full border rounded-xl p-3 text-sm">
+<div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-3">
+<p class="text-[11px] font-black text-blue-700">📍 Ton adresse GPS (obligatoire pour livraison)</p>
+<input id="cAdresse" placeholder="Ex: Agoè derrière Oando" class="mt-2 w-full border rounded-xl p-2 text-sm">
+<div class="flex gap-2 mt-2"><button onclick="getClientGPS()" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs font-bold">📍 Prendre ma position GPS</button><span id="cGPSStatus" class="text-[10px] text-gray-500 py-2">Pas encore</span></div>
+<p id="cGPSCoords" class="text-[9px] text-gray-400 mt-1"></p>
+</div>
+<div class="bg-yellow-50 border rounded-xl p-3">
+<p class="text-[11px] font-bold">📸 Selfie permanent (reste dans système à vie)</p>
+<video id="cSelfieVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 cam-mirror object-cover"></video><canvas id="cSelfieCanvas" class="hidden"></canvas><img id="cSelfieImg" class="hidden w-full h-48 rounded-xl object-cover mt-2">
+<div class="flex gap-2 mt-2"><button onclick="startCam('client')" class="flex-1 bg-black text-white py-2 rounded-xl text-xs">📸 Activer</button><button onclick="capturePerm('client')" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer</button></div>
+</div>
 <button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer compte Client</button>
 </div>
 
-<!-- LIVREUR FORM DOUBLE VERIF -->
+<div id="formVendeur" class="hidden mt-5 space-y-3"><input id="vNom" placeholder="Nom boutique" class="w-full border rounded-xl p-3 text-sm"><input id="vTel" placeholder="Téléphone" class="w-full border rounded-xl p-3 text-sm"><select id="vType" class="w-full border rounded-xl p-3 text-sm"><option value="">Type boutique</option><option value="hotel">🏨 Hôtel</option><option value="restaurant">🍚 Restaurant</option><option value="ambulant">🚶 Ambulant</option><option value="boutique">🏪 Boutique</option></select><button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Vendeur</button></div>
+
 <div id="formLivreur" class="hidden mt-5 space-y-3">
 <input id="lNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><input id="lTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm"><input id="lPlaque" placeholder="Plaque moto" class="w-full border-2 border-red-200 rounded-xl p-3 text-sm">
-<div class="bg-red-50 border-2 border-red-300 rounded-xl p-3"><p class="text-[11px] font-black text-red-700">📸 SELFIE PERMANENT + 🪪 CNI = reste dans système à vie</p>
-<p class="text-[10px] mt-1">1. Selfie permanent:</p><video id="lSelfieVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 cam-mirror object-cover"></video><canvas id="lSelfieCanvas" class="hidden"></canvas><img id="lSelfieImg" class="hidden w-full h-48 rounded-xl object-cover mt-2"><div class="flex gap-2 mt-2"><button onclick="startCam('livreur')" class="flex-1 bg-black text-white py-2 rounded-xl text-xs">📸 Selfie perm</button><button onclick="capturePerm('livreur')" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer</button></div>
-<p class="text-[10px] mt-3">2. Photo CNI:</p><video id="lCniVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 object-cover"></video><canvas id="lCniCanvas" class="hidden"></canvas><img id="lCniImg" class="hidden w-full h-48 rounded-xl object-cover mt-2"><div class="flex gap-2 mt-2"><button onclick="startCniCam()" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs">🪪 Activer CNI</button><button onclick="captureCni()" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer CNI</button></div>
+<div class="bg-red-50 border-2 border-red-300 rounded-xl p-3">
+<p class="text-[11px] font-black text-red-700">📸 SELFIE PERMANENT + 🪪 CNI = reste à vie</p>
+<p class="text-[10px] mt-2 font-bold">1. Selfie permanent:</p>
+<video id="lSelfieVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 cam-mirror object-cover"></video><canvas id="lSelfieCanvas" class="hidden"></canvas><img id="lSelfieImg" class="hidden w-full h-48 rounded-xl object-cover mt-2">
+<div class="flex gap-2 mt-2"><button onclick="startCam('livreur')" class="flex-1 bg-black text-white py-2 rounded-xl text-xs">📸 Selfie perm</button><button onclick="capturePerm('livreur')" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer</button></div>
+<p class="text-[10px] mt-3 font-bold">2. Photo CNI (arrière):</p>
+<video id="lCniVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 object-cover"></video><canvas id="lCniCanvas" class="hidden"></canvas><img id="lCniImg" class="hidden w-full h-48 rounded-xl object-cover mt-2">
+<div class="flex gap-2 mt-2"><button onclick="startCniCam()" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs">🪪 Activer CNI</button><button onclick="captureCni()" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer CNI</button></div>
 </div>
 <button id="btnCreateLivreur" onclick="registerLivreur()" class="w-full bg-gray-400 text-white p-3 rounded-xl font-bold" disabled>📸 Fais Selfie + CNI pour débloquer</button>
 </div>
-
-<div id="formVendeur" class="hidden mt-5 space-y-3"><input id="vNom" placeholder="Boutique" class="w-full border rounded-xl p-3 text-sm"><button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Vendeur</button></div>
-</div></div>
+</div>
+</div>
 
 <script>
-const BASE=[{id:1,name:"Tomates 1kg",price:800,vendeur:"Afi",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300"}];
-let liveStream=null,morningStream=null,permStreams={},cniStream=null,currentFacing='user',role='client';
-let permPhotos={client:null,livreur:null}, cniPhoto=null;
-
+const BASE=[{id:1,name:"Tomates 1kg",price:800,priceGros:7000,vendeur:"Afi",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300"},{id:2,name:"Pagne Wax",price:12000,vendeur:"Adawlato",img:"https://via.placeholder.com/300"}];
+let liveStream=null,morningStream=null,permStreams={},cniStream=null,currentFacing='user',role='client',clientGPS=null;
+let permPhotos={client:null,livreur:null},cniPhoto=null;
 function getAll(){return [...JSON.parse(localStorage.getItem('togo_vendeur_products')||'[]'),...BASE];}
-function init(){
- document.getElementById('productsGrid').innerHTML=BASE.map(p=>`<div class="bg-white rounded-xl shadow p-2"><img src="${p.img}" class="rounded h-24 w-full object-cover"><p class="font-bold text-xs mt-1">${p.name}</p></div>`).join('');
- checkMorningSelfie();
-}
+function init(){render(getAll());checkMorningSelfie();if(new URLSearchParams(window.location.search).has('tue')||new URLSearchParams(window.location.search).has('clear')){localStorage.removeItem('togo_live_active');}}
 function showPage(p){document.getElementById('homePage').classList.toggle('hidden',p!=='home');document.getElementById('vendeurDashPage').classList.toggle('hidden',p!=='vendeurDash');document.getElementById('registerPage').classList.toggle('hidden',p!=='register');}
-function setRole(r){role=r;document.getElementById('formClient').classList.toggle('hidden',r!=='client');document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');}
-function killGhost(){if(liveStream){liveStream.getTracks().forEach(t=>t.stop());}localStorage.removeItem('togo_live_active');location.reload();}
-
-async function startCam(type){
- try{let s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});permStreams[type]=s;let v=document.getElementById(type==='client'?'cSelfieVideo':'lSelfieVideo');v.srcObject=s;v.classList.remove('hidden');}catch(e){alert('Autorise caméra');}
-}
-function capturePerm(type){
- let v=document.getElementById(type==='client'?'cSelfieVideo':'lSelfieVideo');let c=document.getElementById(type==='client'?'cSelfieCanvas':'lSelfieCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let data=c.toDataURL('image/jpeg',0.7);permPhotos[type]=data;let img=document.getElementById(type==='client'?'cSelfieImg':'lSelfieImg');img.src=data;img.classList.remove('hidden');v.classList.add('hidden');if(permStreams[type])permStreams[type].getTracks().forEach(t=>t.stop());if(type==='livreur')checkLivreurReady();
-}
-async function startCniCam(){try{cniStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});let v=document.getElementById('lCniVideo');v.srcObject=cniStream;v.classList.remove('hidden');}catch(e){alert('Autorise caméra arrière');}}
+function render(list){document.getElementById('productsGrid').innerHTML=list.map(pr=>`<div class="bg-white rounded-xl shadow p-2"><img src="${pr.img}" class="rounded-lg h-28 w-full object-cover"><h4 class="font-bold text-[12px] mt-1">${pr.name}</h4><p class="text-[10px] text-gray-500">${pr.vendeur}</p><p class="text-green-600 font-black text-xs">${pr.price}F</p></div>`).join('');}
+function setRole(r){role=r;document.getElementById('btnClient').className=r==='client'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs':'border p-3 rounded-xl font-bold text-xs';document.getElementById('btnVendeur').className=r==='vendeur'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs':'border p-3 rounded-xl font-bold text-xs';document.getElementById('btnLivreur').className=r==='livreur'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs':'border p-3 rounded-xl font-bold text-xs';document.getElementById('formClient').classList.toggle('hidden',r!=='client');document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');}
+function killGhost(){if(liveStream)liveStream.getTracks().forEach(x=>x.stop());localStorage.removeItem('togo_live_active');document.querySelectorAll('video').forEach(v=>{v.srcObject=null;});document.getElementById('liveHomeZone').classList.add('hidden');document.getElementById('liveVideo').classList.add('hidden');document.getElementById('btnStartLive').classList.remove('hidden');document.getElementById('btnStopLive').classList.add('hidden');document.getElementById('btnSwitch').classList.add('hidden');document.getElementById('liveStatus').classList.add('hidden');alert('✅ Fantôme tué!');location.href=location.pathname;}
+async function getClientGPS(){let s=document.getElementById('cGPSStatus');s.innerText='📡 Recherche...';try{const pos=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{enableHighAccuracy:true}));clientGPS={lat:pos.coords.latitude,lng:pos.coords.longitude};document.getElementById('cGPSCoords').innerText=`✅ ${clientGPS.lat.toFixed(5)}, ${clientGPS.lng.toFixed(5)}`;s.innerText='✅ GPS capté!';s.className='text-[10px] text-green-600 font-bold py-2';try{let r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${clientGPS.lat}&lon=${clientGPS.lng}`);let d=await r.json();if(d.display_name)document.getElementById('cAdresse').value=d.display_name.substring(0,80);}catch{}}catch(e){s.innerText='❌ Active GPS';alert('Active localisation dans ton Fold!');}}
+async function startCam(type){try{let s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});permStreams[type]=s;let v=document.getElementById(type==='client'?'cSelfieVideo':'lSelfieVideo');v.srcObject=s;v.classList.remove('hidden');}catch(e){alert('Autorise caméra');}}
+function capturePerm(type){let v=document.getElementById(type==='client'?'cSelfieVideo':'lSelfieVideo');let c=document.getElementById(type==='client'?'cSelfieCanvas':'lSelfieCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let data=c.toDataURL('image/jpeg',0.7);permPhotos[type]=data;let img=document.getElementById(type==='client'?'cSelfieImg':'lSelfieImg');img.src=data;img.classList.remove('hidden');v.classList.add('hidden');if(permStreams[type])permStreams[type].getTracks().forEach(t=>t.stop());if(type==='livreur')checkLivreurReady();}
+async function startCniCam(){try{cniStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});let v=document.getElementById('lCniVideo');v.srcObject=cniStream;v.classList.remove('hidden');}catch{alert('Autorise caméra arrière');}}
 function captureCni(){let v=document.getElementById('lCniVideo');let c=document.getElementById('lCniCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);cniPhoto=c.toDataURL('image/jpeg',0.7);let img=document.getElementById('lCniImg');img.src=cniPhoto;img.classList.remove('hidden');v.classList.add('hidden');if(cniStream)cniStream.getTracks().forEach(t=>t.stop());checkLivreurReady();}
 function checkLivreurReady(){if(permPhotos.livreur && cniPhoto){let b=document.getElementById('btnCreateLivreur');b.disabled=false;b.className='w-full bg-black text-white p-3 rounded-xl font-bold';b.innerText='✅ Créer compte Livreur Vérifié';}}
-
-function registerClient(){
- if(!permPhotos.client)return alert('Fais ton selfie permanent d’abord! Ça restera dans système');
- localStorage.setItem('togo_user',JSON.stringify({role:'client',nom:document.getElementById('cNom').value,permSelfie:permPhotos.client,cni:null}));
- localStorage.setItem('togo_perm_selfie_client',permPhotos.client);
- alert('Client créé avec selfie permanent!');showPage('home');
-}
-function registerLivreur(){
- if(!permPhotos.livreur ||!cniPhoto)return alert('Selfie permanent + CNI obligatoires!');
- localStorage.setItem('togo_user',JSON.stringify({role:'livreur',nom:document.getElementById('lNom').value,permSelfie:permPhotos.livreur,cni:cniPhoto,plaque:document.getElementById('lPlaque').value,verifie:true}));
- localStorage.setItem('togo_perm_selfie_livreur',permPhotos.livreur);
- localStorage.setItem('togo_cni_livreur',cniPhoto);
- alert('Livreur Vérifié créé! Selfie + CNI restent dans système à vie!');showPage('home');
-}
+function registerClient(){if(!clientGPS)return alert('Clique 📍 Prendre ma position GPS!');if(!permPhotos.client)return alert('Fais selfie permanent!');localStorage.setItem('togo_user',JSON.stringify({role:'client',nom:document.getElementById('cNom').value,adresse:document.getElementById('cAdresse').value,gps:clientGPS,permSelfie:permPhotos.client}));alert('✅ Client créé avec GPS!');showPage('home');}
 function registerVendeur(){localStorage.setItem('togo_user',JSON.stringify({role:'vendeur',nom:document.getElementById('vNom').value}));alert('Vendeur ok');showPage('vendeurDash');}
-
-async function checkMorningSelfie(){
- let user=JSON.parse(localStorage.getItem('togo_user')||'null');
- if(!user) return;
- if(user.role!=='client' && user.role!=='livreur') return;
- let today=new Date().toISOString().split('T')[0];
- let last=localStorage.getItem('togo_last_morning_'+user.role);
- if(last===today) return;
- document.getElementById('morningModal').classList.remove('hidden');
- try{morningStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});document.getElementById('morningVideo').srcObject=morningStream;}catch{}
-}
-function takeMorningSelfie(){
- let v=document.getElementById('morningVideo');let c=document.getElementById('morningCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let data=c.toDataURL('image/jpeg',0.6);
- document.getElementById('morningPreview').src=data;document.getElementById('morningPreview').classList.remove('hidden');v.classList.add('hidden');
- document.getElementById('btnTakeMorning').classList.add('hidden');document.getElementById('btnConfirmMorning').classList.remove('hidden');
- window._morningData=data;
-}
-function confirmMorningSelfie(){
- let today=new Date().toISOString().split('T')[0];
- let user=JSON.parse(localStorage.getItem('togo_user')||'{}');
- localStorage.setItem('togo_last_morning_'+user.role,today);
- localStorage.setItem('togo_morning_selfie_'+today,window._morningData);
- if(morningStream)morningStream.getTracks().forEach(t=>t.stop());
- document.getElementById('morningModal').classList.add('hidden');
- alert('✅ Selfie du matin validé! Bonne journée sur Togo Go');
-}
-async function startLive(){try{liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:currentFacing},audio:true});document.getElementById('liveVideo').srcObject=liveStream;document.getElementById('liveVideo').classList.remove('hidden');document.getElementById('homeLiveVideo').srcObject=liveStream;document.getElementById('liveHomeZone').classList.remove('hidden');}catch{}}
+function registerLivreur(){if(!permPhotos.livreur||!cniPhoto)return alert('Selfie + CNI obligatoires!');localStorage.setItem('togo_user',JSON.stringify({role:'livreur',nom:document.getElementById('lNom').value,permSelfie:permPhotos.livreur,cni:cniPhoto,plaque:document.getElementById('lPlaque').value,verifie:true}));alert('✅ Livreur Vérifié créé! Selfie + CNI restent à vie!');showPage('home');}
+async function checkMorningSelfie(){let user=JSON.parse(localStorage.getItem('togo_user')||'null');if(!user)return;if(user.role!=='client'&&user.role!=='livreur')return;let today=new Date().toISOString().split('T')[0];let last=localStorage.getItem('togo_last_morning_'+user.role);if(last===today)return;document.getElementById('morningModal').classList.remove('hidden');try{morningStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});document.getElementById('morningVideo').srcObject=morningStream;}catch{}}
+function takeMorningSelfie(){let v=document.getElementById('morningVideo');let c=document.getElementById('morningCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);window._morningData=c.toDataURL('image/jpeg',0.6);document.getElementById('morningPreview').src=window._morningData;document.getElementById('morningPreview').classList.remove('hidden');v.classList.add('hidden');document.getElementById('btnTakeMorning').classList.add('hidden');document.getElementById('btnConfirmMorning').classList.remove('hidden');}
+function confirmMorningSelfie(){let today=new Date().toISOString().split('T')[0];let user=JSON.parse(localStorage.getItem('togo_user')||'{}');localStorage.setItem('togo_last_morning_'+user.role,today);if(morningStream)morningStream.getTracks().forEach(t=>t.stop());document.getElementById('morningModal').classList.add('hidden');alert('✅ Selfie du matin validé!');}
+async function startLive(){try{if(liveStream)liveStream.getTracks().forEach(t=>t.stop());liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:currentFacing},audio:true});document.getElementById('liveVideo').srcObject=liveStream;document.getElementById('homeLiveVideo').srcObject=liveStream;document.getElementById('liveVideo').classList.remove('hidden');document.getElementById('liveHomeZone').classList.remove('hidden');document.getElementById('btnStartLive').classList.add('hidden');document.getElementById('btnStopLive').classList.remove('hidden');document.getElementById('btnSwitch').classList.remove('hidden');document.getElementById('liveStatus').classList.remove('hidden');}catch(e){alert('Autorise caméra');}}
 function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';startLive();}
-function stopLive(){if(liveStream)liveStream.getTracks().forEach(t=>t.stop());document.getElementById('liveVideo').classList.add('hidden');document.getElementById('liveHomeZone').classList.add('hidden');}
+function stopLive(){killGhost();}
+function publishProduct(){const n=document.getElementById('pName').value,pd=parseInt(document.getElementById('pPriceDetail').value);if(!n||!pd)return alert('Nom + prix');const all=JSON.parse(localStorage.getItem('togo_vendeur_products')||'[]');all.unshift({id:Date.now(),name:n,price:pd,img:'https://via.placeholder.com/300',vendeur:'Moi'});localStorage.setItem('togo_vendeur_products',JSON.stringify(all));render(getAll());alert('Publié!');}
 window.addEventListener('load',init);
 </script>
-</body></html>
+</body>
+</html>
