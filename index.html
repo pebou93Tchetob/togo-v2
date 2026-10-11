@@ -3,118 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Togo Go</title>
+<title>Togo Go - Gratuit</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>body{background:#f8fafc;font-family:sans-serif}.cam-mirror{transform:scaleX(-1)}</style>
+<style>body{background:#f0fdf4;font-family:sans-serif}.tab-active{background:#16a34a!important;color:white!important;border-color:#16a34a!important}</style>
 </head>
 <body class="pb-24">
 <header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50">
-<div class="flex justify-between items-center max-w-7xl mx-auto"><b><i class="fa-solid fa-bag-shopping"></i> Togo Go</b><div class="flex gap-1"><button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1.5 rounded-full text-[11px] font-bold">Accueil</button><button onclick="showPage('vendeurDash')" class="bg-black/20 px-3 py-1.5 rounded-full text-[11px]">🏪</button><button onclick="killGhost()" class="bg-red-600 px-2 py-1.5 rounded-full text-[9px]">🚨</button><button onclick="showPage('register')" class="bg-black/20 px-3 py-1.5 rounded-full text-[11px]">Compte</button></div></div>
+<div class="flex justify-between items-center max-w-7xl mx-auto">
+<b>🛍️ Togo Go</b>
+<div class="flex gap-1">
+<button onclick="nav('home')" class="bg-white text-green-700 px-4 py-2 rounded-full text-xs font-black">Accueil</button>
+<button onclick="nav('vendeur')" class="bg-black/20 px-3 py-2 rounded-full text-xs font-bold">🏪 Boutique</button>
+<button onclick="nav('compte')" class="bg-black/20 px-3 py-2 rounded-full text-xs">Compte</button>
+</div>
+</div>
 </header>
 
-<div id="morningModal" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4"><div class="bg-white rounded-2xl p-5 w-full max-w-sm text-center"><h2 class="font-black">☀️ Selfie du matin</h2><video id="morningVideo" autoplay muted playsinline class="w-full h-64 bg-black rounded-xl mt-3 cam-mirror object-cover"></video><canvas id="morningCanvas" class="hidden"></canvas><img id="morningPreview" class="hidden w-full h-64 rounded-xl mt-3"><button onclick="takeMorningSelfie()" id="btnTakeMorning" class="mt-3 w-full bg-green-600 text-white py-3 rounded-xl font-bold">📸 Selfie</button><button onclick="confirmMorningSelfie()" id="btnConfirmMorning" class="hidden mt-3 w-full bg-black text-white py-3 rounded-xl font-bold">✅ Entrer</button></div></div>
-
-<div id="homePage" class="max-w-7xl mx-auto p-3">
-<div class="bg-white rounded-2xl p-3 shadow flex gap-2 mt-2"><input id="searchInput" placeholder="Chercher..." class="flex-1 border rounded-xl px-3 py-3 text-sm"></div>
-<div id="liveHomeZone" class="hidden mt-3 bg-black rounded-2xl overflow-hidden"><div class="bg-red-600 text-white p-2 flex justify-between text-xs"><b>🔴 LIVE</b><button onclick="killGhost()" class="bg-white text-red-600 px-2 rounded-full">Fermer</button></div><video id="homeLiveVideo" autoplay muted playsinline class="w-full h-60 bg-black"></video></div>
-<div id="productsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3"></div>
+<div id="home" class="max-w-7xl mx-auto p-3">
+<div class="bg-green-100 border border-green-200 rounded-xl p-2 text-center text-xs font-bold text-green-800">🎉 Publication GRATUITE pour tous les vendeurs - Togo Go Beta</div>
+<div class="bg-white rounded-2xl p-3 shadow mt-3 flex gap-2"><input id="search" placeholder="Chercher..." class="flex-1 outline-none text-sm" oninput="filtrer(this.value)"><i class="fa-solid fa-search text-gray-400 p-2"></i></div>
+<div id="grid" class="grid grid-cols-2 gap-3 mt-3"></div>
 </div>
 
-<div id="vendeurDashPage" class="hidden max-w-4xl mx-auto p-4">
-<div class="bg-white rounded-2xl shadow p-5"><h2 class="font-black">🏪 Ma Boutique</h2><div id="vendeurInfo" class="text-xs text-gray-600 mt-1"></div><video id="liveVideo" autoplay muted playsinline class="hidden w-full h-64 bg-black rounded-xl mt-3"></video><div class="flex gap-2 mt-3"><button onclick="startLive()" id="btnStartLive" class="flex-1 bg-red-600 text-white py-3 rounded-xl font-black">📸 LIVE</button><button onclick="switchCamera()" id="btnSwitch" class="hidden bg-blue-600 text-white px-4 py-3 rounded-xl">🔄</button><button onclick="stopLive()" id="btnStopLive" class="hidden bg-gray-800 text-white px-4 py-3 rounded-xl">⏹️</button></div></div>
+<div id="vendeur" class="hidden max-w-3xl mx-auto p-4">
+<div class="bg-white rounded-2xl shadow-lg p-5 mt-3 border-2 border-green-200">
+<h2 class="font-black">🏪 Publier GRATUITEMENT - Avec Photo</h2>
+<p class="text-xs text-green-600 font-bold mt-1">✅ Gratuit illimité pour le moment!</p>
+<div id="infoV" class="mt-3 bg-gray-50 rounded-xl p-3 text-xs">Va dans Compte → Vendeur d'abord</div>
 
-<div class="mt-4 bg-white rounded-2xl shadow p-5 border-2 border-green-200">
-<h3 class="font-black text-sm">➕ Publier produit / chambre / plat AVEC PHOTO</h3>
-
-<div class="bg-yellow-50 rounded-xl p-3 mt-3">
-<p class="text-[11px] font-bold">📸 Photo de ton article (obligatoire)</p>
-<video id="prodVideo" autoplay muted playsinline class="hidden w-full h-56 bg-black rounded-xl mt-2 object-cover"></video>
-<canvas id="prodCanvas" class="hidden"></canvas>
-<img id="prodPreview" class="hidden w-full h-56 rounded-xl object-cover mt-2 border-2 border-green-400">
-<div class="grid grid-cols-3 gap-2 mt-2">
-<button onclick="startProdCam()" class="bg-black text-white py-2 rounded-xl text-[11px] font-bold">📸 Caméra</button>
-<label class="bg-blue-600 text-white py-2 rounded-xl text-[11px] font-bold text-center cursor-pointer">🖼️ Galerie<input type="file" id="prodFile" accept="image/*" class="hidden" onchange="onProdFile(this)"></label>
-<button onclick="clearProdPhoto()" class="bg-gray-200 py-2 rounded-xl text-[11px]">❌ Effacer</button>
-</div>
-<button onclick="captureProd()" id="btnCaptureProd" class="hidden mt-2 w-full bg-green-600 text-white py-2 rounded-xl text-xs font-bold">📸 Capturer photo</button>
+<div class="bg-yellow-50 rounded-xl p-3 mt-4 border-2 border-dashed border-yellow-400">
+<p class="font-black text-xs">📸 Photo de l'article *</p>
+<img id="prev" class="hidden w-full h-64 object-cover rounded-xl mt-2 border-4 border-green-500">
+<label class="mt-2 block bg-blue-600 text-white py-3 rounded-xl text-xs font-black text-center">🖼️ Choisir photo galerie / caméra<input type="file" id="file" accept="image/*" capture="environment" class="hidden"></label>
+<p class="text-[10px] text-gray-500 mt-1 text-center">Tu peux prendre avec caméra ou galerie</p>
 </div>
 
-<input id="pName" placeholder="Nom: ex Tomates / Chambre climatisée / Riz sauce" class="mt-3 w-full border-2 border-gray-200 rounded-xl p-3 text-sm">
-<div class="grid grid-cols-2 gap-2 mt-2"><input id="pPriceDetail" type="number" placeholder="Prix Détail / Nuit" class="border rounded-xl p-3 text-sm"><input id="pPriceGros" type="number" placeholder="Prix Gros (option)" class="border rounded-xl p-3 text-sm"></div>
-<textarea id="pDesc" placeholder="Description libre..." class="mt-2 w-full border rounded-xl p-3 text-sm h-20"></textarea>
-<button onclick="publishProduct()" class="mt-3 w-full bg-black text-white p-3 rounded-xl font-bold">✅ Publier avec photo</button>
-<p id="publishStatus" class="text-[10px] text-center mt-2 text-gray-400">Ajoute photo d'abord</p>
+<input id="nomP" placeholder="Nom: Tomates / Chambre / Riz" class="mt-4 w-full border-2 rounded-xl p-3 text-sm">
+<input id="prix" type="number" placeholder="Prix en F CFA" class="mt-2 w-full border-2 rounded-xl p-3 text-sm">
+<textarea id="descP" placeholder="Description..." class="mt-2 w-full border-2 rounded-xl p-3 text-sm h-20"></textarea>
+<button onclick="publier()" class="mt-3 w-full bg-green-600 text-white p-4 rounded-xl font-black text-sm">✅ Publier GRATUIT sur Accueil</button>
+</div>
+<div class="mt-4 bg-white rounded-xl shadow p-4"><h3 class="font-bold text-xs">Mes articles publiés (gratuit)</h3><div id="myGrid" class="grid grid-cols-2 gap-2 mt-2"></div></div>
 </div>
 
-<div class="mt-4"><h3 class="font-bold text-sm">Mes publications</h3><div id="myProducts" class="grid grid-cols-2 gap-2 mt-2"></div></div>
+<div id="compte" class="hidden max-w-xl mx-auto p-4">
+<div class="bg-white rounded-2xl shadow-xl p-6 mt-3">
+<h2 class="font-black text-center">Compte</h2>
+<div class="grid grid-cols-3 gap-2 mt-5">
+<button id="bC" onclick="setRole('client')" class="tab-active p-3 rounded-xl font-black text-xs">Client</button>
+<button id="bV" onclick="setRole('vendeur')" class="bg-gray-100 p-3 rounded-xl font-bold text-xs">Vendeur</button>
+<button id="bL" onclick="setRole('livreur')" class="bg-gray-100 p-3 rounded-xl font-bold text-xs">Livreur</button>
 </div>
 
-<div id="registerPage" class="hidden max-w-3xl mx-auto p-4"><div class="bg-white rounded-2xl shadow p-6 mt-3">
-<h2 class="text-xl font-black text-center">Compte</h2>
-<div class="grid grid-cols-3 gap-2 mt-5"><button id="btnClient" onclick="setRole('client')" class="border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs">Client</button><button id="btnVendeur" onclick="setRole('vendeur')" class="border p-3 rounded-xl font-bold text-xs">Vendeur</button><button id="btnLivreur" onclick="setRole('livreur')" class="border p-3 rounded-xl font-bold text-xs">Livreur</button></div>
-
-<div id="formClient" class="mt-5 space-y-3"><input id="cNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><input id="cTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm"><div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-3"><p class="text-[11px] font-black text-blue-700">📍 GPS</p><input id="cAdresse" placeholder="Agoè derrière Oando" class="mt-2 w-full border rounded-xl p-2 text-sm"><div class="flex gap-2 mt-2"><button onclick="getClientGPS()" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs font-bold">📍 GPS</button><span id="cGPSStatus" class="text-[10px] text-gray-500 py-2">Pas encore</span></div><p id="cGPSCoords" class="text-[9px] text-gray-400"></p></div><div class="bg-yellow-50 border rounded-xl p-3"><p class="text-[11px] font-bold">📸 Selfie permanent</p><video id="cSelfieVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 cam-mirror"></video><canvas id="cSelfieCanvas" class="hidden"></canvas><img id="cSelfieImg" class="hidden w-full h-48 rounded-xl mt-2"><div class="flex gap-2 mt-2"><button onclick="startCam('client')" class="flex-1 bg-black text-white py-2 rounded-xl text-xs">Activer</button><button onclick="capturePerm('client')" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer</button></div></div><button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Client</button></div>
-
-<div id="formVendeur" class="hidden mt-5 space-y-3">
-<input id="vNom" placeholder="Nom boutique / Hôtel / Maquis" class="w-full border rounded-xl p-3 text-sm"><input id="vTel" placeholder="Téléphone" class="w-full border rounded-xl p-3 text-sm">
-<div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-3"><p class="text-[11px] font-black">🏪 Type libre</p><select id="vTypeSelect" onchange="onTypeChange()" class="mt-2 w-full border rounded-xl p-3 text-sm"><option value="">Choisis...</option><option value="boutique">🏪 Boutique</option><option value="hotel">🏨 Hôtel</option><option value="restaurant">🍚 Restaurant</option><option value="bar">🍺 Bar</option><option value="pharmacie">💊 Pharmacie</option><option value="autre">✍️ Autre libre</option></select><input id="vTypeAutre" placeholder="Écris librement ex: Quincaillerie..." class="hidden mt-2 w-full border-2 border-green-300 rounded-xl p-3 text-sm"><textarea id="vDesc" placeholder="Description activité..." class="mt-2 w-full border rounded-xl p-3 text-sm h-16"></textarea><div id="hotelFields" class="hidden mt-2 bg-white rounded-xl p-3 border"><input id="vChambres" placeholder="Nombre chambres" class="w-full border rounded p-2 text-sm"><input id="vPrixNuit" placeholder="Prix nuit" class="mt-2 w-full border rounded p-2 text-sm"></div><div id="restoFields" class="hidden mt-2 bg-white rounded-xl p-3 border"><input id="vSpecialite" placeholder="Spécialité" class="w-full border rounded p-2 text-sm"><input id="vHoraires" placeholder="Horaires" class="mt-2 w-full border rounded p-2 text-sm"></div></div>
-<div class="bg-black rounded-xl p-4 text-white"><p class="text-[11px] font-black">💳 Abonnement</p><div class="grid grid-cols-3 gap-2 mt-2"><div onclick="setAbon('gratuit')" id="aboGratuit" class="border-2 border-white bg-white/10 p-2 rounded-xl"><p class="font-black text-[10px]">🆓 Gratuit 0F</p></div><div onclick="setAbon('marchand')" id="aboMarchand" class="border border-gray-600 p-2 rounded-xl"><p class="font-black text-[10px]">💼 5000F</p></div><div onclick="setAbon('pro')" id="aboPro" class="border border-gray-600 p-2 rounded-xl"><p class="font-black text-[10px]">👑 15000F</p></div></div><p id="aboSelected" class="text-[10px] mt-2 text-green-400">Gratuit</p></div>
-<button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Boutique</button>
+<div id="fClient" class="mt-5 space-y-3 bg-green-50 p-4 rounded-xl">
+<p class="font-black text-xs">👤 Client</p>
+<input id="cNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm">
+<input id="cTel" placeholder="Tel WhatsApp" class="w-full border rounded-xl p-3 text-sm">
+<input id="cAdr" placeholder="Adresse Agoè..." class="w-full border rounded-xl p-3 text-sm">
+<button onclick="creerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Client</button>
 </div>
 
-<div id="formLivreur" class="hidden mt-5 space-y-3"><input id="lNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><input id="lTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm"><input id="lPlaque" placeholder="Plaque" class="w-full border rounded-xl p-3 text-sm"><div class="bg-red-50 border-2 border-red-300 rounded-xl p-3"><video id="lSelfieVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2 cam-mirror"></video><canvas id="lSelfieCanvas" class="hidden"></canvas><img id="lSelfieImg" class="hidden w-full h-48 rounded-xl mt-2"><div class="flex gap-2 mt-2"><button onclick="startCam('livreur')" class="flex-1 bg-black text-white py-2 rounded-xl text-xs">Selfie</button><button onclick="capturePerm('livreur')" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Capturer</button></div><video id="lCniVideo" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl mt-2"></video><canvas id="lCniCanvas" class="hidden"></canvas><img id="lCniImg" class="hidden w-full h-48 rounded-xl mt-2"><div class="flex gap-2 mt-2"><button onclick="startCniCam()" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs">CNI</button><button onclick="captureCni()" class="flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">CNI Capturer</button></div></div><button id="btnCreateLivreur" onclick="registerLivreur()" class="w-full bg-gray-400 text-white p-3 rounded-xl font-bold" disabled>Selfie+CNI</button></div>
-</div></div>
+<div id="fVendeur" class="hidden mt-5 space-y-3 bg-orange-50 p-4 rounded-xl border-2 border-orange-200">
+<p class="font-black text-sm">🏪 Vendeur GRATUIT - Type libre</p>
+<p class="text-[10px] bg-green-600 text-white p-2 rounded-xl text-center font-bold">🎉 GRATUIT pour le moment - Publie autant que tu veux!</p>
+<input id="vNom" placeholder="Nom boutique / Hôtel / Maquis" class="w-full border rounded-xl p-3 text-sm">
+<input id="vTel" placeholder="Téléphone" class="w-full border rounded-xl p-3 text-sm">
+<select id="vType" class="w-full border rounded-xl p-3 text-sm bg-white font-bold">
+<option value="">Type...</option>
+<option value="boutique">🏪 Boutique</option>
+<option value="hotel">🏨 Hôtel</option>
+<option value="restaurant">🍚 Restaurant</option>
+<option value="bar">🍺 Bar</option>
+<option value="pharmacie">💊 Pharmacie</option>
+<option value="autre">✍️ Autre libre</option>
+</select>
+<input id="vAutre" placeholder="Écris ton type: Coiffure, Quincaillerie..." class="hidden w-full border-2 border-green-400 rounded-xl p-3 text-sm">
+<textarea id="vDesc" placeholder="Décris activité..." class="w-full border rounded-xl p-3 text-sm h-16"></textarea>
+<button onclick="creerVendeur()" class="w-full bg-orange-600 text-white p-3 rounded-xl font-black">✅ Créer boutique GRATUITE</button>
+</div>
+
+<div id="fLivreur" class="hidden mt-5 space-y-3 bg-red-50 p-4 rounded-xl">
+<p class="font-black text-xs">🛵 Livreur</p>
+<input id="lNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm">
+<input id="lTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm">
+<input id="lPlaque" placeholder="Plaque" class="w-full border rounded-xl p-3 text-sm">
+<button onclick="creerLivreur()" class="w-full bg-red-600 text-white p-3 rounded-xl font-bold">Créer Livreur</button>
+</div>
+</div>
+</div>
 
 <script>
-const BASE=[{id:1,name:"Tomates 1kg",price:800,vendeur:"Afi",type:"boutique",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300"}];
-let liveStream=null,morningStream=null,permStreams={},cniStream=null,prodStream=null,currentFacing='user',role='client',clientGPS=null,vendeurAbo='gratuit',prodPhoto=null;
-let permPhotos={client:null,livreur:null},cniPhoto=null;
-function getAll(){return [...JSON.parse(localStorage.getItem('togo_vendeur_products')||'[]'),...BASE];}
-function init(){render(getAll());renderMy();checkMorningSelfie();let u=JSON.parse(localStorage.getItem('togo_user')||'null');if(u&&u.role==='vendeur')document.getElementById('vendeurInfo').innerText=`${u.nom} - ${u.typeFinal} - ${u.abo}`;}
-function showPage(p){document.getElementById('homePage').classList.toggle('hidden',p!=='home');document.getElementById('vendeurDashPage').classList.toggle('hidden',p!=='vendeurDash');document.getElementById('registerPage').classList.toggle('hidden',p!=='register');if(p==='vendeurDash')renderMy();}
-function render(list){document.getElementById('productsGrid').innerHTML=list.map(pr=>`<div class="bg-white rounded-xl shadow overflow-hidden"><img src="${pr.img}" class="h-32 w-full object-cover"><div class="p-2"><h4 class="font-bold text-[12px]">${pr.name}</h4><p class="text-[10px] text-gray-500">${pr.vendeur||''} • ${pr.type||''}</p><p class="text-green-600 font-black text-xs">${pr.price}F</p><p class="text-[9px] text-gray-400 line-clamp-2">${pr.desc||''}</p></div></div>`).join('');}
-function renderMy(){let my=JSON.parse(localStorage.getItem('togo_vendeur_products')||'[]');document.getElementById('myProducts').innerHTML=my.map(pr=>`<div class="bg-white rounded-xl shadow overflow-hidden"><img src="${pr.img}" class="h-24 w-full object-cover"><div class="p-2"><p class="font-bold text-[11px]">${pr.name}</p><p class="text-green-600 text-[11px]">${pr.price}F</p></div></div>`).join('')||'<p class="text-xs text-gray-400">Aucun encore</p>';}
-function setRole(r){role=r;document.getElementById('formClient').classList.toggle('hidden',r!=='client');document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');}
-function killGhost(){if(liveStream)liveStream.getTracks().forEach(x=>x.stop());localStorage.removeItem('togo_live_active');location.href=location.pathname;}
-function onTypeChange(){let s=document.getElementById('vTypeSelect').value;document.getElementById('vTypeAutre').classList.toggle('hidden',s!=='autre');document.getElementById('hotelFields').classList.toggle('hidden',s!=='hotel');document.getElementById('restoFields').classList.toggle('hidden',s!=='restaurant'&&s!=='bar');}
-function setAbon(a){vendeurAbo=a;document.getElementById('aboSelected').innerText='✅ '+a;}
-
-// PHOTO PRODUIT
-async function startProdCam(){try{if(prodStream)prodStream.getTracks().forEach(t=>t.stop());prodStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});document.getElementById('prodVideo').srcObject=prodStream;document.getElementById('prodVideo').classList.remove('hidden');document.getElementById('prodPreview').classList.add('hidden');document.getElementById('btnCaptureProd').classList.remove('hidden');}catch{alert('Autorise caméra');}}
-function captureProd(){let v=document.getElementById('prodVideo');let c=document.getElementById('prodCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);prodPhoto=c.toDataURL('image/jpeg',0.7);document.getElementById('prodPreview').src=prodPhoto;document.getElementById('prodPreview').classList.remove('hidden');v.classList.add('hidden');document.getElementById('btnCaptureProd').classList.add('hidden');if(prodStream)prodStream.getTracks().forEach(t=>t.stop());document.getElementById('publishStatus').innerText='✅ Photo prête!';document.getElementById('publishStatus').className='text-[10px] text-center mt-2 text-green-600 font-bold';}
-function onProdFile(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{prodPhoto=e.target.result;document.getElementById('prodPreview').src=prodPhoto;document.getElementById('prodPreview').classList.remove('hidden');document.getElementById('prodVideo').classList.add('hidden');document.getElementById('publishStatus').innerText='✅ Photo galerie prête!';document.getElementById('publishStatus').className='text-[10px] text-center mt-2 text-green-600 font-bold';};r.readAsDataURL(f);}
-function clearProdPhoto(){prodPhoto=null;document.getElementById('prodPreview').classList.add('hidden');document.getElementById('prodVideo').classList.add('hidden');document.getElementById('publishStatus').innerText='Ajoute photo d’abord';document.getElementById('publishStatus').className='text-[10px] text-center mt-2 text-gray-400';if(prodStream)prodStream.getTracks().forEach(t=>t.stop());}
-
-async function getClientGPS(){let s=document.getElementById('cGPSStatus');s.innerText='📡...';try{const pos=await new Promise((r,j)=>navigator.geolocation.getCurrentPosition(r,j,{enableHighAccuracy:true}));clientGPS={lat:pos.coords.latitude,lng:pos.coords.longitude};document.getElementById('cGPSCoords').innerText=`✅ ${clientGPS.lat.toFixed(5)},${clientGPS.lng.toFixed(5)}`;s.innerText='✅ GPS ok';}catch{alert('Active GPS');}}
-async function startCam(t){try{let s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});permStreams[t]=s;document.getElementById(t==='client'?'cSelfieVideo':'lSelfieVideo').srcObject=s;document.getElementById(t==='client'?'cSelfieVideo':'lSelfieVideo').classList.remove('hidden');}catch{}}
-function capturePerm(t){let v=document.getElementById(t==='client'?'cSelfieVideo':'lSelfieVideo');let c=document.getElementById(t==='client'?'cSelfieCanvas':'lSelfieCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);permPhotos[t]=c.toDataURL('image/jpeg',0.7);let i=document.getElementById(t==='client'?'cSelfieImg':'lSelfieImg');i.src=permPhotos[t];i.classList.remove('hidden');v.classList.add('hidden');if(permStreams[t])permStreams[t].getTracks().forEach(x=>x.stop());if(t==='livreur')checkLivreurReady();}
-async function startCniCam(){try{cniStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});document.getElementById('lCniVideo').srcObject=cniStream;document.getElementById('lCniVideo').classList.remove('hidden');}catch{}}
-function captureCni(){let v=document.getElementById('lCniVideo');let c=document.getElementById('lCniCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);cniPhoto=c.toDataURL('image/jpeg',0.7);document.getElementById('lCniImg').src=cniPhoto;document.getElementById('lCniImg').classList.remove('hidden');v.classList.add('hidden');if(cniStream)cniStream.getTracks().forEach(x=>x.stop());checkLivreurReady();}
-function checkLivreurReady(){if(permPhotos.livreur&&cniPhoto){let b=document.getElementById('btnCreateLivreur');b.disabled=false;b.className='w-full bg-black text-white p-3 rounded-xl font-bold';}}
-function registerClient(){if(!clientGPS)return alert('GPS');if(!permPhotos.client)return alert('Selfie');localStorage.setItem('togo_user',JSON.stringify({role:'client',nom:document.getElementById('cNom').value,gps:clientGPS,adresse:document.getElementById('cAdresse').value}));alert('Client ok');showPage('home');}
-function registerVendeur(){let typeSel=document.getElementById('vTypeSelect').value;let typeAutre=document.getElementById('vTypeAutre').value;if(!typeSel)return alert('Type');let typeFinal=typeSel==='autre'?typeAutre:typeSel;let user={role:'vendeur',nom:document.getElementById('vNom').value,typeFinal:typeFinal,abo:vendeurAbo,desc:document.getElementById('vDesc').value};localStorage.setItem('togo_user',JSON.stringify(user));alert('Boutique créée: '+typeFinal);showPage('vendeurDash');document.getElementById('vendeurInfo').innerText=`${user.nom} - ${typeFinal} - ${vendeurAbo}`;}
-function registerLivreur(){if(!permPhotos.livreur||!cniPhoto)return alert('Selfie+CNI');localStorage.setItem('togo_user',JSON.stringify({role:'livreur',nom:document.getElementById('lNom').value}));alert('Livreur ok');showPage('home');}
-async function checkMorningSelfie(){let u=JSON.parse(localStorage.getItem('togo_user')||'null');if(!u)return;if(u.role!=='client'&&u.role!=='livreur')return;let today=new Date().toISOString().split('T')[0];if(localStorage.getItem('togo_last_morning_'+u.role)===today)return;document.getElementById('morningModal').classList.remove('hidden');try{morningStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});document.getElementById('morningVideo').srcObject=morningStream;}catch{}}
-function takeMorningSelfie(){let v=document.getElementById('morningVideo');let c=document.getElementById('morningCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);window._m=c.toDataURL('image/jpeg',0.6);document.getElementById('morningPreview').src=window._m;document.getElementById('morningPreview').classList.remove('hidden');v.classList.add('hidden');document.getElementById('btnTakeMorning').classList.add('hidden');document.getElementById('btnConfirmMorning').classList.remove('hidden');}
-function confirmMorningSelfie(){let today=new Date().toISOString().split('T')[0];let u=JSON.parse(localStorage.getItem('togo_user')||'{}');localStorage.setItem('togo_last_morning_'+u.role,today);if(morningStream)morningStream.getTracks().forEach(x=>x.stop());document.getElementById('morningModal').classList.add('hidden');}
-async function startLive(){try{if(liveStream)liveStream.getTracks().forEach(t=>t.stop());liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:currentFacing},audio:true});document.getElementById('liveVideo').srcObject=liveStream;document.getElementById('homeLiveVideo').srcObject=liveStream;document.getElementById('liveVideo').classList.remove('hidden');document.getElementById('liveHomeZone').classList.remove('hidden');document.getElementById('btnStartLive').classList.add('hidden');document.getElementById('btnStopLive').classList.remove('hidden');document.getElementById('btnSwitch').classList.remove('hidden');}catch{}}
-function switchCamera(){currentFacing=currentFacing==='user'?'environment':'user';startLive();}
-function stopLive(){killGhost();}
-function publishProduct(){
-const n=document.getElementById('pName').value,pd=parseInt(document.getElementById('pPriceDetail').value);
-if(!prodPhoto)return alert('📸 Ajoute photo produit d’abord! Clique 📸 Caméra ou 🖼️ Galerie');
-if(!n||!pd)return alert('Nom + prix obligatoires');
-let u=JSON.parse(localStorage.getItem('togo_user')||'{}');
-const all=JSON.parse(localStorage.getItem('togo_vendeur_products')||'[]');
-all.unshift({id:Date.now(),name:n,price:pd,priceGros:document.getElementById('pPriceGros').value,vendeur:u.nom||'Moi',type:u.typeFinal||'',img:prodPhoto,desc:document.getElementById('pDesc').value});
-localStorage.setItem('togo_vendeur_products',JSON.stringify(all));
-render(getAll());renderMy();
-alert('✅ Publié avec photo!');
-document.getElementById('pName').value='';document.getElementById('pPriceDetail').value='';document.getElementById('pPriceGros').value='';document.getElementById('pDesc').value='';
-clearProdPhoto();
-}
-window.addEventListener('load',init);
+let ROLE='client', photo=null;
+const BASE=[{name:"Tomates 1kg",price:800,vendeur:"Afi",type:"boutique",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",desc:"Frais du jour"}];
+function getAll(){return [...JSON.parse(localStorage.getItem('tg_prods')||'[]'),...BASE];}
+function nav(p){document.getElementById('home').classList.toggle('hidden',p!=='home');document.getElementById('vendeur').classList.toggle('hidden',p!=='vendeur');document.getElementById('compte').classList.toggle('hidden',p!=='compte');if(p==='vendeur')my();}
+function setRole(r){ROLE=r;document.getElementById('bC').className=r==='client'?'tab-active p-3 rounded-xl font-black text-xs':'bg-gray-100 p-3 rounded-xl font-bold text-xs';document.getElementById('bV').className=r==='vendeur'?'tab-active p-3 rounded-xl font-black text-xs':'bg-gray-100 p-3 rounded-xl font-bold text-xs';document.getElementById('bL').className=r==='livreur'?'tab-active p-3 rounded-xl font-black text-xs':'bg-gray-100 p-3 rounded-xl font-bold text-xs';document.getElementById('fClient').classList.toggle('hidden',r!=='client');document.getElementById('fVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('fLivreur').classList.toggle('hidden',r!=='livreur');}
+function render(list){let l=list||getAll();document.getElementById('grid').innerHTML=l.map(x=>`<div class="bg-white rounded-2xl shadow overflow-hidden"><img src="${x.img}" class="h-36 w-full object-cover"><div class="p-3"><p class="font-black text-xs">${x.name}</p><p class="text-[10px] text-gray-500">${x.vendeur} • ${x.type}</p><p class="text-green-600 font-black">${x.price}F</p><p class="text-[9px] text-gray-400">${x.desc||''}</p></div></div>`).join('');}
+function my(){let m=JSON.parse(localStorage.getItem('tg_prods')||'[]');document.getElementById('myGrid').innerHTML=m.map(x=>`<div class="bg-white rounded-xl shadow overflow-hidden"><img src="${x.img}" class="h-20 w-full object-cover"><p class="p-2 text-[11px] font-bold">${x.name}<br><span class="text-green-600">${x.price}F</span></p></div>`).join('')||'<p class="text-xs text-gray-400">Rien encore - ajoute photo!</p>';}
+function filtrer(q){render(getAll().filter(x=>x.name.toLowerCase().includes(q.toLowerCase())));}
+function creerClient(){localStorage.setItem('tg_user',JSON.stringify({role:'client',nom:document.getElementById('cNom').value}));alert('✅ Client créé');nav('home');}
+function creerVendeur(){let t=document.getElementById('vType').value;if(!t)return alert('Choisis type');let tf=t==='autre'?document.getElementById('vAutre').value:t;let u={role:'vendeur',nom:document.getElementById('vNom').value,type:tf,abo:'gratuit'};localStorage.setItem('tg_user',JSON.stringify(u));document.getElementById('infoV').innerHTML=`✅ ${u.nom} - ${tf}<br><span class="text-green-600 font-bold">GRATUIT illimité - Publie maintenant!</span>`;alert('✅ Boutique GRATUITE créée: '+tf);nav('vendeur');}
+function creerLivreur(){localStorage.setItem('tg_user',JSON.stringify({role:'livreur',nom:document.getElementById('lNom').value}));alert('✅ Livreur');nav('home');}
+function publier(){if(!photo)return alert('📸 Choisis photo!');let n=document.getElementById('nomP').value,p=parseInt(document.getElementById('prix').value);if(!n||!p)return alert('Nom + prix');let u=JSON.parse(localStorage.getItem('tg_user')||'{}');let all=JSON.parse(localStorage.getItem('tg_prods')||'[]');all.unshift({name:n,price:p,vendeur:u.nom||'Moi',type:u.type||'',img:photo,desc:document.getElementById('descP').value});localStorage.setItem('tg_prods',JSON.stringify(all));render();my();alert('✅ Publié GRATUITEMENT sur Accueil!');document.getElementById('nomP').value='';document.getElementById('prix').value='';photo=null;document.getElementById('prev').classList.add('hidden');}
+document.getElementById('file').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=ev=>{photo=ev.target.result;let im=document.getElementById('prev');im.src=photo;im.classList.remove('hidden');};r.readAsDataURL(f);});
+document.getElementById('vType').addEventListener('change',e=>{document.getElementById('vAutre').classList.toggle('hidden',e.target.value!=='autre');});
+window.addEventListener('load',()=>{render();setRole('client');nav('home');});
 </script>
 </body>
 </html>
