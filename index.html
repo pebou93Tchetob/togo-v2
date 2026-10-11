@@ -3,112 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Togo Go V6.6.8 Belle</title>
+<title>Togo Go V7 - Final</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>body{background:#f8fafc}</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>body{background:#f6f7fb;font-family:sans-serif}.hide{display:none}</style>
 </head>
-<body class="pb-20">
-<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50 flex justify-between items-center">
-<b class="text-sm">Togo Go 🇹🇬</b>
-<div class="flex gap-2">
-<button onclick="document.getElementById('menuCompte').classList.toggle('hidden')" class="bg-white text-green-700 px-4 py-2 rounded-full text-xs font-black">👤 Compte ▼</button>
-<button onclick="location.reload()" class="bg-black/20 px-3 py-2 rounded-full text-xs">↻</button>
+<body class="pb-24">
+<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50 shadow">
+<div class="flex justify-between items-center max-w-7xl mx-auto">
+<b class="text-[16px]">🛍️ Togo Go V7</b>
+<div class="flex gap-1">
+<button onclick="nav('home')" class="bg-white text-green-700 px-4 py-2 rounded-full text-[11px] font-black">Accueil</button>
+<button onclick="nav('vendeur')" class="bg-black/20 px-3 py-2 rounded-full text-[11px] font-bold">🏪 Vendre</button>
+<button onclick="nav('compte')" class="bg-black/20 px-3 py-2 rounded-full text-[11px]">Compte</button>
+</div>
 </div>
 </header>
 
-<div id="menuCompte" class="hidden fixed top-14 right-3 bg-white shadow-2xl rounded-2xl p-3 z-50 w-60 border">
-<p class="font-bold text-xs mb-2">Choisir profil:</p>
-<button onclick="show('vendeur');hideMenu()" class="w-full text-left p-3 hover:bg-green-50 rounded-xl text-sm">🏪 Vendeur LIBRE + LIVE 📸</button>
-<button onclick="show('client');hideMenu()" class="w-full text-left p-3 hover:bg-blue-50 rounded-xl text-sm">👤 Client - Mes Infos</button>
-<button onclick="show('livreur');hideMenu()" class="w-full text-left p-3 hover:bg-orange-50 rounded-xl text-sm">🛵 Livreur Vérifié</button>
-<button onclick="show('home');hideMenu()" class="w-full text-left p-3 hover:bg-gray-50 rounded-xl text-sm mt-2 border-t">🏠 Accueil Photos</button>
+<!-- ACCUEIL -->
+<div id="home" class="max-w-7xl mx-auto p-3">
+<div class="bg-white rounded-2xl p-3 shadow flex gap-2 mt-2">
+<input id="search" oninput="renderHome()" placeholder="Rechercher: tomates, chambre, riz, pagne..." class="flex-1 outline-none text-sm">
+<i class="fa-solid fa-search text-gray-400 p-2"></i>
 </div>
 
-<!-- ACCUEIL PHOTOS JOLI COMME AVANT -->
-<div id="home" class="p-3 max-w-4xl mx-auto">
-<div class="bg-white p-3 rounded-2xl shadow flex gap-2"><input id="q" oninput="render()" placeholder="Chercher..." class="flex-1 outline-none text-sm"><span>🔍</span></div>
+<div class="flex gap-2 mt-3 overflow-x-auto pb-2">
+<button onclick="setCat('all')" id="catAll" class="bg-green-600 text-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap">Tout</button>
+<button onclick="setCat('boutique')" id="catBoutique" class="bg-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap">🏪 Boutiques</button>
+<button onclick="setCat('hotel')" id="catHotel" class="bg-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap">🏨 Hôtels</button>
+<button onclick="setCat('restaurant')" id="catResto" class="bg-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap">🍚 Restos</button>
+<button onclick="setCat('ambulant')" id="catAmbulant" class="bg-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap">🚶 Ambulants</button>
+</div>
 
-<div id="liveHome" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600"><div class="bg-red-600 text-white p-2 text-xs flex justify-between"><span>🔴 LIVE</span><button onclick="stopL()" class="bg-white text-red-600 px-3 rounded-full">X</button></div><video id="vHome" autoplay muted playsinline class="w-full h-64"></video></div>
+<div class="mt-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl p-3 flex justify-between items-center">
+<div><p class="font-black text-sm">Marché d'Agoè en direct</p><p class="text-[11px] opacity-90" id="countInfo">0 produits, 0 boutiques</p></div>
+<div class="bg-white text-green-600 px-3 py-1 rounded-full text-[10px] font-black">GRATUIT</div>
+</div>
 
-<div id="grid" class="grid grid-cols-2 gap-3 mt-4"></div>
+<div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-3"></div>
 </div>
 
 <!-- VENDEUR -->
-<div id="vendeur" class="hidden p-3 max-w-4xl mx-auto">
-<div class="bg-white p-5 rounded-2xl shadow">
-<div class="flex justify-between"><h2 class="font-black">🏪 Vendeur LIBRE</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
-<div id="zoneLive" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600"><video id="vLive" autoplay muted playsinline class="w-full h-72"></video><button onclick="stopL()" class="w-full bg-red-600 text-white p-2 text-xs">Couper LIVE</button></div>
-<button onclick="startL()" id="bStart" class="mt-3 w-full bg-red-600 text-white py-3 rounded-xl font-bold text-xs">📸 LANCER LIVE</button>
-<input id="vNom" placeholder="Nom boutique" class="mt-4 w-full border-2 rounded-xl p-3 text-sm"><input id="vQuoi" placeholder="Tu vends quoi? Écris libre..." class="w-full border-2 border-green-500 rounded-xl p-3 text-sm mt-2">
-<input id="pNom" placeholder="Nom produit" class="w-full border rounded-xl p-3 text-sm mt-3"><input id="pPrix" type="number" placeholder="Prix" class="w-full border rounded-xl p-3 text-sm mt-2">
-<input type="file" id="pImg" accept="image/*" class="mt-2 w-full text-xs">
-<button onclick="pub()" class="mt-3 w-full bg-black text-white p-3 rounded-xl font-bold">✅ Publier avec Photo</button>
-</div>
-<div id="my" class="grid grid-cols-2 gap-3 mt-4"></div>
+<div id="vendeur" class="hidden max-w-4xl mx-auto p-3">
+<div class="bg-white rounded-2xl shadow p-5 mt-2">
+<h2 class="font-black text-base">🏪 Espace Vendeur - Gratuit & Libre</h2>
+<p class="text-[11px] text-gray-500">Comme tu as dit Djo: tu écris ce que tu veux, tu publies photos immeuble, chambres, articles</p>
+
+<div id="boutiqueInfo" class="mt-3 bg-gray-50 rounded-xl p-3 text-xs">Pas de boutique - va dans Compte -> Vendeur d'abord</div>
+
+<!-- PHOTO BOUTIQUE -->
+<div class="mt-4 border-2 border-dashed border-green-300 rounded-xl p-3 bg-green-50">
+<p class="font-bold text-xs">📸 Photo de ta boutique / immeuble / hôtel (cover)</p>
+<img id="coverPrev" class="hidden w-full h-48 object-cover rounded-xl mt-2 border-2 border-white shadow">
+<input type="file" id="coverFile" accept="image/*" class="mt-2 w-full text-xs">
+<p class="text-[10px] text-gray-500 mt-1">Ex: photo de ton hôtel, ta boutique Aké</p>
 </div>
 
-<!-- CLIENT AVEC INFOS RESTAURÉ -->
-<div id="client" class="hidden p-3 max-w-4xl mx-auto">
-<div class="bg-white p-5 rounded-2xl shadow border-t-4 border-blue-500">
-<div class="flex justify-between"><h2 class="font-black">👤 Client - Mes Informations</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
-<p class="text-[11px] text-gray-500 mt-2">Comme avant Djo, tu peux mettre tes infos</p>
-<div class="mt-4 space-y-2">
-<input id="cNom" placeholder="Nom complet" class="w-full border-2 rounded-xl p-3 text-sm">
-<input id="cTel" placeholder="Numéro WhatsApp" class="w-full border-2 rounded-xl p-3 text-sm">
-<input id="cAddr" placeholder="Adresse: Adidogomé, Agoè..." class="w-full border-2 rounded-xl p-3 text-sm">
-<textarea id="cNote" placeholder="Note pour livreur..." class="w-full border-2 rounded-xl p-3 text-sm h-20"></textarea>
-<button onclick="saveClient()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-sm">💾 Enregistrer Mes Infos</button>
+<div class="mt-4 flex items-center gap-2 bg-yellow-50 p-3 rounded-xl border">
+<input type="checkbox" id="isAmbulant" class="w-5 h-5">
+<label for="isAmbulant" class="text-xs font-bold">🚶 Je suis vendeur ambulant (je me promène, pas de boutique fixe)</label>
 </div>
-<div id="clientSaved" class="mt-4 hidden bg-blue-50 p-3 rounded-xl text-xs"></div>
+
+<!-- PUBLICATION ARTICLE -->
+<div class="mt-5 bg-white border-2 border-black rounded-2xl p-4">
+<h3 class="font-black text-sm">➕ Publier un article / chambre / plat</h3>
+<p class="text-[10px] text-gray-500">Tu peux publier beaucoup de choses comme tu as dit</p>
+
+<div class="mt-3">
+<p class="text-[11px] font-bold">📸 Photos de l'article (1 à 4 photos) *</p>
+<div id="prodPrevs" class="grid grid-cols-2 gap-2 mt-2"></div>
+<input type="file" id="prodFiles" accept="image/*" multiple class="mt-2 w-full text-xs border p-2 rounded-xl">
+<p class="text-[9px] text-gray-500">Tu peux sélectionner plusieurs photos: immeuble, chambre, vêtements...</p>
+</div>
+
+<input id="pName" placeholder="Nom: Ex Tomates 1kg / Chambre Climée 2 lits / Riz sauce / Pagne Aké" class="mt-3 w-full border-2 rounded-xl p-3 text-sm">
+<div class="grid grid-cols-2 gap-2 mt-2">
+<input id="pDetail" type="number" placeholder="Prix Détail (F) * ex: 1000" class="border-2 rounded-xl p-3 text-sm font-bold">
+<input id="pGros" type="number" placeholder="Prix Gros (option) ex: 800" class="border rounded-xl p-3 text-sm bg-gray-50">
+</div>
+<p class="text-[9px] text-gray-500 mt-1">Si tu vends pas en gros, laisse Prix Gros vide - comme tu as dit Djo</p>
+<textarea id="pDesc" placeholder="Description libre: ex Hôtel 10 chambres clim, wifi, parking... ou Boutique Aké pagnes wax..." class="mt-2 w-full border rounded-xl p-3 text-sm h-20"></textarea>
+<button onclick="publierArticle()" class="mt-3 w-full bg-black text-white p-4 rounded-xl font-black">✅ Publier sur Accueil - GRATUIT</button>
+</div>
+
+<div class="mt-5"><h3 class="font-bold text-sm">📦 Mes publications</h3><div id="myGrid" class="grid grid-cols-2 gap-2 mt-2"></div></div>
 </div>
 </div>
 
-<!-- LIVREUR CORRIGE MAIS JOLI -->
-<div id="livreur" class="hidden p-3 max-w-4xl mx-auto">
-<div class="bg-white p-5 rounded-2xl shadow border-t-4 border-orange-500">
-<div class="flex justify-between"><h2 class="font-black text-sm">🛵 Livreur Vérifié</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
-<input id="lNom" placeholder="Nom" class="mt-3 w-full border-2 rounded-xl p-3 text-sm"><input id="lTel" placeholder="Tel" class="mt-2 w-full border-2 rounded-xl p-3 text-sm"><input id="lCNI" placeholder="N° CNI" class="mt-2 w-full border-2 rounded-xl p-3 text-sm">
-<div class="grid grid-cols-2 gap-2 mt-3"><label class="border-2 border-dashed p-3 rounded-xl text-xs text-center">+ CNI Recto<input type="file" class="hidden" accept="image/*" onchange="prev(this,'R')"><img id="imgR" class="hidden h-16 w-full object-cover mt-1 rounded"></label><label class="border-2 border-dashed p-3 rounded-xl text-xs text-center">+ CNI Verso<input type="file" class="hidden" accept="image/*" onchange="prev(this,'V')"><img id="imgV" class="hidden h-16 w-full object-cover mt-1 rounded"></label></div>
-<div class="mt-3 bg-blue-50 p-3 rounded-xl"><p class="text-xs font-bold">🤳 Selfie</p><video id="vSelfie" autoplay muted playsinline class="hidden w-full h-40 bg-black rounded-xl mt-2"></video><img id="imgSelfie" class="hidden w-full h-40 object-cover rounded-xl mt-2"><div class="flex gap-2 mt-2"><button onclick="startSelfie()" id="bS1" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs">Ouvrir Caméra</button><button onclick="takeSelfie()" id="bS2" class="hidden flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Prendre</button></div></div>
-<div class="mt-3 bg-green-50 p-3 rounded-xl"><p id="txtGps" class="text-xs">📍 GPS non pris</p><button onclick="getGPS()" class="mt-2 w-full bg-green-600 text-white py-2 rounded-xl text-xs">📡 Prendre GPS</button></div>
-<div class="mt-3 flex gap-2 items-center bg-black text-white p-3 rounded-xl text-xs"><input type="checkbox" id="lTracking" checked> Tracking LIVE ON</div>
-<button onclick="validerLivreur()" class="mt-4 w-full bg-orange-600 text-white py-4 rounded-xl font-black">✅ VALIDER</button>
+<!-- COMPTE -->
+<div id="compte" class="hidden max-w-2xl mx-auto p-3">
+<div class="bg-white rounded-2xl shadow p-5 mt-2">
+<h2 class="font-black text-center text-lg">Créer Compte</h2>
+<div class="grid grid-cols-3 gap-2 mt-4">
+<button id="bC" onclick="setRole('client')" class="bg-green-600 text-white p-3 rounded-xl font-bold text-xs">Client</button>
+<button id="bV" onclick="setRole('vendeur')" class="bg-gray-100 p-3 rounded-xl font-bold text-xs">Vendeur</button>
+<button id="bL" onclick="setRole('livreur')" class="bg-gray-100 p-3 rounded-xl font-bold text-xs">Livreur</button>
+</div>
+
+<div id="fClient" class="mt-5 space-y-3">
+<p class="font-bold text-sm">👤 Client - Simple</p>
+<input id="cNom" placeholder="Nom complet" class="w-full border rounded-xl p-3 text-sm">
+<input id="cTel" placeholder="Numéro WhatsApp" class="w-full border rounded-xl p-3 text-sm">
+<input id="cAdr" placeholder="Adresse: Agoè, Adidogomé..." class="w-full border rounded-xl p-3 text-sm">
+<div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 flex justify-between items-center">
+<span class="text-xs font-bold">📍 GPS pour livraison</span><button onclick="getGPS()" class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs">GPS</button>
+</div><p id="gpsTxt" class="text-[10px] text-gray-500"></p>
+<button onclick="createUser('client')" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Client</button>
+</div>
+
+<div id="fVendeur" class="hidden mt-5 space-y-3">
+<p class="font-bold text-sm">🏪 Vendeur - LIBRE - GRATUIT illimité</p>
+<div class="bg-green-100 text-green-800 text-xs p-2 rounded-xl font-bold text-center">🎉 GRATUIT pour le moment comme tu as dit Djo</div>
+<input id="vNom" placeholder="Nom boutique / Hôtel / Maquis / Bar" class="w-full border rounded-xl p-3 text-sm">
+<input id="vTel" placeholder="Téléphone" class="w-full border rounded-xl p-3 text-sm">
+<select id="vType" class="w-full border rounded-xl p-3 text-sm bg-white font-bold">
+<option value="boutique">🏪 Boutique / Aké / Marché</option>
+<option value="hotel">🏨 Hôtel</option>
+<option value="restaurant">🍚 Restaurant / Maquis</option>
+<option value="bar">🍺 Bar</option>
+<option value="pharmacie">💊 Pharmacie</option>
+<option value="ambulant">🚶 Vendeur Ambulant</option>
+<option value="autre">✍️ Autre - je vais écrire</option>
+</select>
+<textarea id="vTypeLibre" placeholder="Écris librement ton activité: ex: Hôtel 12 chambres clim, wifi, piscine / Boutique pagnes wax hollandais / Quincaillerie..." class="w-full border-2 border-green-200 rounded-xl p-3 text-sm h-24 bg-yellow-50"></textarea>
+<button onclick="createUser('vendeur')" class="w-full bg-orange-600 text-white p-3 rounded-xl font-bold">✅ Créer boutique GRATUITE</button>
+</div>
+
+<div id="fLivreur" class="hidden mt-5 space-y-3">
+<p class="font-bold text-sm">🛵 Livreur - Compte sécurisé</p>
+<input id="lNom" placeholder="Nom complet" class="w-full border rounded-xl p-3 text-sm">
+<input id="lTel" placeholder="Numéro" class="w-full border rounded-xl p-3 text-sm">
+<input id="lPass" type="password" placeholder="Mot de passe" class="w-full border rounded-xl p-3 text-sm">
+<input id="lPlaque" placeholder="Numéro plaque moto" class="w-full border rounded-xl p-3 text-sm">
+<div class="bg-red-50 border-2 border-red-200 rounded-xl p-3">
+<p class="text-xs font-bold">📸 Carte d'identité + Selfie + GPS tracking</p>
+<input type="file" id="lCni" accept="image/*" class="mt-2 w-full text-xs"><p class="text-[9px]">Photo CNI</p>
+<input type="file" id="lSelfie" accept="image/*" class="mt-2 w-full text-xs"><p class="text-[9px]">Selfie visage</p>
+</div>
+<button onclick="createUser('livreur')" class="w-full bg-red-600 text-white p-3 rounded-xl font-bold">Créer Livreur</button>
+</div>
+</div>
+</div>
+
+<!-- MODAL ACHAT -->
+<div id="buyModal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
+<div class="bg-white rounded-2xl p-5 w-full max-w-sm">
+<img id="mImg" class="w-full h-48 object-cover rounded-xl">
+<h3 id="mName" class="font-black mt-3"></h3>
+<p id="mVendeur" class="text-xs text-gray-500"></p>
+<p id="mPrice" class="text-green-600 font-black mt-1"></p>
+<p id="mDesc" class="text-xs text-gray-600 mt-2"></p>
+<div class="grid grid-cols-2 gap-2 mt-4">
+<button onclick="alert('✅ Commande notée! Tu y vas toi-même avec GPS')" class="bg-green-600 text-white p-3 rounded-xl text-xs font-bold"><i class="fa-solid fa-person-walking"></i><br>J'y vais moi-même</button>
+<button onclick="alert('🛵 Livreur demandé! Il arrive avec GPS tracking')" class="bg-black text-white p-3 rounded-xl text-xs font-bold"><i class="fa-solid fa-motorcycle"></i><br>Demander livreur</button>
+</div>
+<button onclick="document.getElementById('buyModal').classList.add('hidden')" class="mt-3 w-full bg-gray-100 p-2 rounded-xl text-xs">Fermer</button>
 </div>
 </div>
 
 <script>
-let LIVE=null, face='user', streamSelfie=null, dataSelfie=null, posGps=null, dataR=null, dataV=null, tempImg=null;
+let cat='all', gps=null, coverPhoto=null, prodPhotos=[], userRole='client';
 const BASE=[
-{n:"Tomates",p:800,img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300"},
-{n:"Wax",p:12000,img:"https://images.unsplash.com/photo-1520903923805-20d4f2c4c4d8?w=300"},
-{n:"Riz",p:2500,img:"https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=300"},
-{n:"Chaussures",p:18000,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300"},
-{n:"Bananes",p:500,img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300"},
-{n:"Ciment",p:8500,img:"https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300"},
-{n:"Médic",p:1500,img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300"},
-{n:"Chambre",p:15000,img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300"}
+{name:"Tomates 1kg",detail:800,gros:7000,vendeur:"Mama Afi",type:"boutique",ambulant:false,img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",desc:"Tomates fraîches Agoè"},
+{name:"Chambre clim Hôtel",detail:15000,gros:0,vendeur:"Hôtel Concorde",type:"hotel",ambulant:false,img:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400",desc:"12 chambres clim, wifi, piscine, parking sécurisé"},
+{name:"Riz sauce poisson",detail:2500,gros:0,vendeur:"Maquis La Joie",type:"restaurant",ambulant:false,img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400",desc:"Riz sauce poisson frais"},
+{name:"Pagne Wax Hollandais",detail:12000,gros:10000,vendeur:"Aké Boutique",type:"boutique",ambulant:false,img:"https://images.unsplash.com/photo-1584302052179-2e90841dad6a?w=400",desc:"Wax hollandais original - gros disponible"},
+{name:"Bananes plantain - Ambulant",detail:500,gros:4000,vendeur:"Koffi Ambulant",type:"ambulant",ambulant:true,img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400",desc:"Je me promène à Agoè, Adidogomé - appelez!"},
 ];
-function hideMenu(){document.getElementById('menuCompte').classList.add('hidden')}
-function show(id){['home','vendeur','client','livreur'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));hideMenu();if(id==='home')render();if(id==='client')loadClient();}
-function render(){
- let q=(document.getElementById('q').value||'').toLowerCase();
- let all=[...JSON.parse(localStorage.getItem('tg')||'[]'),...BASE].filter(x=>!q||x.n.toLowerCase().includes(q));
- document.getElementById('grid').innerHTML=all.map(x=>`<div class="bg-white rounded-2xl shadow overflow-hidden"><img src="${x.img||'https://via.placeholder.com/300'}" class="w-full h-32 object-cover"><div class="p-2"><p class="font-bold text-xs">${x.n}</p><p class="text-green-600 font-black text-xs">${x.p} F</p></div></div>`).join('');
- let my=JSON.parse(localStorage.getItem('tg')||'[]');
- document.getElementById('my').innerHTML=my.map(x=>`<div class="bg-white rounded-2xl shadow overflow-hidden"><img src="${x.img}" class="w-full h-24 object-cover"><div class="p-2"><p class="text-xs font-bold">${x.n}</p><p class="text-[10px] text-green-600">${x.p}F</p></div></div>`).join('');
+function getProds(){return [...JSON.parse(localStorage.getItem('tg_v7')||'[]'),...BASE];}
+function nav(p){
+document.getElementById('home').classList.toggle('hidden',p!=='home');
+document.getElementById('vendeur').classList.toggle('hidden',p!=='vendeur');
+document.getElementById('compte').classList.toggle('hidden',p!=='compte');
+if(p==='vendeur')renderMy();
+if(p==='home')renderHome();
 }
-document.getElementById('pImg').addEventListener('change',e=>{let r=new FileReader();r.onload=v=>tempImg=v.target.result;r.readAsDataURL(e.target.files[0])});
-function pub(){let n=document.getElementById('pNom').value,pr=parseInt(document.getElementById('pPrix').value);if(!n||!pr)return alert('Nom+Prix');let a=JSON.parse(localStorage.getItem('tg')||'[]');a.unshift({n,p:pr,img:tempImg||'https://via.placeholder.com/300'});localStorage.setItem('tg',JSON.stringify(a));render();alert('Publié avec photo!');}
-function saveClient(){let o={nom:document.getElementById('cNom').value,tel:document.getElementById('cTel').value,addr:document.getElementById('cAddr').value,note:document.getElementById('cNote').value};localStorage.setItem('clientInfo',JSON.stringify(o));document.getElementById('clientSaved').classList.remove('hidden');document.getElementById('clientSaved').innerHTML=`✅ Enregistré: ${o.nom} - ${o.tel} - ${o.addr}`;alert('Infos client enregistrées');}
-function loadClient(){let o=JSON.parse(localStorage.getItem('clientInfo')||'null');if(o){document.getElementById('cNom').value=o.nom;document.getElementById('cTel').value=o.tel;document.getElementById('cAddr').value=o.addr;document.getElementById('cNote').value=o.note;document.getElementById('clientSaved').classList.remove('hidden');document.getElementById('clientSaved').innerHTML=`✅ ${o.nom} - ${o.tel}`;}}
-async function startL(){try{if(LIVE)LIVE.getTracks().forEach(t=>t.stop());LIVE=await navigator.mediaDevices.getUserMedia({video:{facingMode:face},audio:true});document.getElementById('vLive').srcObject=LIVE;document.getElementById('vHome').srcObject=LIVE;document.getElementById('zoneLive').classList.remove('hidden');document.getElementById('liveHome').classList.remove('hidden');document.getElementById('bStart').classList.add('hidden');}catch(e){alert(e.message)}}
-function stopL(){if(LIVE)LIVE.getTracks().forEach(t=>t.stop());document.getElementById('zoneLive').classList.add('hidden');document.getElementById('liveHome').classList.add('hidden');document.getElementById('bStart').classList.remove('hidden');}
-function prev(inp,t){let r=new FileReader();r.onload=e=>{if(t==='R'){dataR=e.target.result;document.getElementById('imgR').src=dataR;document.getElementById('imgR').classList.remove('hidden')}else{dataV=e.target.result;document.getElementById('imgV').src=dataV;document.getElementById('imgV').classList.remove('hidden')}};r.readAsDataURL(inp.files[0])}
-async function startSelfie(){streamSelfie=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});document.getElementById('vSelfie').srcObject=streamSelfie;document.getElementById('vSelfie').classList.remove('hidden');document.getElementById('bS1').classList.add('hidden');document.getElementById('bS2').classList.remove('hidden');}
-function takeSelfie(){let v=document.getElementById('vSelfie'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);dataSelfie=c.toDataURL('image/jpeg');document.getElementById('imgSelfie').src=dataSelfie;document.getElementById('imgSelfie').classList.remove('hidden');v.classList.add('hidden');if(streamSelfie)streamSelfie.getTracks().forEach(t=>t.stop());}
-function getGPS(){navigator.geolocation.getCurrentPosition(p=>{posGps={lat:p.coords.latitude,lng:p.coords.longitude};document.getElementById('txtGps').innerText=`✅ GPS: ${posGps.lat.toFixed(4)}, ${posGps.lng.toFixed(4)}`});}
-function validerLivreur(){if(!dataR||!dataV||!dataSelfie||!posGps)return alert('CNI Recto+Verso + Selfie + GPS obligatoires');alert('✅ Livreur validé!');show('home');}
-render();
+function setRole(r){
+userRole=r;
+document.getElementById('bC').className=r==='client'?'bg-green-600 text-white p-3 rounded-xl font-bold text-xs':'bg-gray-100 p-3 rounded-xl font-bold text-xs';
+document.getElementById('bV').className=r==='vendeur'?'bg-green-600 text-white p-3 rounded-xl font-bold text-xs':'bg-gray-100 p-3 rounded-xl font-bold text-xs';
+document.getElementById('bL').className=r==='livreur'?'bg-green-600 text-white p-3 rounded-xl font-bold text-xs':'bg-gray-100 p-3 rounded-xl font-bold text-xs';
+document.getElementById('fClient').classList.toggle('hidden',r!=='client');
+document.getElementById('fVendeur').classList.toggle('hidden',r!=='vendeur');
+document.getElementById('fLivreur').classList.toggle('hidden',r!=='livreur');
+}
+function setCat(c){
+cat=c;
+['all','boutique','hotel','ambulant'].forEach(k=>{
+let el=document.getElementById('cat'+k.charAt(0).toUpperCase()+k.slice(1));
+if(el) el.className = (k===c||(c==='all'&&k==='all'))?'bg-green-600 text-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap':'bg-white px-4 py-2 rounded-full text-[11px] font-bold whitespace-nowrap';
+});
+let r=document.getElementById('catResto'); if(r) r.className = c==='restaurant'?'bg-green-600 text-white px-4 py-2 rounded-full text-[11px] font-bold':'bg-white px-4 py-2 rounded-full text-[11px] font-bold';
+renderHome();
+}
+function renderHome(){
+let q=document.getElementById('search').value.toLowerCase();
+let list=getProds().filter(p=>{
+let okCat = cat==='all' || p.type===cat || (cat==='ambulant'&&p.ambulant);
+let okSearch =!q || p.name.toLowerCase().includes(q) || p.vendeur.toLowerCase().includes(q);
+return okCat && okSearch;
+});
+document.getElementById('countInfo').innerText=`${list.length} produits trouvés`;
+document.getElementById('grid').innerHTML=list.map((p,i)=>`
+<div onclick="openBuy(${JSON.stringify(p).replace(/"/g,'&quot;')})" class="bg-white rounded-2xl shadow overflow-hidden border hover:shadow-lg cursor-pointer">
+<div class="relative">
+<img src="${p.img}" class="h-36 w-full object-cover">
+${p.ambulant?'<span class="absolute top-2 left-2 bg-yellow-400 text-black text-[9px] px-2 py-1 rounded-full font-black">🚶 AMBULANT</span>':''}
+${p.type==='hotel'?'<span class="absolute top-2 left-2 bg-blue-600 text-white text-[9px] px-2 py-1 rounded-full">🏨 HÔTEL</span>':''}
+</div>
+<div class="p-3">
+<p class="font-black text-[12px] leading-tight">${p.name}</p>
+<p class="text-[10px] text-gray-500">${p.vendeur} • ${p.type}</p>
+<div class="flex gap-2 mt-1">
+<span class="text-green-600 font-black text-xs">${p.detail}F détail</span>
+${p.gros?`<span class="text-[10px] text-orange-600 bg-orange-50 px-2 rounded-full">${p.gros}F gros</span>`:''}
+</div>
+<p class="text-[9px] text-gray-400 mt-1 line-clamp-2">${p.desc}</p>
+</div>
+</div>
+`).join('');
+}
+function openBuy(p){
+if(typeof p==='string') p=JSON.parse(p.replace(/&quot;/g,'"'));
+document.getElementById('mImg').src=p.img;
+document.getElementById('mName').innerText=p.name;
+document.getElementById('mVendeur').innerText=p.vendeur+' • '+(p.ambulant?'🚶 Ambulant':'🏪 Fixe');
+document.getElementById('mPrice').innerText=p.detail+'F détail'+(p.gros?' / '+p.gros+'F gros':'');
+document.getElementById('mDesc').innerText=p.desc;
+document.getElementById('buyModal').classList.remove('hidden');
+}
+function renderMy(){
+let m=JSON.parse(localStorage.getItem('tg_v7')||'[]');
+document.getElementById('myGrid').innerHTML=m.map(x=>`<div class="bg-white rounded-xl shadow overflow-hidden border"><img src="${x.img}" class="h-24 w-full object-cover"><div class="p-2"><p class="font-bold text-[11px]">${x.name}</p><p class="text-green-600 text-[10px] font-bold">${x.detail}F${x.gros?' / '+x.gros+'F gros':''}</p></div></div>`).join('')||'<p class="text-xs text-gray-400">Aucune publication</p>';
+}
+function getGPS(){
+navigator.geolocation.getCurrentPosition(pos=>{
+gps={lat:pos.coords.latitude,lng:pos.coords.longitude};
+document.getElementById('gpsTxt').innerText=`✅ GPS: ${gps.lat.toFixed(4)}, ${gps.lng.toFixed(4)}`;
+},()=>alert('Active GPS'));
+}
+function createUser(t){
+let nom = t==='client'?document.getElementById('cNom').value:t==='vendeur'?document.getElementById('vNom').value:document.getElementById('lNom').value;
+if(!nom) return alert('Nom');
+let u={role:t,nom:nom,type:document.getElementById('vType').value, libre:document.getElementById('vTypeLibre').value, gps:gps};
+localStorage.setItem('tg_user_v7',JSON.stringify(u));
+document.getElementById('boutiqueInfo').innerHTML=`✅ ${nom} - ${u.type} - ${u.libre}<br><span class="text-green-600 font-bold">GRATUIT - Tu peux publier maintenant dans 🏪 Vendre</span>`;
+alert('✅ '+t+' créé: '+nom);
+nav(t==='vendeur'?'vendeur':'home');
+}
+document.getElementById('coverFile').addEventListener('change',e=>{
+let r=new FileReader(); r.onload=ev=>{coverPhoto=ev.target.result; let im=document.getElementById('coverPrev'); im.src=coverPhoto; im.classList.remove('hidden');}; r.readAsDataURL(e.target.files[0]);
+});
+document.getElementById('prodFiles').addEventListener('change',e=>{
+prodPhotos=[];
+let files=e.target.files;
+let container=document.getElementById('prodPrevs'); container.innerHTML='';
+for(let i=0;i<Math.min(files.length,4);i++){
+let r=new FileReader();
+r.onload=ev=>{
+prodPhotos.push(ev.target.result);
+let img=document.createElement('img'); img.src=ev.target.result; img.className='h-20 w-full object-cover rounded-xl border';
+container.appendChild(img);
+};
+r.readAsDataURL(files[i]);
+}
+});
+function publierArticle(){
+let name=document.getElementById('pName').value, detail=parseInt(document.getElementById('pDetail').value), gros=parseInt(document.getElementById('pGros').value)||0;
+if(prodPhotos.length===0) return alert('📸 Ajoute au moins 1 photo!');
+if(!name||!detail) return alert('Nom + Prix détail obligatoires');
+let u=JSON.parse(localStorage.getItem('tg_user_v7')||'{}');
+let ambulant=document.getElementById('isAmbulant').checked;
+let all=JSON.parse(localStorage.getItem('tg_v7')||'[]');
+all.unshift({name:name,detail:detail,gros:gros,vendeur:u.nom||'Moi',type:u.type||document.getElementById('vType').value||'boutique',ambulant:ambulant,img:prodPhotos[0],imgs:prodPhotos,desc:document.getElementById('pDesc').value,cover:coverPhoto});
+localStorage.setItem('tg_v7',JSON.stringify(all));
+renderHome(); renderMy();
+alert('✅ Publié GRATUIT sur Accueil avec '+prodPhotos.length+' photo(s)!');
+document.getElementById('pName').value=''; document.getElementById('pDetail').value=''; document.getElementById('pGros').value=''; document.getElementById('pDesc').value='';
+}
+window.addEventListener('load',()=>{setRole('client'); setCat('all'); renderHome();});
 </script>
 </body>
 </html>
