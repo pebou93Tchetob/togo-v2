@@ -3,132 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Togo Go V8 JOLI 🇹🇬</title>
+<title>Togo Go V9 FIX PANIER 🇹🇬</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-<style>body{font-family:'Poppins',sans-serif}</style>
+<style>body{font-family:sans-serif}</style>
 </head>
-<body class="bg-gradient-to-br from-green-50 via-yellow-50 to-green-100 min-h-screen pb-28">
-<header class="bg-gradient-to-r from-green-600 via-yellow-500 to-red-500 text-white p-4 sticky top-0 z-50 shadow-xl">
-<div class="flex justify-between items-center max-w-5xl mx-auto">
-<b class="text-lg">Togo Go V8 ✨ JOLI</b>
-<div class="flex gap-2 items-center">
-<span id="cartCount" class="hidden bg-white text-green-700 px-3 py-1 rounded-full text-xs font-black">🛒 0</span>
-<button onclick="document.getElementById('menu').classList.toggle('hidden')" class="bg-white text-green-700 px-5 py-2.5 rounded-full text-xs font-black shadow-lg">👤 MENU ▼</button>
-</div>
+<body class="bg-gradient-to-br from-green-50 to-yellow-50 min-h-screen pb-28">
+<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-4 sticky top-0 z-50 flex justify-between items-center shadow-xl">
+<b>V9 FIX PANIER ✨</b>
+<div class="flex gap-2">
+<button onclick="openPanier()" id="cartBtn" class="bg-black text-white px-4 py-2 rounded-full text-xs font-black">🛒 Panier (<span id="cartCount">0</span>)</button>
+<button onclick="document.getElementById('menu').classList.toggle('hidden')" class="bg-white text-green-700 px-4 py-2 rounded-full text-xs font-black">MENU ▼</button>
 </div>
 </header>
-<div id="menu" class="hidden fixed top-[70px] right-3 bg-white shadow-2xl rounded-[20px] p-3 z-[60] w-64 border-2 border-green-100">
-<button onclick="showSec('home')" class="w-full text-left p-4 hover:bg-green-50 rounded-2xl text-sm font-semibold">🏠 Accueil 10 Photos Jolies</button>
-<button onclick="showSec('vendeur')" class="w-full text-left p-4 hover:bg-green-50 rounded-2xl text-sm font-semibold">🏪 Vendeur Libre + LIVE</button>
-<button onclick="showSec('client')" class="w-full text-left p-4 hover:bg-blue-50 rounded-2xl text-sm font-semibold">👤 Client + Panier Joli</button>
-<button onclick="showSec('livreur')" class="w-full text-left p-4 hover:bg-orange-50 rounded-2xl text-sm font-semibold">🛵 Livreur + Tracking</button>
+
+<div id="menu" class="hidden fixed top-16 right-3 bg-white shadow-2xl rounded-2xl p-2 z-[60] w-60 border-2">
+<button onclick="showSec('home')" class="w-full text-left p-3 hover:bg-gray-100 rounded-xl text-sm font-bold">🏠 Accueil</button>
+<button onclick="showSec('vendeur')" class="w-full text-left p-3 hover:bg-green-50 rounded-xl text-sm font-bold">🏪 Vendeur</button>
+<button onclick="showSec('client')" class="w-full text-left p-3 hover:bg-blue-50 rounded-xl text-sm font-bold">👤 Client</button>
+<button onclick="showSec('livreur')" class="w-full text-left p-3 hover:bg-orange-50 rounded-xl text-sm font-bold">🛵 Livreur</button>
 </div>
+
 <div id="home" class="p-4 max-w-5xl mx-auto">
-<div class="bg-white p-4 rounded-[24px] shadow-xl flex gap-3 border-2 border-green-100">
-<span class="text-xl">🔍</span><input id="q" oninput="render()" placeholder="Chercher chaussures, habits, hôtel, fruits, sauce..." class="flex-1 outline-none text-sm font-medium">
+<div class="bg-white p-4 rounded-[20px] shadow flex gap-2"><input id="q" oninput="renderHome()" placeholder="Chercher..." class="flex-1 outline-none text-sm"><span>🔍</span></div>
+<div id="grid" class="grid grid-cols-2 gap-4 mt-4"></div>
 </div>
-<div id="liveHome" class="hidden mt-4 bg-black rounded-[24px] overflow-hidden border-4 border-red-500 shadow-2xl">
-<div class="bg-gradient-to-r from-red-600 to-red-500 text-white p-3 text-xs flex justify-between items-center"><span class="font-black">🔴 LIVE EN COURS</span><button onclick="stopL()" class="bg-white text-red-600 px-4 py-1.5 rounded-full font-black">⏹️ COUPER</button></div>
-<video id="vHome" autoplay muted playsinline class="w-full h-72 object-cover"></video>
-</div>
-<div id="grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4"></div>
-</div>
+
 <div id="vendeur" class="hidden p-4 max-w-5xl mx-auto">
-<div class="bg-white p-6 rounded-[28px] shadow-2xl border-2 border-green-100">
-<div class="flex justify-between items-center"><h2 class="font-black text-base">🏪 Vendeur Libre ✨</h2><button onclick="showSec('home')" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">⬅️ Retour</button></div>
-<div id="zoneLive" class="hidden mt-4 bg-black rounded-[24px] overflow-hidden border-4 border-red-500 shadow-xl">
-<video id="vLive" autoplay muted playsinline class="w-full h-72 object-cover"></video>
-<div class="p-3 flex gap-2 bg-gray-900"><button onclick="switchL()" class="flex-1 bg-blue-600 text-white py-3 rounded-2xl text-xs font-black">🔄 Caméra</button><button onclick="stopL()" class="flex-1 bg-white text-red-600 py-3 rounded-2xl text-xs font-black">⏹️ COUPER LIVE</button></div>
-</div>
-<button onclick="startL()" id="bStart" class="mt-4 w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-4 rounded-[20px] font-black text-sm shadow-lg">📸 LANCER LIVE - Ne bloque plus</button>
-<div class="mt-5 p-5 bg-gradient-to-br from-green-50 to-yellow-50 rounded-[24px] border-2 border-dashed border-green-300">
-<p class="font-black text-xs text-green-700">🏪 MA BOUTIQUE (LIBRE)</p>
-<input id="vNom" placeholder="Nom boutique ex: Chez Djo" class="mt-3 w-full border-2 border-white rounded-2xl p-4 text-sm shadow-sm">
-<input id="vAddr" placeholder="Adresse boutique ex: Adidogomé Lomé" class="mt-3 w-full border-2 border-orange-200 rounded-2xl p-4 text-sm">
-<input id="vTel" placeholder="Numéro WhatsApp OBLIGATOIRE" class="mt-3 w-full border-2 border-green-200 rounded-2xl p-4 text-sm">
-<input type="file" id="vRef" accept="image/*" class="mt-3 w-full text-xs bg-white p-3 rounded-2xl">
-<div class="flex gap-2 mt-3">
-<button onclick="testGPS()" class="flex-1 bg-gradient-to-r from-green-600 to-green-500 text-white py-4 rounded-2xl text-xs font-black">📍 TEST GPS → Maps</button>
-<button onclick="getPos('boutique')" class="flex-1 bg-black text-white py-4 rounded-2xl text-xs font-bold">📡 Position GPS</button>
-</div>
-<p id="txtPosB" class="text-[11px] text-gray-500 mt-2">GPS pas encore pris</p>
-<textarea id="vDesc" placeholder="Description libre boutique..." class="w-full border-2 border-white rounded-2xl p-4 text-sm mt-3 h-20"></textarea>
-</div>
-<div class="mt-5 p-5 bg-white rounded-[24px] border-2 border-gray-100 shadow-lg">
-<p class="font-black text-xs">📦 Nouvel Article + Photo Téléphone</p>
-<input id="pNom" placeholder="Nom article" class="w-full border-2 rounded-2xl p-4 text-sm mt-3">
-<div class="grid grid-cols-2 gap-3 mt-3"><input id="pPrixD" type="number" placeholder="Prix détail" class="border-2 rounded-2xl p-4 text-sm"><input id="pPrixG" type="number" placeholder="Prix gros" class="border-2 rounded-2xl p-4 text-sm"></div>
-<input type="file" id="pImg" accept="image/*" class="mt-3 w-full text-xs bg-gray-50 p-3 rounded-2xl border-2"><img id="prevImg" class="hidden w-full h-40 object-cover rounded-[20px] mt-3">
-<button onclick="pub()" class="mt-4 w-full bg-black text-white p-4 rounded-[20px] font-black">✅ Publier Joli</button>
+<div class="bg-white p-5 rounded-[24px] shadow-xl">
+<div class="flex justify-between"><h2 class="font-black">🏪 Vendeur</h2><button onclick="showSec('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Retour</button></div>
+<input id="vNom" placeholder="Nom boutique" class="mt-3 w-full border-2 rounded-2xl p-3 text-sm">
+<input id="vAddr" placeholder="Adresse boutique pour GPS" class="mt-2 w-full border-2 border-orange-200 rounded-2xl p-3 text-sm">
+<input id="vTel" placeholder="WhatsApp obligatoire" class="mt-2 w-full border-2 rounded-2xl p-3 text-sm">
+<div class="flex gap-2 mt-2"><button onclick="testGPS()" class="flex-1 bg-green-600 text-white py-3 rounded-2xl text-xs font-black">📍 TEST GPS</button><button onclick="getPos('boutique')" class="flex-1 bg-black text-white py-3 rounded-2xl text-xs">📡 Ma Position</button></div>
+<p id="txtPosB" class="text-[10px] text-gray-500 mt-1">GPS pas encore pris</p>
+<div class="mt-4 p-3 bg-gray-50 rounded-2xl border-2">
+<input id="pNom" placeholder="Nom article" class="w-full border rounded-xl p-3 text-sm">
+<div class="grid grid-cols-2 gap-2 mt-2"><input id="pPrixD" type="number" placeholder="Prix détail" class="border rounded-xl p-3 text-sm"><input id="pPrixG" type="number" placeholder="Prix gros" class="border rounded-xl p-3 text-sm"></div>
+<input type="file" id="pImg" accept="image/*" class="mt-2 w-full text-xs bg-white p-2 rounded-xl border"><img id="prevImg" class="hidden w-full h-32 object-cover rounded-xl mt-2">
+<button onclick="pub()" class="mt-3 w-full bg-black text-white p-3 rounded-xl font-black">✅ Publier</button>
 </div>
 </div>
-<div id="myProd" class="grid grid-cols-2 gap-4 mt-5"></div>
+<div id="myProd" class="grid grid-cols-2 gap-3 mt-4"></div>
 </div>
+
 <div id="client" class="hidden p-4 max-w-5xl mx-auto">
-<div class="bg-white p-6 rounded-[28px] shadow-2xl border-2 border-blue-100">
-<div class="flex justify-between"><h2 class="font-black">👤 Client Joli + Panier</h2><button onclick="showSec('home')" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">⬅️ Retour</button></div>
-<div class="mt-4 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[24px] border-2 border-dashed border-blue-300">
-<p class="font-black text-xs text-blue-700">👤 INFOS CLIENT - Numéro Obligatoire</p>
-<input id="cNom" placeholder="Nom complet" class="w-full border-2 rounded-2xl p-3 text-sm mt-3"><input id="cTel" placeholder="Numéro téléphone OBLIGATOIRE" class="w-full border-2 rounded-2xl p-3 text-sm mt-2 border-blue-200">
-<input id="cAddr" placeholder="Adresse libre ex: Maison bleue carrefour" class="w-full border-2 rounded-2xl p-4 text-sm mt-3 border-orange-200">
-<div class="flex gap-2 mt-3"><button onclick="getPos('client')" class="flex-1 bg-blue-600 text-white py-4 rounded-2xl text-xs font-black">📡 GPS Client</button><button onclick="testGPSClient()" class="flex-1 bg-green-600 text-white py-4 rounded-2xl text-xs font-black">📍 TEST GPS</button></div>
-<p id="txtPosC" class="text-[11px] text-gray-500 mt-2">GPS client pas encore pris</p>
-</div>
-<div class="mt-4 bg-black text-white p-5 rounded-[24px] flex justify-between items-center"><div><p class="text-sm font-black">🛒 Mon Panier Joli</p><p id="cartInfo" class="text-[11px] opacity-70">Vide</p></div><button onclick="commander()" class="bg-yellow-400 text-black px-6 py-3 rounded-full text-xs font-black">Commander ✨</button></div>
+<div class="bg-white p-5 rounded-[24px] shadow-xl border-2 border-blue-100">
+<div class="flex justify-between"><h2 class="font-black">👤 Client</h2><button onclick="showSec('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Retour</button></div>
+<input id="cNom" placeholder="Ton nom" class="w-full border-2 rounded-2xl p-3 text-sm mt-3">
+<input id="cTel" placeholder="Numéro obligatoire" class="w-full border-2 rounded-2xl p-3 text-sm mt-2">
+<input id="cAddr" placeholder="Adresse libre ex: Maison bleue carrefour" class="w-full border-2 rounded-2xl p-3 text-sm mt-2 border-orange-200">
+<div class="flex gap-2 mt-2"><button onclick="getPos('client')" class="flex-1 bg-blue-600 text-white py-3 rounded-2xl text-xs font-black">📡 GPS Client</button><button onclick="testGPSClient()" class="flex-1 bg-green-600 text-white py-3 rounded-2xl text-xs font-black">📍 TEST GPS</button></div>
+<p id="txtPosC" class="text-[10px] text-gray-500 mt-1">GPS client pas encore pris</p>
+<div class="mt-4 bg-black text-white p-4 rounded-[20px] flex justify-between items-center"><div><p class="font-black text-sm">🛒 Mon Panier</p><p id="cartInfo" class="text-[11px] opacity-70">Vide - reste ici</p></div><button onclick="openPanier()" class="bg-yellow-400 text-black px-5 py-2.5 rounded-full text-xs font-black">VOIR PANIER ✅</button></div>
 <div id="clientGrid" class="grid grid-cols-2 gap-4 mt-4"></div>
 </div>
 </div>
+
 <div id="livreur" class="hidden p-4 max-w-5xl mx-auto">
-<div class="bg-white p-6 rounded-[28px] shadow-2xl border-2 border-orange-100">
-<div class="flex justify-between"><h2 class="font-black">🛵 Livreur Joli</h2><button onclick="showSec('home')" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">⬅️ Retour</button></div>
-<div class="mt-4 p-5 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-[24px] border-2 border-dashed border-orange-300">
-<p class="font-black text-xs text-orange-700">📋 INSCRIPTION LIVREUR</p>
-<div class="grid grid-cols-2 gap-3 mt-3"><div class="bg-white p-3 rounded-2xl"><p class="text-[10px] font-bold">Photo CNI</p><input type="file" id="lCNI" accept="image/*" class="w-full text-[10px] mt-1"></div><div class="bg-white p-3 rounded-2xl"><p class="text-[10px] font-bold">Selfie Moto</p><input type="file" id="lSelfie" accept="image/*" class="w-full text-[10px] mt-1"></div></div>
-<input id="lTel" placeholder="Numéro OBLIGATOIRE" class="w-full border-2 rounded-2xl p-4 text-sm mt-3"><div class="grid grid-cols-2 gap-3 mt-3"><input id="lPlaque" placeholder="Plaque moto" class="border-2 rounded-2xl p-4 text-sm"><input id="lMarque" placeholder="Marque moto" class="border-2 rounded-2xl p-4 text-sm"></div>
-<button onclick="alert('✅ Profil livreur enregistré')" class="mt-3 w-full bg-orange-500 text-white py-4 rounded-2xl text-xs font-black">✅ Enregistrer</button>
-</div>
-<div class="mt-6"><p class="font-black text-sm">📦 Commandes proches</p><div id="orders" class="space-y-3 mt-3"></div></div>
-<div id="tracking" class="hidden mt-5 bg-black text-white p-5 rounded-[24px]"><p class="text-sm font-black">🚀 Course en cours</p><p id="trackTxt" class="text-[11px] mt-2 opacity-80"></p><div class="flex gap-2 mt-3"><button onclick="goVendeur()" class="flex-1 bg-yellow-400 text-black py-3 rounded-2xl text-xs font-black">📍 Vendeur</button><button onclick="goClient()" class="flex-1 bg-green-500 text-white py-3 rounded-2xl text-xs font-black">📍 Client</button></div><button onclick="finishCourse()" class="mt-3 w-full bg-white text-black py-3 rounded-2xl text-xs font-black">✅ Livré → Continuer</button></div>
-<div class="mt-6 p-4 bg-gray-900 rounded-[20px] text-white"><p class="text-[10px] font-black">📞 SUPPORT 24/7</p><p class="text-[11px] mt-1">Flooz/TMoney: +228 90 XX XX XX</p><p class="text-[11px]">Commission 1000F min + 150F/km + 500F plateforme</p></div>
+<div class="bg-white p-5 rounded-[24px] shadow-xl">
+<div class="flex justify-between"><h2 class="font-black">🛵 Livreur</h2><button onclick="showSec('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Retour</button></div>
+<div id="orders" class="space-y-3 mt-4"></div>
+<div id="tracking" class="hidden mt-4 bg-black text-white p-4 rounded-[20px]"><p class="font-black text-sm">🚀 Course en cours</p><p id="trackTxt" class="text-[11px] mt-1"></p><div class="flex gap-2 mt-3"><button onclick="goVendeur()" class="flex-1 bg-yellow-400 text-black py-2 rounded-xl text-xs font-black">📍 Vendeur</button><button onclick="goClient()" class="flex-1 bg-green-500 text-white py-2 rounded-xl text-xs font-black">📍 Client</button></div><button onclick="finishCourse()" class="mt-2 w-full bg-white text-black py-2 rounded-xl text-xs font-black">✅ Livré</button></div>
 </div>
 </div>
-<div id="modal" class="hidden fixed inset-0 bg-black/70 z-[70] p-4 flex items-center justify-center"><div class="bg-white rounded-[28px] p-5 w-full max-w-sm"><img id="mImg" class="w-full h-56 object-cover rounded-[20px]"><h3 id="mNom" class="font-black mt-3"></h3><p id="mPrix" class="text-green-600 font-black text-lg"></p><p id="mAddr" class="text-[11px] text-gray-500 mt-1 bg-gray-50 p-2 rounded-xl"></p><div class="flex gap-3 mt-4"><button onclick="openGPSBoutique()" class="flex-1 bg-green-600 text-white py-4 rounded-2xl text-xs font-black">📍 GPS Boutique</button><button onclick="addCart()" class="flex-1 bg-black text-white py-4 rounded-2xl text-xs font-black">🛒 Panier</button></div><button onclick="document.getElementById('modal').classList.add('hidden')" class="mt-3 w-full bg-gray-100 py-3 rounded-2xl text-xs">Fermer</button></div></div>
+
+<!-- MODAL PRODUIT -->
+<div id="modalProd" class="hidden fixed inset-0 bg-black/70 z-[70] p-4 flex items-center justify-center"><div class="bg-white rounded-[24px] p-5 w-full max-w-sm"><img id="mImg" class="w-full h-48 object-cover rounded-xl"><h3 id="mNom" class="font-black mt-2"></h3><p id="mPrix" class="text-green-600 font-black"></p><p id="mAddr" class="text-[10px] text-gray-500 mt-1"></p><div class="flex gap-2 mt-3"><button onclick="openGPSBoutique()" class="flex-1 bg-green-600 text-white py-3 rounded-xl text-xs font-black">📍 GPS Boutique</button><button onclick="addCart()" class="flex-1 bg-black text-white py-3 rounded-xl text-xs font-black">🛒 Ajouter Panier</button></div><button onclick="document.getElementById('modalProd').classList.add('hidden')" class="mt-2 w-full bg-gray-100 py-2 rounded-xl text-xs">Fermer</button></div></div>
+
+<!-- MODAL PANIER FIX -->
+<div id="modalPanier" class="hidden fixed inset-0 bg-black/70 z-[80] p-4 flex items-center justify-center"><div class="bg-white rounded-[24px] p-5 w-full max-w-sm max-h-[80vh] overflow-auto"><div class="flex justify-between items-center"><h3 class="font-black">🛒 Mon Panier</h3><button onclick="document.getElementById('modalPanier').classList.add('hidden')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">X</button></div><div id="panierList" class="mt-3 space-y-2"></div><div class="mt-4 p-3 bg-gray-100 rounded-xl"><p id="panierTotal" class="font-black text-sm"></p></div><button onclick="commander()" class="mt-3 w-full bg-gradient-to-r from-green-600 to-yellow-500 text-white py-4 rounded-2xl font-black">✅ Commander maintenant</button><p class="text-[10px] text-gray-400 mt-2 text-center">Tu restes dans Client, tu ne vas plus à l'accueil</p></div></div>
+
 <script>
-let LIVE=null,face='user',posBoutique=null,posClient=null,tempImg=null,selectedProd=null,cart=[];
+let posBoutique=null,posClient=null,tempImg=null,selectedProd=null,cart=[];
 const PHOTOS=[
-{n:"Chaussures Nike Air ✨",p:18000,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",addr:"Shop Chaussures Adidogomé"},
-{n:"Habits Wax Femme 👗",p:12000,img:"https://images.unsplash.com/photo-1520903923805-20d4f2c4c4d8?w=400",addr:"Boutique Wax Atikoumè"},
-{n:"Hôtel 5 Étoiles 🏨",p:35000,img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400",addr:"Hôtel 2 Février Lomé"},
-{n:"Fruits Frais 🍓",p:500,img:"https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400",addr:"Marché Adawlato"},
-{n:"Sauce Togolaise 🍲",p:1500,img:"https://images.unsplash.com/photo-1547592180-85f173990554?w=400",addr:"Cuisine Chez Maman"},
-{n:"Tomates Bio 🍅",p:800,img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",addr:"Ferme Agoè"},
-{n:"iPhone 15 📱",p:150000,img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",addr:"Télecom Deckon"},
-{n:"Riz 25kg 🍚",p:12500,img:"https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=400",addr:"Alimentation Générale"},
-{n:"Sac Cuir 👜",p:9000,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400",addr:"Maroquinerie Bè"},
-{n:"Chambre Moderne 🛏️",p:15000,img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400",addr:"Location Lomé"}
+{n:"Chaussures Nike",p:18000,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",addr:"Adidogomé"},
+{n:"Habits Wax",p:12000,img:"https://images.unsplash.com/photo-1520903923805-20d4f2c4c4d8?w=400",addr:"Atikoumè"},
+{n:"Hôtel 5 Étoiles",p:35000,img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400",addr:"2 Février Lomé"},
+{n:"Fruits Frais",p:500,img:"https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400",addr:"Adawlato"},
+{n:"Sauce Togolaise",p:1500,img:"https://images.unsplash.com/photo-1547592180-85f173990554?w=400",addr:"Chez Maman"},
+{n:"Tomates 1kg",p:800,img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",addr:"Agoè"},
+{n:"iPhone 15",p:150000,img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400",addr:"Deckon"},
+{n:"Riz 25kg",p:12500,img:"https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=400",addr:"Alimentation"},
+{n:"Sac Cuir",p:9000,img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400",addr:"Bè"},
+{n:"Chambre",p:15000,img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400",addr:"Lomé"}
 ];
-function showSec(id){['home','vendeur','client','livreur'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));document.getElementById('menu').classList.add('hidden');if(id==='home'||id==='client')render();}
+function showSec(id){['home','vendeur','client','livreur'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));document.getElementById('menu').classList.add('hidden');if(id==='home')renderHome();if(id==='client')renderClient();}
 function testGPS(){let a=document.getElementById('vAddr').value.trim();if(!a)return alert('Mets adresse');window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(a)}`,'_blank');}
 function testGPSClient(){let a=document.getElementById('cAddr').value.trim();if(!a)return alert('Mets adresse');window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(a)}`,'_blank');}
-function getPos(t){let el=document.getElementById(t==='boutique'?'txtPosB':'txtPosC');el.innerText='⏳ GPS...';navigator.geolocation.getCurrentPosition(p=>{if(t==='boutique'){posBoutique={lat:p.coords.latitude,lng:p.coords.longitude};el.innerText=`✅ Boutique: ${posBoutique.lat.toFixed(5)},${posBoutique.lng.toFixed(5)}`;}else{posClient={lat:p.coords.latitude,lng:p.coords.longitude};el.innerText=`✅ Client: ${posClient.lat.toFixed(5)},${posClient.lng.toFixed(5)}`;}},e=>{el.innerText='❌ Active GPS';},{enableHighAccuracy:true});}
-function openGPSBoutique(){window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProd.addr||selectedProd.n+' Lomé')}`,'_blank');}
+function getPos(t){let el=document.getElementById(t==='boutique'?'txtPosB':'txtPosC');el.innerText='⏳ GPS...';navigator.geolocation.getCurrentPosition(p=>{if(t==='boutique'){posBoutique=p.coords;el.innerText=`✅ Boutique: ${p.coords.latitude.toFixed(5)},${p.coords.longitude.toFixed(5)}`;}else{posClient=p.coords;el.innerText=`✅ Client: ${p.coords.latitude.toFixed(5)},${p.coords.longitude.toFixed(5)}`;}},e=>{el.innerText='❌ Active GPS';},{enableHighAccuracy:true});}
+function openGPSBoutique(){if(!selectedProd)return;window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProd.addr||selectedProd.n+' Lomé')}`,'_blank');}
 function goVendeur(){window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(document.getElementById('vAddr').value||'Lomé')}`,'_blank');}
 function goClient(){window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(document.getElementById('cAddr').value||'Lomé')}`,'_blank');}
 document.getElementById('pImg').addEventListener('change',e=>{let r=new FileReader();r.onload=v=>{tempImg=v.target.result;document.getElementById('prevImg').src=tempImg;document.getElementById('prevImg').classList.remove('hidden');};r.readAsDataURL(e.target.files[0]);});
-function pub(){let n=document.getElementById('pNom').value,pd=document.getElementById('pPrixD').value;if(!n||!pd)return alert('Nom + prix');let arr=JSON.parse(localStorage.getItem('tg')||'[]');arr.unshift({n:n,p:pd,img:tempImg||PHOTOS[0].img,addr:document.getElementById('vAddr').value||'Boutique Togo'});localStorage.setItem('tg',JSON.stringify(arr));tempImg=null;document.getElementById('prevImg').classList.add('hidden');render();alert('✅ Publié JOLI');}
-function render(){let q=(document.getElementById('q').value||'').toLowerCase();let all=[...JSON.parse(localStorage.getItem('tg')||'[]'),...PHOTOS];let f=all.filter(x=>!q||x.n.toLowerCase().includes(q));document.getElementById('grid').innerHTML=f.map((x,i)=>`<div onclick="openProd(${i})" class="bg-white rounded-[24px] shadow-xl overflow-hidden cursor-pointer border-2 border-white"><img src="${x.img}" class="w-full h-44 object-cover"><div class="p-4"><p class="font-black text-xs">${x.n}</p><p class="text-green-600 font-black text-sm mt-1">${x.p} F</p><p class="text-[9px] text-gray-400 mt-1 truncate">📍 ${x.addr||''}</p><div class="mt-3 bg-black text-white text-[10px] py-2.5 rounded-full text-center font-bold">Voir Joli ✨</div></div></div>`).join('');document.getElementById('clientGrid').innerHTML=f.map((x,i)=>`<div onclick="openProd(${i})" class="bg-white rounded-[20px] shadow-lg overflow-hidden cursor-pointer"><img src="${x.img}" class="w-full h-28 object-cover"><div class="p-3"><p class="font-bold text-[11px]">${x.n}</p><p class="text-green-600 text-xs font-black">${x.p} F</p></div></div>`).join('');let my=JSON.parse(localStorage.getItem('tg')||'[]');document.getElementById('myProd').innerHTML=my.map(x=>`<div class="bg-white rounded-[20px] shadow-lg overflow-hidden"><img src="${x.img}" class="w-full h-28 object-cover"><div class="p-3"><p class="text-xs font-black">${x.n}</p><p class="text-[10px]">${x.p}F</p></div></div>`).join('');document.getElementById('cartCount').classList.toggle('hidden',cart.length===0);document.getElementById('cartCount').innerText=`🛒 ${cart.length}`;document.getElementById('cartInfo').innerText=cart.length?cart.length+' article(s) - '+cart.reduce((s,c)=>s+parseInt(c.p),0)+' F':'Vide';renderOrders();}
-let allProds=()=>[...JSON.parse(localStorage.getItem('tg')||'[]'),...PHOTOS];
-function openProd(i){let p=allProds()[i];selectedProd=p;document.getElementById('mImg').src=p.img;document.getElementById('mNom').innerText=p.n;document.getElementById('mPrix').innerText=p.p+' F';document.getElementById('mAddr').innerText='📍 '+(p.addr||'Boutique');document.getElementById('modal').classList.remove('hidden');}
-function addCart(){cart.push(selectedProd);render();document.getElementById('modal').classList.add('hidden');}
-function commander(){if(!cart.length)return alert('Panier vide');alert(`Commande ${cart.reduce((s,c)=>s+parseInt(c.p),0)} F envoyée!`);cart=[];render();showSec('livreur');}
-function renderOrders(){let h='';for(let i=1;i<=3;i++){h+=`<div class="bg-white p-4 rounded-[20px] shadow-lg border-2 border-orange-50 flex justify-between items-center"><div><p class="font-black text-xs">Commande #${100+i} - ${[1200,800,1500][i-1]}F - ${[2.5,0.8,1.2][i-1]}km</p><p class="text-[10px] text-gray-500 mt-1">⏱️ Reste 4m - proche vendeur</p></div><div class="flex gap-1"><button onclick="acceptOrder(${i})" class="bg-green-600 text-white px-4 py-2.5 rounded-full text-[10px] font-black">Accepter</button><button onclick="this.parentElement.parentElement.remove()" class="bg-gray-100 px-3 py-2.5 rounded-full text-[10px]">Rejeter</button></div></div>`;}document.getElementById('orders').innerHTML=h;}
-function acceptOrder(id){document.getElementById('tracking').classList.remove('hidden');document.getElementById('trackTxt').innerText=`Course #${100+id} acceptée. Client te track. Va vendeur puis client.`;}
-function finishCourse(){document.getElementById('tracking').classList.add('hidden');renderOrders();}
-async function startL(){try{if(LIVE)LIVE.getTracks().forEach(t=>t.stop());LIVE=await navigator.mediaDevices.getUserMedia({video:{facingMode:face},audio:true});document.getElementById('vLive').srcObject=LIVE;document.getElementById('vHome').srcObject=LIVE;document.getElementById('zoneLive').classList.remove('hidden');document.getElementById('liveHome').classList.remove('hidden');document.getElementById('bStart').classList.add('hidden');}catch(e){alert(e.message)}}
-function switchL(){face=face==='user'?'environment':'user';startL();}
-function stopL(){if(LIVE)LIVE.getTracks().forEach(t=>t.stop());LIVE=null;document.getElementById('zoneLive').classList.add('hidden');document.getElementById('liveHome').classList.add('hidden');document.getElementById('bStart').classList.remove('hidden');}
-render();
+function pub(){let n=document.getElementById('pNom').value,pd=document.getElementById('pPrixD').value;if(!n||!pd)return alert('Nom + prix');let arr=JSON.parse(localStorage.getItem('tg')||'[]');arr.unshift({n:n,p:pd,img:tempImg||PHOTOS[0].img,addr:document.getElementById('vAddr').value||'Boutique Togo'});localStorage.setItem('tg',JSON.stringify(arr));tempImg=null;document.getElementById('prevImg').classList.add('hidden');renderHome();renderClient();alert('✅ Publié');}
+function allProds(){return [...JSON.parse(localStorage.getItem('tg')||'[]'),...PHOTOS];}
+function renderHome(){let q=(document.getElementById('q').value||'').toLowerCase();let all=allProds();let f=all.filter(x=>!q||x.n.toLowerCase().includes(q));document.getElementById('grid').innerHTML=f.map((x,i)=>`<div onclick="openProd(${all.indexOf(x)})" class="bg-white rounded-[20px] shadow overflow-hidden cursor-pointer"><img src="${x.img}" class="w-full h-36 object-cover"><div class="p-3"><p class="font-black text-xs">${x.n}</p><p class="text-green-600 font-black text-xs">${x.p} F</p><p class="text-[9px] text-gray-400 truncate">📍 ${x.addr||''}</p></div></div>`).join('');updateCartUI();}
+function renderClient(){let all=allProds();document.getElementById('clientGrid').innerHTML=all.map((x,i)=>`<div onclick="openProd(${i})" class="bg-white rounded-[20px] shadow overflow-hidden cursor-pointer"><img src="${x.img}" class="w-full h-28 object-cover"><div class="p-3"><p class="font-bold text-[11px]">${x.n}</p><p class="text-green-600 text-xs font-black">${x.p} F</p></div></div>`).join('');let my=JSON.parse(localStorage.getItem('tg')||'[]');document.getElementById('myProd').innerHTML=my.map(x=>`<div class="bg-white rounded-[20px] shadow overflow-hidden"><img src="${x.img}" class="w-full h-28 object-cover"><div class="p-3"><p class="text-xs font-black">${x.n}</p><p class="text-[10px]">${x.p}F</p></div></div>`).join('');updateCartUI();renderOrders();}
+function updateCartUI(){document.getElementById('cartCount').innerText=cart.length;document.getElementById('cartInfo').innerText=cart.length?cart.length+' article(s) - '+cart.reduce((s,c)=>s+parseInt(c.p),0)+' F - Reste dans Client':'Vide - reste ici';}
+function openProd(i){let p=allProds()[i];selectedProd=p;document.getElementById('mImg').src=p.img;document.getElementById('mNom').innerText=p.n;document.getElementById('mPrix').innerText=p.p+' F';document.getElementById('mAddr').innerText='📍 '+(p.addr||'Boutique');document.getElementById('modalProd').classList.remove('hidden');}
+function addCart(){if(!selectedProd)return;cart.push(selectedProd);document.getElementById('modalProd').classList.add('hidden');updateCartUI();openPanier();}
+function openPanier(){if(!cart.length){document.getElementById('panierList').innerHTML='<p class="text-sm text-gray-500 text-center py-4">Panier vide, ajoute des articles depuis Client</p>';document.getElementById('panierTotal').innerText='Total: 0 F';}else{document.getElementById('panierList').innerHTML=cart.map((c,idx)=>`<div class="flex gap-3 bg-gray-50 p-3 rounded-xl"><img src="${c.img}" class="w-12 h-12 rounded-xl object-cover"><div class="flex-1"><p class="font-bold text-xs">${c.n}</p><p class="text-green-600 text-xs font-black">${c.p} F</p></div><button onclick="removeCart(${idx})" class="text-red-500 text-xs font-bold">X</button></div>`).join('');document.getElementById('panierTotal').innerText='Total: '+cart.reduce((s,c)=>s+parseInt(c.p),0)+' F';}document.getElementById('modalPanier').classList.remove('hidden');}
+function removeCart(idx){cart.splice(idx,1);openPanier();updateCartUI();}
+function commander(){if(!cart.length)return alert('Panier vide');alert('✅ Commande '+cart.reduce((s,c)=>s+parseInt(c.p),0)+' F envoyée aux livreurs!');cart=[];document.getElementById('modalPanier').classList.add('hidden');updateCartUI();showSec('livreur');}
+function renderOrders(){let h='';for(let i=1;i<=3;i++){h+=`<div class="bg-white p-4 rounded-[20px] shadow border flex justify-between items-center"><div><p class="font-black text-xs">Commande #${100+i} - ${[1200,800,1500][i-1]}F - ${[2.5,0.8,1.2][i-1]}km</p><p class="text-[10px] text-gray-500">Reste 4m - proche vendeur</p></div><div class="flex gap-1"><button onclick="acceptOrder(${i})" class="bg-green-600 text-white px-4 py-2 rounded-full text-[10px] font-black">Accepter</button><button onclick="this.parentElement.parentElement.remove()" class="bg-gray-100 px-3 py-2 rounded-full text-[10px]">Rejeter</button></div></div>`;}document.getElementById('orders').innerHTML=h;}
+function acceptOrder(id){document.getElementById('tracking').classList.remove('hidden');document.getElementById('trackTxt').innerText=`Course #${100+id} acceptée. Va vendeur puis client.`;}
+function finishCourse(){document.getElementById('tracking').classList.add('hidden');}
+renderHome();renderOrders();
 </script>
 </body>
 </html>
