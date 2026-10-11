@@ -3,232 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Togo Go V6.6.7 Complet</title>
+<title>Togo Go V6.6.8 Belle</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<style>body{background:#f8fafc}.nav-active{border-top:3px solid #16a34a; color:#16a34a}</style>
+<style>body{background:#f8fafc}</style>
 </head>
-<body class="pb-24">
+<body class="pb-20">
 <header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50 flex justify-between items-center">
-<b class="text-sm">Togo Go V6.6.7 ✅ COMPLET</b>
-<button onclick="location.reload()" class="bg-white text-green-700 px-3 py-1 rounded-full text-[11px] font-bold">Reload?v667=1</button>
+<b class="text-sm">Togo Go 🇹🇬</b>
+<div class="flex gap-2">
+<button onclick="document.getElementById('menuCompte').classList.toggle('hidden')" class="bg-white text-green-700 px-4 py-2 rounded-full text-xs font-black">👤 Compte ▼</button>
+<button onclick="location.reload()" class="bg-black/20 px-3 py-2 rounded-full text-xs">↻</button>
+</div>
 </header>
 
-<!-- ACCUEIL -->
-<div id="home" class="p-3 max-w-4xl mx-auto">
-<div class="bg-white p-3 rounded-xl shadow flex gap-2 items-center"><input id="q" oninput="render()" placeholder="Chercher produit..." class="flex-1 outline-none text-sm"><span>🔍</span></div>
-
-<div id="liveHome" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600">
-<div class="bg-red-600 text-white p-2 text-[11px] flex justify-between"><span>🔴 LIVE EN COURS SUR ACCUEIL</span><button onclick="stopL()" class="bg-white text-red-600 px-3 rounded-full font-bold">X</button></div>
-<video id="vHome" autoplay muted playsinline class="w-full h-56 bg-black"></video>
+<div id="menuCompte" class="hidden fixed top-14 right-3 bg-white shadow-2xl rounded-2xl p-3 z-50 w-60 border">
+<p class="font-bold text-xs mb-2">Choisir profil:</p>
+<button onclick="show('vendeur');hideMenu()" class="w-full text-left p-3 hover:bg-green-50 rounded-xl text-sm">🏪 Vendeur LIBRE + LIVE 📸</button>
+<button onclick="show('client');hideMenu()" class="w-full text-left p-3 hover:bg-blue-50 rounded-xl text-sm">👤 Client - Mes Infos</button>
+<button onclick="show('livreur');hideMenu()" class="w-full text-left p-3 hover:bg-orange-50 rounded-xl text-sm">🛵 Livreur Vérifié</button>
+<button onclick="show('home');hideMenu()" class="w-full text-left p-3 hover:bg-gray-50 rounded-xl text-sm mt-2 border-t">🏠 Accueil Photos</button>
 </div>
 
-<div id="grid" class="grid grid-cols-2 gap-3 mt-3"></div>
-<div class="mt-4 bg-white p-3 rounded-xl text-[11px] text-gray-500">Vendeur = LIBRE | Livreur = CNI+Selfie+GPS+Tracking | Client = OK | Retour ⬅️ partout</div>
+<!-- ACCUEIL PHOTOS JOLI COMME AVANT -->
+<div id="home" class="p-3 max-w-4xl mx-auto">
+<div class="bg-white p-3 rounded-2xl shadow flex gap-2"><input id="q" oninput="render()" placeholder="Chercher..." class="flex-1 outline-none text-sm"><span>🔍</span></div>
+
+<div id="liveHome" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600"><div class="bg-red-600 text-white p-2 text-xs flex justify-between"><span>🔴 LIVE</span><button onclick="stopL()" class="bg-white text-red-600 px-3 rounded-full">X</button></div><video id="vHome" autoplay muted playsinline class="w-full h-64"></video></div>
+
+<div id="grid" class="grid grid-cols-2 gap-3 mt-4"></div>
 </div>
 
 <!-- VENDEUR -->
 <div id="vendeur" class="hidden p-3 max-w-4xl mx-auto">
-<div class="bg-white p-4 rounded-2xl shadow border-t-4 border-green-600">
-<div class="flex justify-between items-center"><h2 class="font-black text-sm">🏪 Vendeur LIBRE + LIVE</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
-
-<div id="zoneLive" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600">
-<div class="bg-red-600 text-white p-2 text-[11px] flex justify-between"><span>🔴 TU ES EN LIVE</span><button onclick="stopL()" class="bg-white text-red-600 px-2 rounded-full">Fermer</button></div>
-<video id="vLive" autoplay muted playsinline class="w-full h-64 bg-black"></video>
+<div class="bg-white p-5 rounded-2xl shadow">
+<div class="flex justify-between"><h2 class="font-black">🏪 Vendeur LIBRE</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
+<div id="zoneLive" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600"><video id="vLive" autoplay muted playsinline class="w-full h-72"></video><button onclick="stopL()" class="w-full bg-red-600 text-white p-2 text-xs">Couper LIVE</button></div>
+<button onclick="startL()" id="bStart" class="mt-3 w-full bg-red-600 text-white py-3 rounded-xl font-bold text-xs">📸 LANCER LIVE</button>
+<input id="vNom" placeholder="Nom boutique" class="mt-4 w-full border-2 rounded-xl p-3 text-sm"><input id="vQuoi" placeholder="Tu vends quoi? Écris libre..." class="w-full border-2 border-green-500 rounded-xl p-3 text-sm mt-2">
+<input id="pNom" placeholder="Nom produit" class="w-full border rounded-xl p-3 text-sm mt-3"><input id="pPrix" type="number" placeholder="Prix" class="w-full border rounded-xl p-3 text-sm mt-2">
+<input type="file" id="pImg" accept="image/*" class="mt-2 w-full text-xs">
+<button onclick="pub()" class="mt-3 w-full bg-black text-white p-3 rounded-xl font-bold">✅ Publier avec Photo</button>
+</div>
+<div id="my" class="grid grid-cols-2 gap-3 mt-4"></div>
 </div>
 
-<button onclick="startL()" id="bStart" class="mt-3 w-full bg-red-600 text-white py-4 rounded-xl font-black text-xs">📸 LANCER LIVE (Accueil + Vendeur)</button>
-<div class="flex gap-2 mt-2"><button onclick="switchL()" id="bSwitch" class="hidden flex-1 bg-blue-600 text-white py-3 rounded-xl text-[11px]">🔄 Retourner Caméra</button><button onclick="stopL()" id="bStop" class="hidden flex-1 bg-black text-white py-3 rounded-xl text-[11px]">⏹️ Couper LIVE</button></div>
-
-<div class="mt-5 p-3 border-2 border-dashed border-green-500 rounded-xl">
-<p class="font-bold text-xs">✍️ Vendeur LIBRE (écris ce que tu veux)</p>
-<input id="vNom" placeholder="Nom boutique" class="mt-2 w-full border-2 rounded-xl p-3 text-sm">
-<input id="vQuoi" placeholder="Tu vends quoi? Ex: Wax, Tomates, Service..." class="w-full border-2 border-green-500 rounded-xl p-3 text-sm mt-2 font-bold">
-<input id="pNom" placeholder="Nom produit" class="w-full border rounded-xl p-3 text-sm mt-3">
-<input id="pPrix" type="number" placeholder="Prix FCFA" class="w-full border rounded-xl p-3 text-sm mt-2">
-<button onclick="pub()" class="mt-3 w-full bg-black text-white p-3 rounded-xl font-bold text-sm">✅ Publier Produit</button>
-</div>
-</div>
-<div class="mt-4 bg-white p-4 rounded-xl shadow"><h3 class="font-bold text-sm">Mes produits publiés</h3><div id="my" class="grid grid-cols-2 gap-2 mt-2"></div></div>
-</div>
-
-<!-- CLIENT -->
+<!-- CLIENT AVEC INFOS RESTAURÉ -->
 <div id="client" class="hidden p-3 max-w-4xl mx-auto">
-<div class="bg-white p-4 rounded-2xl shadow border-t-4 border-blue-500">
-<div class="flex justify-between"><h2 class="font-black text-sm">👤 Client - Commandes</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
-<div class="mt-3 text-xs">Panier: <span id="panierTxt" class="font-bold">0 produits</span></div>
-<button onclick="show('livreur')" class="mt-3 w-full bg-blue-600 text-white py-3 rounded-xl text-xs font-bold">🛵 Voir Livreurs Vérifiés</button>
-<div id="listeCmd" class="mt-3 text-xs text-gray-500">Pas de commandes</div>
+<div class="bg-white p-5 rounded-2xl shadow border-t-4 border-blue-500">
+<div class="flex justify-between"><h2 class="font-black">👤 Client - Mes Informations</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
+<p class="text-[11px] text-gray-500 mt-2">Comme avant Djo, tu peux mettre tes infos</p>
+<div class="mt-4 space-y-2">
+<input id="cNom" placeholder="Nom complet" class="w-full border-2 rounded-xl p-3 text-sm">
+<input id="cTel" placeholder="Numéro WhatsApp" class="w-full border-2 rounded-xl p-3 text-sm">
+<input id="cAddr" placeholder="Adresse: Adidogomé, Agoè..." class="w-full border-2 rounded-xl p-3 text-sm">
+<textarea id="cNote" placeholder="Note pour livreur..." class="w-full border-2 rounded-xl p-3 text-sm h-20"></textarea>
+<button onclick="saveClient()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-sm">💾 Enregistrer Mes Infos</button>
+</div>
+<div id="clientSaved" class="mt-4 hidden bg-blue-50 p-3 rounded-xl text-xs"></div>
 </div>
 </div>
 
-<!-- LIVREUR V6.6.7 CORRIGE -->
+<!-- LIVREUR CORRIGE MAIS JOLI -->
 <div id="livreur" class="hidden p-3 max-w-4xl mx-auto">
-<div class="bg-white p-4 rounded-2xl shadow border-t-4 border-orange-500">
-<div class="flex justify-between items-center"><h2 class="font-black text-sm">🛵 Livreur - CNI + Selfie + GPS + Tracking</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
-
-<div class="mt-4 grid grid-cols-2 gap-2">
-<input id="lNom" placeholder="Nom complet" class="border-2 rounded-xl p-3 text-sm col-span-2">
-<input id="lTel" placeholder="Tel WhatsApp" class="border-2 rounded-xl p-3 text-sm">
-<input id="lCNI" placeholder="N° Carte d'identité" class="border-2 rounded-xl p-3 text-sm">
-</div>
-
-<div class="mt-4 bg-orange-50 p-3 rounded-xl border">
-<p class="font-bold text-[11px]">📇 Carte d'identité Recto/Verso</p>
-<div class="grid grid-cols-2 gap-2 mt-2">
-<label class="bg-white border-2 border-dashed p-3 rounded-xl text-center text-[11px] cursor-pointer"><span id="txtCniR">+ Recto</span><input type="file" accept="image/*" class="hidden" onchange="previewCNI(this,'R')"><img id="imgCniR" class="hidden w-full h-20 object-cover rounded mt-1"></label>
-<label class="bg-white border-2 border-dashed p-3 rounded-xl text-center text-[11px] cursor-pointer"><span id="txtCniV">+ Verso</span><input type="file" accept="image/*" class="hidden" onchange="previewCNI(this,'V')"><img id="imgCniV" class="hidden w-full h-20 object-cover rounded mt-1"></label>
+<div class="bg-white p-5 rounded-2xl shadow border-t-4 border-orange-500">
+<div class="flex justify-between"><h2 class="font-black text-sm">🛵 Livreur Vérifié</h2><button onclick="show('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Accueil</button></div>
+<input id="lNom" placeholder="Nom" class="mt-3 w-full border-2 rounded-xl p-3 text-sm"><input id="lTel" placeholder="Tel" class="mt-2 w-full border-2 rounded-xl p-3 text-sm"><input id="lCNI" placeholder="N° CNI" class="mt-2 w-full border-2 rounded-xl p-3 text-sm">
+<div class="grid grid-cols-2 gap-2 mt-3"><label class="border-2 border-dashed p-3 rounded-xl text-xs text-center">+ CNI Recto<input type="file" class="hidden" accept="image/*" onchange="prev(this,'R')"><img id="imgR" class="hidden h-16 w-full object-cover mt-1 rounded"></label><label class="border-2 border-dashed p-3 rounded-xl text-xs text-center">+ CNI Verso<input type="file" class="hidden" accept="image/*" onchange="prev(this,'V')"><img id="imgV" class="hidden h-16 w-full object-cover mt-1 rounded"></label></div>
+<div class="mt-3 bg-blue-50 p-3 rounded-xl"><p class="text-xs font-bold">🤳 Selfie</p><video id="vSelfie" autoplay muted playsinline class="hidden w-full h-40 bg-black rounded-xl mt-2"></video><img id="imgSelfie" class="hidden w-full h-40 object-cover rounded-xl mt-2"><div class="flex gap-2 mt-2"><button onclick="startSelfie()" id="bS1" class="flex-1 bg-blue-600 text-white py-2 rounded-xl text-xs">Ouvrir Caméra</button><button onclick="takeSelfie()" id="bS2" class="hidden flex-1 bg-green-600 text-white py-2 rounded-xl text-xs">Prendre</button></div></div>
+<div class="mt-3 bg-green-50 p-3 rounded-xl"><p id="txtGps" class="text-xs">📍 GPS non pris</p><button onclick="getGPS()" class="mt-2 w-full bg-green-600 text-white py-2 rounded-xl text-xs">📡 Prendre GPS</button></div>
+<div class="mt-3 flex gap-2 items-center bg-black text-white p-3 rounded-xl text-xs"><input type="checkbox" id="lTracking" checked> Tracking LIVE ON</div>
+<button onclick="validerLivreur()" class="mt-4 w-full bg-orange-600 text-white py-4 rounded-xl font-black">✅ VALIDER</button>
 </div>
 </div>
-
-<div class="mt-4 bg-blue-50 p-3 rounded-xl border border-blue-200">
-<p class="font-bold text-[11px]">🤳 Selfie Vérification (obligatoire)</p>
-<div class="mt-2">
-<video id="vSelfie" autoplay muted playsinline class="hidden w-full h-48 bg-black rounded-xl"></video>
-<canvas id="cSelfie" class="hidden"></canvas>
-<img id="imgSelfie" class="hidden w-full h-48 object-cover rounded-xl border-2 border-green-500">
-<div class="flex gap-2 mt-2">
-<button onclick="startSelfie()" id="btnStartSelfie" class="flex-1 bg-blue-600 text-white py-3 rounded-xl text-[11px] font-bold">📸 Ouvrir Caméra Selfie</button>
-<button onclick="takeSelfie()" id="btnTakeSelfie" class="hidden flex-1 bg-green-600 text-white py-3 rounded-xl text-[11px] font-bold">✅ Prendre Selfie</button>
-<button onclick="retakeSelfie()" id="btnRetake" class="hidden flex-1 bg-gray-200 py-3 rounded-xl text-[11px]">🔄 Refaire</button>
-</div>
-</div>
-</div>
-
-<div class="mt-4 bg-green-50 p-3 rounded-xl border border-green-200">
-<p class="font-bold text-[11px]">📍 Position GPS + Tracking LIVE</p>
-<p id="txtGps" class="text-[11px] text-gray-500 mt-1">Pas encore localisé - clique ci-dessous</p>
-<button onclick="getGPS()" id="btnGps" class="mt-2 w-full bg-green-600 text-white py-3 rounded-xl text-[11px] font-bold">📡 Obtenir ma Position GPS</button>
-<div id="mapPreview" class="hidden mt-2 bg-white p-2 rounded text-[11px] border">✅ Position enregistrée - Tracking activable</div>
-</div>
-
-<div class="mt-4 grid grid-cols-2 gap-2">
-<select id="lVehicule" class="border-2 rounded-xl p-3 text-sm"><option>Moto</option><option>Vélo</option><option>Voiture</option><option>Tricycle</option></select>
-<select id="lZone" class="border-2 rounded-xl p-3 text-sm"><option>Lomé - Adidogomé</option><option>Lomé - Agoè</option><option>Lomé - Baguida</option><option>Kara</option><option>Sokodé</option></select>
-</div>
-
-<div class="mt-4 flex items-center gap-2 bg-black text-white p-3 rounded-xl"><input type="checkbox" id="lTracking" checked class="w-5 h-5"><label class="text-[11px] font-bold">🛰️ Activer Tracking LIVE (clients voient ma position en direct)</label></div>
-
-<button onclick="validerLivreur()" class="mt-5 w-full bg-orange-600 text-white py-4 rounded-xl font-black text-sm">✅ VALIDER INSCRIPTION LIVREUR VÉRIFIÉ</button>
-<p id="statusLivreur" class="text-[11px] text-center mt-2 text-gray-400">CNI + Selfie + GPS obligatoires</p>
-</div>
-
-<div class="mt-4 bg-white p-3 rounded-xl shadow">
-<h3 class="font-bold text-xs">Livreurs vérifiés (local)</h3>
-<div id="listLivreurs" class="mt-2 text-[11px]"></div>
-</div>
-</div>
-
-<!-- NAV BAS -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2 text-[11px] font-bold z-50">
-<button onclick="show('home')" id="nHome" class="nav-active flex flex-col items-center"><span>🏠</span>Accueil</button>
-<button onclick="show('vendeur')" id="nVendeur" class="flex flex-col items-center"><span>🏪</span>Vendeur</button>
-<button onclick="show('client')" id="nClient" class="flex flex-col items-center"><span>👤</span>Client</button>
-<button onclick="show('livreur')" id="nLivreur" class="flex flex-col items-center"><span>🛵</span>Livreur</button>
-</nav>
 
 <script>
-let LIVE=null, face='user';
-let streamSelfie=null, dataSelfie=null, posGps=null, dataCniR=null, dataCniV=null;
-const BASE=[{n:"Tomates Fraîches",p:800},{n:"Wax Hollandais",p:12000},{n:"Riz 25kg",p:2500},{n:"Chambre à louer",p:15000},{n:"Bananes",p:500},{n:"Ciment",p:8500},{n:"Chaussures",p:18000},{n:"Médicaments",p:1500}];
-
-function show(id){
- ['home','vendeur','client','livreur'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));
- document.querySelectorAll('nav button').forEach(b=>b.classList.remove('nav-active'));
- document.getElementById('n'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('nav-active');
- if(id==='home')render();
- if(id==='livreur')renderLivreurs();
-}
+let LIVE=null, face='user', streamSelfie=null, dataSelfie=null, posGps=null, dataR=null, dataV=null, tempImg=null;
+const BASE=[
+{n:"Tomates",p:800,img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300"},
+{n:"Wax",p:12000,img:"https://images.unsplash.com/photo-1520903923805-20d4f2c4c4d8?w=300"},
+{n:"Riz",p:2500,img:"https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=300"},
+{n:"Chaussures",p:18000,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300"},
+{n:"Bananes",p:500,img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300"},
+{n:"Ciment",p:8500,img:"https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300"},
+{n:"Médic",p:1500,img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300"},
+{n:"Chambre",p:15000,img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300"}
+];
+function hideMenu(){document.getElementById('menuCompte').classList.add('hidden')}
+function show(id){['home','vendeur','client','livreur'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));hideMenu();if(id==='home')render();if(id==='client')loadClient();}
 function render(){
  let q=(document.getElementById('q').value||'').toLowerCase();
  let all=[...JSON.parse(localStorage.getItem('tg')||'[]'),...BASE].filter(x=>!q||x.n.toLowerCase().includes(q));
- document.getElementById('grid').innerHTML=all.map(x=>`<div class="bg-white rounded-xl shadow p-3"><p class="font-bold text-xs truncate">${x.n}</p><p class="text-green-600 text-xs font-black mt-1">${x.p} FCFA</p><button class="mt-2 w-full bg-black text-white text-[10px] py-2 rounded-full">Commander</button></div>`).join('');
+ document.getElementById('grid').innerHTML=all.map(x=>`<div class="bg-white rounded-2xl shadow overflow-hidden"><img src="${x.img||'https://via.placeholder.com/300'}" class="w-full h-32 object-cover"><div class="p-2"><p class="font-bold text-xs">${x.n}</p><p class="text-green-600 font-black text-xs">${x.p} F</p></div></div>`).join('');
  let my=JSON.parse(localStorage.getItem('tg')||'[]');
- document.getElementById('my').innerHTML=my.map(x=>`<div class="bg-white rounded-xl shadow p-2"><p class="text-xs font-bold truncate">${x.n}</p><p class="text-[10px] text-green-600">${x.p}F</p></div>`).join('')||'<span class="text-[11px] text-gray-400">Vide</span>';
+ document.getElementById('my').innerHTML=my.map(x=>`<div class="bg-white rounded-2xl shadow overflow-hidden"><img src="${x.img}" class="w-full h-24 object-cover"><div class="p-2"><p class="text-xs font-bold">${x.n}</p><p class="text-[10px] text-green-600">${x.p}F</p></div></div>`).join('');
 }
-function pub(){
- let n=document.getElementById('pNom').value.trim(), pr=parseInt(document.getElementById('pPrix').value);
- if(!n||!pr) return alert('Nom + Prix obligatoires');
- let a=JSON.parse(localStorage.getItem('tg')||'[]'); a.unshift({n:n,p:pr}); localStorage.setItem('tg',JSON.stringify(a));
- document.getElementById('pNom').value=''; document.getElementById('pPrix').value='';
- render(); alert('✅ Publié');
-}
-async function startL(){
- try{
-  if(LIVE) LIVE.getTracks().forEach(t=>t.stop());
-  LIVE=await navigator.mediaDevices.getUserMedia({video:{facingMode:face},audio:true});
-  document.getElementById('vLive').srcObject=LIVE;
-  document.getElementById('vHome').srcObject=LIVE;
-  document.getElementById('zoneLive').classList.remove('hidden');
-  document.getElementById('liveHome').classList.remove('hidden');
-  document.getElementById('bStart').classList.add('hidden');
-  document.getElementById('bStop').classList.remove('hidden');
-  document.getElementById('bSwitch').classList.remove('hidden');
- }catch(e){alert('Autorise caméra! Erreur: '+e.message);}
-}
-function switchL(){face=face==='user'?'environment':'user';startL();}
-function stopL(){
- if(LIVE) LIVE.getTracks().forEach(t=>t.stop()); LIVE=null;
- document.getElementById('zoneLive').classList.add('hidden');
- document.getElementById('liveHome').classList.add('hidden');
- document.getElementById('bStart').classList.remove('hidden');
- document.getElementById('bStop').classList.add('hidden');
- document.getElementById('bSwitch').classList.add('hidden');
-}
-function previewCNI(input,type){
- const file=input.files[0]; if(!file) return;
- const reader=new FileReader();
- reader.onload=e=>{
-  if(type==='R'){dataCniR=e.target.result; document.getElementById('imgCniR').src=dataCniR; document.getElementById('imgCniR').classList.remove('hidden'); document.getElementById('txtCniR').innerText='✅ Recto OK';}
-  else{dataCniV=e.target.result; document.getElementById('imgCniV').src=dataCniV; document.getElementById('imgCniV').classList.remove('hidden'); document.getElementById('txtCniV').innerText='✅ Verso OK';}
- };
- reader.readAsDataURL(file);
-}
-async function startSelfie(){
- try{
-  streamSelfie=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
-  document.getElementById('vSelfie').srcObject=streamSelfie;
-  document.getElementById('vSelfie').classList.remove('hidden');
-  document.getElementById('btnStartSelfie').classList.add('hidden');
-  document.getElementById('btnTakeSelfie').classList.remove('hidden');
- }catch(e){alert('Autorise caméra selfie: '+e.message)}
-}
-function takeSelfie(){
- const v=document.getElementById('vSelfie'), c=document.getElementById('cSelfie');
- c.width=v.videoWidth; c.height=v.videoHeight; c.getContext('2d').drawImage(v,0,0);
- dataSelfie=c.toDataURL('image/jpeg');
- document.getElementById('imgSelfie').src=dataSelfie;
- document.getElementById('imgSelfie').classList.remove('hidden');
- v.classList.add('hidden'); document.getElementById('btnTakeSelfie').classList.add('hidden');
- document.getElementById('btnRetake').classList.remove('hidden');
- if(streamSelfie) streamSelfie.getTracks().forEach(t=>t.stop());
-}
-function retakeSelfie(){dataSelfie=null; document.getElementById('imgSelfie').classList.add('hidden'); document.getElementById('btnRetake').classList.add('hidden'); startSelfie();}
-function getGPS(){
- const txt=document.getElementById('txtGps'); txt.innerText='⏳ Localisation GPS...';
- if(!navigator.geolocation) return alert('GPS non supporté');
- navigator.geolocation.getCurrentPosition(p=>{
-  posGps={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};
-  txt.innerText=`✅ Lat: ${posGps.lat.toFixed(5)} Lng: ${posGps.lng.toFixed(5)} (±${Math.round(posGps.acc)}m)`;
-  document.getElementById('mapPreview').classList.remove('hidden');
-  document.getElementById('btnGps').innerText='✅ GPS OK - Actualiser';
- }, e=>{txt.innerText='❌ Erreur GPS: '+e.message; alert('Active GPS du téléphone')}, {enableHighAccuracy:true});
-}
-function validerLivreur(){
- if(!document.getElementById('lNom').value||!document.getElementById('lCNI').value) return alert('Nom + N° CNI obligatoires');
- if(!dataCniR||!dataCniV) return alert('Ajoute Recto + Verso CNI');
- if(!dataSelfie) return alert('Fais ton Selfie obligatoire');
- if(!posGps) return alert('Clique sur GPS d\'abord');
- const livreur={nom:document.getElementById('lNom').value,tel:document.getElementById('lTel').value,cni:document.getElementById('lCNI').value,cniR:dataCniR,cniV:dataCniV,selfie:dataSelfie,gps:posGps,vehicule:document.getElementById('lVehicule').value,zone:document.getElementById('lZone').value,tracking:document.getElementById('lTracking').checked,date:new Date().toISOString()};
- let all=JSON.parse(localStorage.getItem('livreurs')||'[]'); all.unshift(livreur); localStorage.setItem('livreurs',JSON.stringify(all));
- localStorage.setItem('livreur_verif',JSON.stringify(livreur));
- document.getElementById('statusLivreur').innerText='✅ Vérifié - Tu peux livrer maintenant';
- alert('✅ Livreur vérifié!\nCNI + Selfie + GPS + Tracking OK');
- renderLivreurs(); show('home');
-}
-function renderLivreurs(){
- let all=JSON.parse(localStorage.getItem('livreurs')||'[]');
- document.getElementById('listLivreurs').innerHTML=all.map(l=>`<div class="border rounded-xl p-2 flex gap-2 items-center mt-2"><img src="${l.selfie}" class="w-10 h-10 rounded-full object-cover"><div><p class="font-bold">${l.nom} - ${l.vehicule}</p><p class="text-[10px] text-gray-500">${l.zone} | GPS: ${l.gps.lat.toFixed(3)} | Tracking: ${l.tracking?'ON 🟢':'OFF'}</p></div></div>`).join('')||'<span class="text-gray-400">Aucun livreur encore</span>';
-}
+document.getElementById('pImg').addEventListener('change',e=>{let r=new FileReader();r.onload=v=>tempImg=v.target.result;r.readAsDataURL(e.target.files[0])});
+function pub(){let n=document.getElementById('pNom').value,pr=parseInt(document.getElementById('pPrix').value);if(!n||!pr)return alert('Nom+Prix');let a=JSON.parse(localStorage.getItem('tg')||'[]');a.unshift({n,p:pr,img:tempImg||'https://via.placeholder.com/300'});localStorage.setItem('tg',JSON.stringify(a));render();alert('Publié avec photo!');}
+function saveClient(){let o={nom:document.getElementById('cNom').value,tel:document.getElementById('cTel').value,addr:document.getElementById('cAddr').value,note:document.getElementById('cNote').value};localStorage.setItem('clientInfo',JSON.stringify(o));document.getElementById('clientSaved').classList.remove('hidden');document.getElementById('clientSaved').innerHTML=`✅ Enregistré: ${o.nom} - ${o.tel} - ${o.addr}`;alert('Infos client enregistrées');}
+function loadClient(){let o=JSON.parse(localStorage.getItem('clientInfo')||'null');if(o){document.getElementById('cNom').value=o.nom;document.getElementById('cTel').value=o.tel;document.getElementById('cAddr').value=o.addr;document.getElementById('cNote').value=o.note;document.getElementById('clientSaved').classList.remove('hidden');document.getElementById('clientSaved').innerHTML=`✅ ${o.nom} - ${o.tel}`;}}
+async function startL(){try{if(LIVE)LIVE.getTracks().forEach(t=>t.stop());LIVE=await navigator.mediaDevices.getUserMedia({video:{facingMode:face},audio:true});document.getElementById('vLive').srcObject=LIVE;document.getElementById('vHome').srcObject=LIVE;document.getElementById('zoneLive').classList.remove('hidden');document.getElementById('liveHome').classList.remove('hidden');document.getElementById('bStart').classList.add('hidden');}catch(e){alert(e.message)}}
+function stopL(){if(LIVE)LIVE.getTracks().forEach(t=>t.stop());document.getElementById('zoneLive').classList.add('hidden');document.getElementById('liveHome').classList.add('hidden');document.getElementById('bStart').classList.remove('hidden');}
+function prev(inp,t){let r=new FileReader();r.onload=e=>{if(t==='R'){dataR=e.target.result;document.getElementById('imgR').src=dataR;document.getElementById('imgR').classList.remove('hidden')}else{dataV=e.target.result;document.getElementById('imgV').src=dataV;document.getElementById('imgV').classList.remove('hidden')}};r.readAsDataURL(inp.files[0])}
+async function startSelfie(){streamSelfie=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});document.getElementById('vSelfie').srcObject=streamSelfie;document.getElementById('vSelfie').classList.remove('hidden');document.getElementById('bS1').classList.add('hidden');document.getElementById('bS2').classList.remove('hidden');}
+function takeSelfie(){let v=document.getElementById('vSelfie'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);dataSelfie=c.toDataURL('image/jpeg');document.getElementById('imgSelfie').src=dataSelfie;document.getElementById('imgSelfie').classList.remove('hidden');v.classList.add('hidden');if(streamSelfie)streamSelfie.getTracks().forEach(t=>t.stop());}
+function getGPS(){navigator.geolocation.getCurrentPosition(p=>{posGps={lat:p.coords.latitude,lng:p.coords.longitude};document.getElementById('txtGps').innerText=`✅ GPS: ${posGps.lat.toFixed(4)}, ${posGps.lng.toFixed(4)}`});}
+function validerLivreur(){if(!dataR||!dataV||!dataSelfie||!posGps)return alert('CNI Recto+Verso + Selfie + GPS obligatoires');alert('✅ Livreur validé!');show('home');}
 render();
 </script>
 </body>
