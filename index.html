@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Togo Go V6.6.3</title>
+<title>Togo Go V6.6.4 LIVE</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>body{background:#f8fafc;font-family:sans-serif}</style>
 </head>
 <body class="pb-24">
-<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50 shadow">
+<header class="bg-gradient-to-r from-green-600 to-yellow-500 text-white p-3 sticky top-0 z-50">
 <div class="flex justify-between items-center max-w-7xl mx-auto">
 <div class="flex items-center gap-2">
 <button onclick="showPage('home')" id="backBtn" class="hidden bg-black/30 w-9 h-9 rounded-full">⬅️</button>
-<b>Togo Go V6.6.3</b>
+<b>Togo Go V6.6.4 LIVE</b>
 </div>
 <div class="flex gap-1">
 <button onclick="showPage('home')" class="bg-white text-green-700 px-3 py-1.5 rounded-full text-[11px] font-black">Accueil</button>
@@ -24,28 +24,29 @@
 </header>
 
 <div id="homePage" class="max-w-7xl mx-auto p-3">
-<div class="bg-white rounded-2xl p-3 shadow flex gap-2"><input id="searchInput" oninput="render(getAll())" placeholder="Chercher tomates, chambre, pagnes..." class="flex-1 outline-none text-sm"><i class="fa-solid fa-search text-gray-300 p-3"></i></div>
-<div class="mt-2 bg-green-600 text-white text-xs font-black p-2 rounded-xl text-center">✅ V6.6.3 - VENDEUR LIBRE + ACCUEIL PLEIN + LIVE + RETOUR ⬅️</div>
+<div class="bg-white rounded-2xl p-3 shadow flex gap-2"><input id="searchInput" oninput="render(getAll())" placeholder="Chercher..." class="flex-1 outline-none text-sm"><i class="fa-solid fa-search text-gray-300 p-3"></i></div>
+<div class="mt-2 bg-red-600 text-white text-xs font-black p-2 rounded-xl text-center animate-pulse">🔴 V6.6.4 - APPLICATION EN LIVE - Si tu vois ça LIVE est revenu Djo!</div>
+<div id="liveHomeZone" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600"><div class="bg-red-600 text-white p-2 flex justify-between text-xs font-bold"><span>🔴 LIVE EN DIRECT SUR ACCUEIL</span><button onclick="stopLive()" class="bg-white text-red-600 px-3 rounded-full">Fermer</button></div><video id="homeLiveVideo" autoplay muted playsinline class="w-full h-60 bg-black"></video></div>
 <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3"></div>
 </div>
 
 <div id="vendeurDashPage" class="hidden max-w-4xl mx-auto p-4">
 <div class="bg-white rounded-2xl shadow p-5">
-<div class="flex justify-between"><h2 class="font-black">🏪 Publier - LIBRE</h2><button onclick="showPage('home')" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">⬅️ Accueil</button></div>
+<div class="flex justify-between"><h2 class="font-black">🏪 Ma Boutique - LIVE</h2><button onclick="showPage('home')" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">⬅️ Accueil</button></div>
 <div id="vendeurInfo" class="text-xs mt-2 bg-green-50 p-2 rounded-xl"></div>
 
-<div id="liveZone" class="hidden mt-3 bg-black rounded-2xl overflow-hidden">
-<div class="bg-red-600 text-white p-2 flex justify-between text-xs font-bold"><span>🔴 LIVE en direct</span><button onclick="stopLive()" class="bg-white text-red-600 px-3 rounded-full">Fermer</button></div>
+<div id="liveZone" class="hidden mt-3 bg-black rounded-2xl overflow-hidden border-2 border-red-600">
+<div class="bg-red-600 text-white p-2 flex justify-between text-xs font-bold"><span>🔴 TU ES EN LIVE</span><button onclick="stopLive()" class="bg-white text-red-600 px-3 rounded-full">Fermer</button></div>
 <video id="liveVideo" autoplay muted playsinline class="w-full h-64 bg-black"></video>
 </div>
-<div class="flex gap-2 mt-2">
-<button onclick="startLive()" id="btnStart" class="flex-1 bg-red-600 text-white py-3 rounded-xl font-black text-xs">📸 LIVE Vidéo</button>
-<button onclick="switchCam()" id="btnSwitch" class="hidden bg-blue-600 text-white px-4 py-3 rounded-xl text-xs">🔄 Retourner</button>
-<button onclick="stopLive()" id="btnStop" class="hidden bg-gray-800 text-white px-4 py-3 rounded-xl text-xs">⏹️ Stop</button>
+<div class="flex gap-2 mt-3">
+<button onclick="startLive()" id="btnStart" class="flex-1 bg-red-600 text-white py-4 rounded-xl font-black text-sm">📸 LANCER LE LIVE VIDÉO</button>
+<button onclick="switchCam()" id="btnSwitch" class="hidden bg-blue-600 text-white px-4 py-4 rounded-xl text-xs">🔄</button>
+<button onclick="stopLive()" id="btnStop" class="hidden bg-gray-800 text-white px-4 py-4 rounded-xl text-xs">⏹️ Stop</button>
 </div>
 
-<div class="mt-3 border-2 border-dashed border-green-400 rounded-xl p-3 bg-yellow-50">
-<p class="font-black text-xs">📸 Photos boutique + articles (1 à 4) *</p>
+<div class="mt-4 border-2 border-dashed border-green-400 rounded-xl p-3 bg-yellow-50">
+<p class="font-black text-xs">📸 Photos (1 à 4)</p>
 <img id="prodPreview" class="hidden w-full h-56 rounded-xl object-cover mt-2 border-2 border-green-500">
 <video id="prodVideo" autoplay muted playsinline class="hidden w-full h-56 bg-black rounded-xl mt-2"></video><canvas id="prodCanvas" class="hidden"></canvas>
 <div class="grid grid-cols-2 gap-2 mt-2">
@@ -55,12 +56,12 @@
 <button onclick="captureProd()" id="btnCap" class="hidden mt-2 w-full bg-green-600 text-white py-2 rounded-xl text-xs">📸 Capturer</button>
 <div id="prodPrevs" class="grid grid-cols-4 gap-1 mt-2"></div>
 </div>
-<input id="pName" placeholder="Nom: Tomates / Chambre clim 2 lits / Wax" class="mt-3 w-full border-2 rounded-xl p-3 text-sm">
-<div class="grid grid-cols-2 gap-2 mt-2"><input id="pPriceDetail" type="number" placeholder="Prix détail F *" class="border-2 rounded-xl p-3 text-sm font-bold"><input id="pPriceGros" type="number" placeholder="Prix gros (option)" class="border rounded-xl p-3 text-sm bg-gray-50"></div>
-<textarea id="pDesc" placeholder="Description LIBRE..." class="mt-2 w-full border rounded-xl p-3 text-sm h-20"></textarea>
-<button onclick="publishProduct()" class="mt-3 w-full bg-black text-white p-4 rounded-xl font-black">✅ Publier sur Accueil</button>
+<input id="pName" placeholder="Nom produit" class="mt-3 w-full border-2 rounded-xl p-3 text-sm">
+<div class="grid grid-cols-2 gap-2 mt-2"><input id="pPriceDetail" type="number" placeholder="Prix détail *" class="border-2 rounded-xl p-3 text-sm font-bold"><input id="pPriceGros" type="number" placeholder="Prix gros" class="border rounded-xl p-3 text-sm bg-gray-50"></div>
+<textarea id="pDesc" placeholder="Description..." class="mt-2 w-full border rounded-xl p-3 text-sm h-20"></textarea>
+<button onclick="publishProduct()" class="mt-3 w-full bg-black text-white p-4 rounded-xl font-black">✅ Publier</button>
 </div>
-<div class="mt-4 bg-white rounded-xl shadow p-4"><div class="flex justify-between"><h3 class="font-bold text-sm">Mes publications</h3><button onclick="showPage('home')" class="bg-gray-100 px-3 py-1 rounded-full text-xs">⬅️ Retour</button></div><div id="myProducts" class="grid grid-cols-2 gap-2 mt-3"></div></div>
+<div class="mt-4 bg-white rounded-xl shadow p-4"><h3 class="font-bold text-sm">Mes publications</h3><div id="myProducts" class="grid grid-cols-2 gap-2 mt-3"></div></div>
 </div>
 
 <div id="registerPage" class="hidden max-w-3xl mx-auto p-4"><div class="bg-white rounded-2xl shadow p-6">
@@ -70,63 +71,57 @@
 <button id="btnVendeur" onclick="setRole('vendeur')" class="border p-3 rounded-xl font-bold text-xs bg-white">Vendeur</button>
 <button id="btnLivreur" onclick="setRole('livreur')" class="border p-3 rounded-xl font-bold text-xs bg-white">Livreur</button>
 </div>
-
-<div id="formClient" class="mt-5 space-y-3">
-<input id="cNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><input id="cTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm">
-<div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-3 flex justify-between items-center"><span class="text-xs font-bold">📍 GPS</span><button onclick="getClientGPS()" class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs">Prendre GPS</button></div><p id="cGPSCoords" class="text-[9px]"></p>
-<button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Client</button>
-<button onclick="showPage('home')" class="w-full bg-gray-100 p-2 rounded-xl text-xs">⬅️ Retour Accueil</button>
-</div>
-
-<div id="formVendeur" class="hidden mt-5 space-y-3">
-<div class="bg-orange-100 border-2 border-orange-400 rounded-xl p-4">
-<p class="font-black text-sm">🏪 VENDEUR 100% LIBRE - TU ÉCRIS CE QUE TU VEUX</p>
-<input id="vNom" placeholder="Nom boutique / Hôtel / Maquis" class="mt-3 w-full border-2 rounded-xl p-3 text-sm font-bold bg-white">
-<input id="vTypeLibre" placeholder="Tu vends quoi? ÉCRIS LIBRE: hôtel, pagnes, riz, quincaillerie..." class="mt-2 w-full border-2 border-green-500 rounded-xl p-3 text-sm bg-white font-bold">
-<textarea id="vDesc" placeholder="Décris librement..." class="mt-2 w-full border rounded-xl p-3 text-sm h-24 bg-yellow-50"></textarea>
-<input id="vTel" placeholder="Téléphone" class="mt-2 w-full border rounded-xl p-3 text-sm">
-</div>
-<div class="bg-black text-white rounded-xl p-3 text-center text-xs font-black">💳 GRATUIT ILLIMITÉ</div>
-<button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-4 rounded-xl font-black">✅ Créer boutique LIBRE</button>
-<button onclick="showPage('home')" class="w-full bg-gray-100 p-2 rounded-xl text-xs">⬅️ Retour</button>
-</div>
-
-<div id="formLivreur" class="hidden mt-5 space-y-3">
-<input id="lNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><input id="lTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm"><input id="lPlaque" placeholder="Plaque" class="w-full border rounded-xl p-3 text-sm">
-<button onclick="registerLivreur()" class="w-full bg-black text-white p-3 rounded-xl font-bold">Créer Livreur</button>
-<button onclick="showPage('home')" class="w-full bg-gray-100 p-2 rounded-xl text-xs">⬅️ Retour</button>
-</div>
+<div id="formClient" class="mt-5 space-y-3"><input id="cNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><button onclick="registerClient()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold">Créer Client</button><button onclick="showPage('home')" class="w-full bg-gray-100 p-2 rounded-xl text-xs">⬅️ Retour</button></div>
+<div id="formVendeur" class="hidden mt-5 space-y-3"><input id="vNom" placeholder="Nom boutique" class="w-full border-2 rounded-xl p-3 text-sm font-bold"><input id="vTypeLibre" placeholder="Tu vends quoi? Écris libre..." class="w-full border-2 border-green-500 rounded-xl p-3 text-sm font-bold"><textarea id="vDesc" placeholder="Décris..." class="w-full border rounded-xl p-3 text-sm h-24 bg-yellow-50"></textarea><input id="vTel" placeholder="Tel" class="w-full border rounded-xl p-3 text-sm"><button onclick="registerVendeur()" class="w-full bg-green-600 text-white p-4 rounded-xl font-black">✅ Créer boutique LIBRE</button><button onclick="showPage('home')" class="w-full bg-gray-100 p-2 rounded-xl text-xs">⬅️ Retour</button></div>
+<div id="formLivreur" class="hidden mt-5 space-y-3"><input id="lNom" placeholder="Nom" class="w-full border rounded-xl p-3 text-sm"><button onclick="registerLivreur()" class="w-full bg-black text-white p-3 rounded-xl font-bold">Créer Livreur</button><button onclick="showPage('home')" class="w-full bg-gray-100 p-2 rounded-xl text-xs">⬅️ Retour</button></div>
 </div></div>
 
 <script>
 const BASE=[
-{name:"Tomates fraîches 1kg",price:800,priceGros:7000,vendeur:"Mama Afi",type:"tomates boutique",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",desc:"Frais du jardin Agoè"},
-{name:"Hôtel Concorde - Chambre clim",price:15000,vendeur:"Hôtel Concorde",type:"hôtel chambre clim wifi piscine",img:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400",desc:"12 chambres clim wifi piscine"},
-{name:"Pagne Wax VLISCO",price:12000,vendeur:"Aké Boutique",type:"pagnes wax",img:"https://images.unsplash.com/photo-1584302052179-2e90841dad6a?w=400",desc:"VLISCO original"},
-{name:"Riz sauce poisson",price:2500,vendeur:"Maquis Joie",type:"maquis riz",img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400",desc:"Riz sauce frais"},
-{name:"Bananes ambulant",price:500,vendeur:"Koffi Ambulant",type:"ambulant bananes",img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400",desc:"Je me promène Agoè"},
-{name:"Ciment quincaillerie",price:8500,vendeur:"Quincaillerie",type:"quincaillerie ciment",img:"https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400",desc:"Ciment fer"},
-{name:"Chaussures cuir",price:18000,vendeur:"Boutique Chauss",type:"chaussures cuir",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",desc:"Cuir 40-45"},
-{name:"Paracétamol pharma",price:1500,vendeur:"Pharma Santé",type:"pharmacie",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400",desc:"Médicaments"},
+{name:"Tomates 1kg",price:800,vendeur:"Mama Afi",type:"tomates",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400",desc:"Frais"},
+{name:"Chambre clim",price:15000,vendeur:"Hôtel Concorde",type:"hôtel",img:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400",desc:"Chambre clim"},
+{name:"Wax VLISCO",price:12000,vendeur:"Aké",type:"pagnes",img:"https://images.unsplash.com/photo-1584302052179-2e90841dad6a?w=400",desc:"Wax"},
+{name:"Riz sauce",price:2500,vendeur:"Maquis",type:"riz",img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400",desc:"Riz sauce"},
+{name:"Bananes",price:500,vendeur:"Koffi",type:"ambulant",img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400",desc:"Ambulant"},
+{name:"Ciment",price:8500,vendeur:"Quincaillerie",type:"quincaillerie",img:"https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400",desc:"Ciment"},
+{name:"Chaussures",price:18000,vendeur:"Boutique",type:"chaussures",img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",desc:"Cuir"},
+{name:"Paracétamol",price:1500,vendeur:"Pharma",type:"pharmacie",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400",desc:"Médicaments"},
 ];
-let prodPhotos=[], prodStream=null, liveStream=null, curFace='user', role='client', clientGPS=null;
+let prodPhotos=[], prodStream=null, liveStream=null, curFace='user', role='client';
 function getAll(){return [...JSON.parse(localStorage.getItem('tg_libre')||'[]'),...BASE];}
 function showPage(p){document.getElementById('homePage').classList.toggle('hidden',p!=='home');document.getElementById('vendeurDashPage').classList.toggle('hidden',p!=='vendeurDash');document.getElementById('registerPage').classList.toggle('hidden',p!=='register');document.getElementById('backBtn').classList.toggle('hidden',p==='home');if(p==='vendeurDash')renderMy();if(p==='home')render(getAll());}
-function render(list){let q=document.getElementById('searchInput').value.toLowerCase();let f=list.filter(x=>!q||x.name.toLowerCase().includes(q)||x.type.toLowerCase().includes(q)||x.vendeur.toLowerCase().includes(q));document.getElementById('productsGrid').innerHTML=f.map(pr=>`<div class="bg-white rounded-2xl shadow overflow-hidden border"><img src="${pr.img}" class="h-36 w-full object-cover"><div class="p-3"><p class="font-black text-[12px]">${pr.name}</p><p class="text-[10px] text-gray-500">${pr.vendeur}</p><p class="text-[9px] bg-yellow-100 px-2 rounded-full inline-block">${pr.type}</p><p class="text-green-600 font-black text-xs">${pr.price}F ${pr.priceGros?'/ '+pr.priceGros+'F gros':''}</p></div></div>`).join('');}
+function render(list){let q=document.getElementById('searchInput').value.toLowerCase();let f=list.filter(x=>!q||x.name.toLowerCase().includes(q)||x.type.toLowerCase().includes(q));document.getElementById('productsGrid').innerHTML=f.map(pr=>`<div class="bg-white rounded-2xl shadow overflow-hidden border"><img src="${pr.img}" class="h-36 w-full object-cover"><div class="p-3"><p class="font-black text-[12px]">${pr.name}</p><p class="text-[10px] text-gray-500">${pr.vendeur}</p><p class="text-green-600 font-black text-xs">${pr.price}F</p></div></div>`).join('');}
 function renderMy(){let my=JSON.parse(localStorage.getItem('tg_libre')||'[]');document.getElementById('myProducts').innerHTML=my.map(x=>`<div class="bg-white rounded-xl shadow overflow-hidden"><img src="${x.img}" class="h-20 w-full object-cover"><p class="p-2 text-[11px] font-bold">${x.name}</p></div>`).join('')||'<p class="text-xs text-gray-400">Aucun</p>';}
 function setRole(r){role=r;document.getElementById('formClient').classList.toggle('hidden',r!=='client');document.getElementById('formVendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('formLivreur').classList.toggle('hidden',r!=='livreur');document.getElementById('btnClient').className=r==='client'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs':'border p-3 rounded-xl font-bold text-xs bg-white';document.getElementById('btnVendeur').className=r==='vendeur'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs':'border p-3 rounded-xl font-bold text-xs bg-white';document.getElementById('btnLivreur').className=r==='livreur'?'border-2 border-green-600 bg-green-50 p-3 rounded-xl font-bold text-xs':'border p-3 rounded-xl font-bold text-xs bg-white';}
-async function getClientGPS(){try{let pos=await new Promise((a,b)=>navigator.geolocation.getCurrentPosition(a,b));clientGPS={lat:pos.coords.latitude,lng:pos.coords.longitude};document.getElementById('cGPSCoords').innerText=`✅ GPS ok ${clientGPS.lat.toFixed(4)}`;}catch{alert('Active GPS');}}
 function registerClient(){localStorage.setItem('tg_user',JSON.stringify({role:'client'}));alert('Client créé');showPage('home');}
-function registerVendeur(){let nom=document.getElementById('vNom').value,libre=document.getElementById('vTypeLibre').value;if(!nom||!libre)return alert('Nom + tu vends quoi? Écris libre!');localStorage.setItem('tg_user',JSON.stringify({role:'vendeur',nom:nom,typeFinal:libre,desc:document.getElementById('vDesc').value}));document.getElementById('vendeurInfo').innerHTML=`✅ ${nom} - ${libre} - GRATUIT`;alert('✅ Boutique LIBRE: '+libre);showPage('vendeurDash');}
+function registerVendeur(){let nom=document.getElementById('vNom').value,libre=document.getElementById('vTypeLibre').value;if(!nom||!libre)return alert('Nom + tu vends quoi?');localStorage.setItem('tg_user',JSON.stringify({role:'vendeur',nom:nom,typeFinal:libre});document.getElementById('vendeurInfo').innerHTML=`✅ ${nom} - ${libre} - GRATUIT`;alert('✅ Boutique LIBRE: '+libre);showPage('vendeurDash');}
 function registerLivreur(){localStorage.setItem('tg_user',JSON.stringify({role:'livreur'}));alert('Livreur créé');showPage('home');}
 async function startProdCam(){try{prodStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});document.getElementById('prodVideo').srcObject=prodStream;document.getElementById('prodVideo').classList.remove('hidden');document.getElementById('btnCap').classList.remove('hidden');}catch{}}
-function captureProd(){let v=document.getElementById('prodVideo');let c=document.getElementById('prodCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let d=c.toDataURL('image/jpeg',0.7);prodPhotos.push(d);addPrev(d);v.classList.add('hidden');document.getElementById('btnCap').classList.add('hidden');if(prodStream)prodStream.getTracks().forEach(t=>t.stop());}
-function addPrev(src){let div=document.getElementById('prodPrevs');let img=document.createElement('img');img.src=src;img.className='h-16 w-full object-cover rounded-xl border-2 border-green-500';div.appendChild(img);document.getElementById('prodPreview').src=prodPhotos[0];document.getElementById('prodPreview').classList.remove('hidden');}
-document.getElementById('prodFile').addEventListener('change',e=>{for(let f of e.target.files){let r=new FileReader();r.onload=ev=>{prodPhotos.push(ev.target.result);addPrev(ev.target.result);};r.readAsDataURL(f);}});
+function captureProd(){let v=document.getElementById('prodVideo');let c=document.getElementById('prodCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);let d=c.toDataURL('image/jpeg',0.7);prodPhotos.push(d);let div=document.getElementById('prodPrevs');let img=document.createElement('img');img.src=d;img.className='h-16 w-full object-cover rounded-xl border-2 border-green-500';div.appendChild(img);document.getElementById('prodPreview').src=prodPhotos[0];document.getElementById('prodPreview').classList.remove('hidden');v.classList.add('hidden');document.getElementById('btnCap').classList.add('hidden');if(prodStream)prodStream.getTracks().forEach(t=>t.stop());}
+document.getElementById('prodFile').addEventListener('change',e=>{for(let f of e.target.files){let r=new FileReader();r.onload=ev=>{prodPhotos.push(ev.target.result);let div=document.getElementById('prodPrevs');let img=document.createElement('img');img.src=ev.target.result;img.className='h-16 w-full object-cover rounded-xl border-2 border-green-500';div.appendChild(img);document.getElementById('prodPreview').src=prodPhotos[0];document.getElementById('prodPreview').classList.remove('hidden');};r.readAsDataURL(f);}});
 function publishProduct(){let n=document.getElementById('pName').value,detail=parseInt(document.getElementById('pPriceDetail').value),gros=parseInt(document.getElementById('pPriceGros').value)||0;if(prodPhotos.length===0)return alert('📸 Photo!');if(!n||!detail)return alert('Nom+prix');let u=JSON.parse(localStorage.getItem('tg_user')||'{}');let all=JSON.parse(localStorage.getItem('tg_libre')||'[]');all.unshift({name:n,price:detail,priceGros:gros,vendeur:u.nom||'Moi',type:u.typeFinal||'libre',img:prodPhotos[0],desc:document.getElementById('pDesc').value});localStorage.setItem('tg_libre',JSON.stringify(all));render(getAll());renderMy();alert('✅ Publié!');}
-async function startLive(){try{if(liveStream)liveStream.getTracks().forEach(t=>t.stop());liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:curFace},audio:true});document.getElementById('liveVideo').srcObject=liveStream;document.getElementById('liveZone').classList.remove('hidden');document.getElementById('btnStart').classList.add('hidden');document.getElementById('btnStop').classList.remove('hidden');document.getElementById('btnSwitch').classList.remove('hidden');}catch(e){alert('Autorise caméra');}}
+async function startLive(){
+try{
+if(liveStream) liveStream.getTracks().forEach(t=>t.stop());
+liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:curFace},audio:true});
+document.getElementById('liveVideo').srcObject=liveStream;
+document.getElementById('homeLiveVideo').srcObject=liveStream;
+document.getElementById('liveZone').classList.remove('hidden');
+document.getElementById('liveHomeZone').classList.remove('hidden');
+document.getElementById('btnStart').classList.add('hidden');
+document.getElementById('btnStop').classList.remove('hidden');
+document.getElementById('btnSwitch').classList.remove('hidden');
+}catch(e){alert('Autorise caméra Djo!');}
+}
 function switchCam(){curFace=curFace==='user'?'environment':'user';startLive();}
-function stopLive(){if(liveStream)liveStream.getTracks().forEach(t=>t.stop());document.getElementById('liveZone').classList.add('hidden');document.getElementById('btnStart').classList.remove('hidden');document.getElementById('btnStop').classList.add('hidden');document.getElementById('btnSwitch').classList.add('hidden');}
+function stopLive(){
+if(liveStream) liveStream.getTracks().forEach(t=>t.stop());
+document.getElementById('liveZone').classList.add('hidden');
+document.getElementById('liveHomeZone').classList.add('hidden');
+document.getElementById('btnStart').classList.remove('hidden');
+document.getElementById('btnStop').classList.add('hidden');
+document.getElementById('btnSwitch').classList.add('hidden');
+}
 window.addEventListener('load',()=>{setRole('client');render(getAll());});
 </script>
 </body>
