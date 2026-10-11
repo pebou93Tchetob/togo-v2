@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Togo Marché 24/24 - V2</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="manifest" href="manifest.json">
+<style>@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap');body{font-family:'Plus Jakarta Sans',sans-serif}</style>
+</head>
+<body class="bg-[#FFF8F0]">
+<header class="bg-[#FF6B00] text-white p-4 sticky top-0 z-50 flex justify-between items-center">
+<h1 class="text-xl font-black">🇹🇬 TOGO MARCHÉ 24/24</h1>
+<button onclick="openCart()" class="bg-white text-[#FF6B00] px-4 py-1 rounded-full font-bold">Panier <span id="cartCount">0</span></button>
+</header>
+
+<div class="max-w-5xl mx-auto p-4">
+<div class="grid grid-cols-3 gap-2 mb-6">
+<button onclick="setRole('client')" id="btn-client" class="bg-black text-white py-3 rounded-xl font-bold">Client</button>
+<button onclick="setRole('vendeur')" id="btn-vendeur" class="bg-white border-2 py-3 rounded-xl font-bold">Vendeur</button>
+<button onclick="setRole('livreur')" id="btn-livreur" class="bg-white border-2 py-3 rounded-xl font-bold">Livreur CNI</button>
+</div>
+
+<div id="view-client">
+<div class="flex gap-2 mb-4">
+<input id="search" oninput="render()" placeholder="Chercher produit, boutique..." class="flex-1 p-3 rounded-xl border-2">
+<select id="filterType" onchange="render()" class="p-3 rounded-xl border-2"><option value="all">Tous prix</option><option value="detail">Détail</option><option value="gros">Gros</option></select>
+</div>
+<div id="shops" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+</div>
+
+<div id="view-vendeur" class="hidden bg-white p-6 rounded-2xl shadow">
+<h2 class="text-2xl font-black mb-4">Créer ta Boutique Illimitée</h2>
+<input id="shopName" placeholder="Nom boutique ex: Chez Aya - Adidogomé" class="w-full p-3 border-2 rounded-xl mb-2">
+<input id="shopWhats" placeholder="Ton WhatsApp 228..." class="w-full p-3 border-2 rounded-xl mb-2">
+<input id="shopLoc" placeholder="Localisation GPS (Lomé, Sokodé...)" class="w-full p-3 border-2 rounded-xl mb-4">
+<h3 class="font-bold">Ajouter Produit</h3>
+<input id="pName" placeholder="Nom produit" class="w-full p-3 border rounded-xl mt-2">
+<div class="grid grid-cols-2 gap-2 mt-2">
+<input id="pDetail" type="number" placeholder="Prix détail FCFA" class="p-3 border rounded-xl">
+<input id="pGros" type="number" placeholder="Prix gros FCFA" class="p-3 border rounded-xl">
+</div>
+<input id="pImage" placeholder="Lien image (ou laisse vide)" class="w-full p-3 border rounded-xl mt-2">
+<button onclick="addProduct()" class="w-full bg-[#FF6B00] text-white py-3 rounded-xl font-black mt-3">+ AJOUTER PRODUIT À MA BOUTIQUE</button>
+<div id="myProducts" class="mt-4"></div>
+</div>
+
+<div id="view-livreur" class="hidden bg-white p-6 rounded-2xl shadow">
+<h2 class="text-2xl font-black mb-2">Devenir Livreur Vérifié</h2>
+<p class="text-sm text-gray-600 mb-4">Obligatoire: CNI + Photo + GPS pour confiance client</p>
+<input placeholder="Nom complet" class="w-full p-3 border-2 rounded-xl mb-2">
+<input type="file" id="cniFile" accept="image/*" class="w-full mb-2"><label class="text-xs">📸 Photo de ta CNI recto/verso</label>
+<input type="file" accept="image/*" class="w-full mt-3 mb-2"><label class="text-xs">🤳 Selfie avec CNI</label>
+<button onclick="enableGPS()" class="w-full bg-black text-white py-3 rounded-xl font-bold mt-3">📍 ACTIVER GPS EN TEMPS RÉEL</button>
+<p id="gpsStatus" class="text-center text-sm mt-2"></p>
+<button onclick="alert('Demande envoyée! Admin va vérifier CNI en 24h')" class="w-full bg-green-600 text-white py-3 rounded-xl font-black mt-4">ENVOYER DOSSIER CNI</button>
+<div class="mt-6 p-3 bg-yellow-50 rounded-xl text-sm">Commandes disponibles près de toi:<br>• Adidogomé -> Agoè 2km - 1500F<br>• Bè -> Tokoin 3.5km - 2000F</div>
+</div>
+</div>
+
+<div id="cartModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center p-4 z-50">
+<div class="bg-white rounded-2xl p-6 w-full max-w-md">
+<h2 class="font-black text-xl mb-3">Ton Panier</h2><div id="cartItems"></div>
+<button onclick="checkoutWhats()" class="w-full bg-green-600 text-white py-3 rounded-xl font-black mt-4">Commander via WhatsApp</button>
+<button onclick="closeCart()" class="w-full mt-2">Fermer</button>
+</div>
+</div>
+
+<script>
+let role='client';
+let shops=JSON.parse(localStorage.getItem('togoShops')||'[{"id":1,"name":"Chez Aya - Adidogomé","whats":"22890123456","loc":"Lomé - Adidogomé","products":[{"name":"Riz 25kg","detail":18500,"gros":16500,"img":"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300"},{"name":"Huile 20L","detail":22000,"gros":19500,"img":"https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300"}]},{"id":2,"name":"Épicerie Koffi - Grand Marché","whats":"22891234567","loc":"Lomé - Grand Marché","products":[{"name":"Tomate cageot","detail":12000,"gros":9000,"img":"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300"}]}]');
+let cart=[];
+function setRole(r){role=r;document.getElementById('view-client').classList.toggle('hidden',r!=='client');document.getElementById('view-vendeur').classList.toggle('hidden',r!=='vendeur');document.getElementById('view-livreur').classList.toggle('hidden',r!=='livreur');['client','vendeur','livreur'].forEach(x=>document.getElementById('btn-'+x).className=x===r?'bg-black text-white py-3 rounded-xl font-bold':'bg-white border-2 py-3 rounded-xl font-bold');if(r!=='client')renderMy()}
+function render(){let q=document.getElementById('search').value.toLowerCase();let type=document.getElementById('filterType').value;let html='';shops.forEach(s=>{let prods=s.products.filter(p=>p.name.toLowerCase().includes(q)||s.name.toLowerCase().includes(q));if(q&&prods.length==0&&!s.name.toLowerCase().includes(q))return;html+=`<div class="bg-white rounded-2xl shadow p-4"><div class="flex justify-between"><h3 class="font-black">${s.name}</h3><span class="text-xs bg-green-100 px-2 py-1 rounded-full">📍 ${s.loc}</span></div><p class="text-xs text-gray-500">WhatsApp: ${s.whats}</p><div class="mt-3 grid gap-2">`; (q?prods:s.products).forEach(p=>{if(type==='detail'&&!p.detail)return;if(type==='gros'&&!p.gros)return;html+=`<div class="border rounded-xl p-2 flex gap-2"><img src="${p.img||'https://via.placeholder.com/80'}" class="w-16 h-16 object-cover rounded-xl"><div class="flex-1"><b>${p.name}</b><br><span class="text-xs">Détail: <b>${p.detail}F</b> | Gros: <b class="text-[#FF6B00]">${p.gros}F</b></span><br><div class="flex gap-1 mt-1"><button onclick='addToCart("${p.name}",${p.detail})' class="text-xs bg-black text-white px-2 py-1 rounded-full">Détail</button><button onclick='addToCart("${p.name}",${p.gros})' class="text-xs bg-[#FF6B00] text-white px-2 py-1 rounded-full">Gros</button></div></div></div>`});html+=`</div></div>`});document.getElementById('shops').innerHTML=html||'<p class="col-span-3 text-center">Aucun produit, crée ta boutique en mode Vendeur!</p>'}
+function addProduct(){let name=document.getElementById('pName').value;if(!name)return alert('Nom produit?');let shopName=document.getElementById('shopName').value||'Ma Boutique';let whats=document.getElementById('shopWhats').value||'228...';let loc=document.getElementById('shopLoc').value||'Lomé';let s=shops.find(x=>x.name===shopName);if(!s){s={id:Date.now(),name:shopName,whats:whats,loc:loc,products:[]};shops.push(s)};s.products.push({name:name,detail:+document.getElementById('pDetail').value||0,gros:+document.getElementById('pGros').value||0,img:document.getElementById('pImage').value});localStorage.setItem('togoShops',JSON.stringify(shops));document.getElementById('pName').value='';renderMy();render();alert('Produit ajouté! Boutique illimitée!')}
+function renderMy(){let my=document.getElementById('myProducts');my.innerHTML=shops.map(s=>`<b>${s.name}</b> - ${s.products.length} produits`).join('<br>')}
+function addToCart(name,price){cart.push({name,price});document.getElementById('cartCount').innerText=cart.length;alert(name+' ajouté: '+price+'F')}
+function openCart(){document.getElementById('cartModal').classList.remove('hidden');document.getElementById('cartModal').classList.add('flex');document.getElementById('cartItems').innerHTML=cart.map(c=>`<div class="flex justify-between border-b py-1"><span>${c.name}</span><b>${c.price}F</b></div>`).join('')+`<div class="font-black mt-2">Total: ${cart.reduce((a,b)=>a+b.price,0)}F</div>`}
+function closeCart(){document.getElementById('cartModal').classList.add('hidden')}
+function checkoutWhats(){let total=cart.reduce((a,b)=>a+b.price,0);let msg=encodeURIComponent('Salem Togo Marché! Commande: '+cart.map(c=>c.name+'-'+c.price+'F').join(', ')+' Total '+total+'F - Ma position: '+ (window.lastPos||''));window.open('https://wa.me/22890123456?text='+msg,'_blank')}
+function enableGPS(){if(!navigator.geolocation)return alert('GPS non supporté');navigator.geolocation.watchPosition(p=>{window.lastPos=p.coords.latitude+','+p.coords.longitude;document.getElementById('gpsStatus').innerText='✅ GPS actif: '+window.lastPos},e=>alert('Active GPS!'),{enableHighAccuracy:true});}
+render();
+</script>
+</body>
+</html>
